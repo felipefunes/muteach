@@ -28,6 +28,8 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
+  config.hosts << "dev.muteach.com"
+
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
 
@@ -36,6 +38,11 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
+  host = 'http://dev.muteach.com:3000'
+  Rails.application.routes.default_url_options = { host: host }
+  config.action_controller.default_url_options = { host: host }
+  config.action_mailer.default_url_options = { host: host }
+  
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
 
