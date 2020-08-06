@@ -16,7 +16,7 @@
     "webpack-dev-server": "^3.11.0"
   },
   "engines": {
-    "node": "12.x"
+    "node": ">10.10"
   },
   "scripts": {
     "start": "./bin/webpack --watch --progress --colors"
