@@ -1,0 +1,8 @@
+%nav.flex.items-center.bg-white.justify-between.flex-wrap.py-5.px-6.border-b.border-gray-600.fixed.top-0.left-0.right-0
+  .flex.items-center.flex-shrink-0.mr-6.content-between
+    .text-3xl.font-bold
+      = link_to root_path do
+        muteach
+  %div
+    = link_to t('sign_up'), new_user_session_path, class: 'ml-4'
+    = link_to t('log_in'), new_user_registration_path, class: 'ml-4'
