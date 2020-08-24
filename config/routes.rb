@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
   devise_for :users
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
-  root to: "welcome#show"
+  root to: "welcome#index"
+
+  scope module: 'users' do
+    resources :home, path: '/home', only: [:index]
+  end
 end
