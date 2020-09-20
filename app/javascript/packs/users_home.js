@@ -1,9 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import UsersHome from "../components/UsersHome"
 
 document.addEventListener("DOMContentLoaded", () => {
   ReactDOM.render(
-    <div>Hola</div>,
+    <UsersHome />,
     document.getElementById("users-home")
   );
 });
