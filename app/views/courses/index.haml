@@ -1,0 +1,21 @@
+.max-w-md.mx-auto.py-10.px-6
+  %h1.text-4xl.font-bold.mb-4 Courses
+  = link_to 'New Course', new_course_path, class: 'btn btn-blue'
+
+  %table
+    %thead
+      %tr
+        %td Name
+        %td Description
+        %td Category
+        %td Actions
+    %tbody
+      - @courses.each do |course| 
+        %tr
+          %td
+            = link_to course.name, course_path(course)
+          %td= course.description
+          %td= course.category.name
+          %td
+            = link_to 'Edit', edit_course_path(course)
+            -# = link_to 'Delete', edit_course_path(course)

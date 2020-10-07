@@ -1,0 +1,35 @@
+= form_for @course do |f|
+  - if @course.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@course.errors.size, "error")} prohibited this course from being saved:"
+      %ul
+        - @course.errors.full_messages.each do |msg|
+          %li= msg
+
+  .form-field
+    = f.label :name
+    .field
+      = f.text_field :name
+
+  .form-field
+    = f.label :description
+    .field
+      = f.text_area :description
+  
+  .form-fields
+    = f.label :students_quota
+    .field
+      = f.text_field :students_quota
+  
+  .form-fields
+    = f.label :price
+    .field
+      = f.text_field :price
+  
+  .form-fields
+    = f.label :category_id, 'Category'
+    = f.select(:category_id, options_for_select(Category.all.map{ |c| [c.name.titleize, c.id] }, { selected: @course.category_id }))
+
+
+  .form-field
+    = f.submit 'Save', class: "btn-blue btn"
