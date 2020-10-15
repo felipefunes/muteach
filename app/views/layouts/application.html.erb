@@ -12,8 +12,11 @@
 
   <body class="pt-20 bg-white">
     <%= render 'layouts/header' %>
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
+    <% flash.each do |type, msg| %>
+      <div class="js-flash-msg text-center font-semibold text-lg text-white py-4 <%= type.to_s == 'alert' ? 'bg-red-600' : 'bg-green-600' %>">
+        <%= msg %>
+      </div>
+    <% end %>
     <%= yield %>
   </body>
 </html>

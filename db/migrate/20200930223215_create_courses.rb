@@ -12,6 +12,9 @@ class CreateCourses < ActiveRecord::Migration[6.0]
       t.string :website
       t.text :primary_objectives
       t.text :secondary_objectives
+      t.integer :modality, default: 0
+      t.string :lang, default: 0
+      t.integer :sessions_amount
  
       t.timestamps
     end

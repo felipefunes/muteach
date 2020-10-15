@@ -9,12 +9,12 @@
   .form-field
     = f.label :name
     .field
-      = f.text_field :name
+      = f.text_field :name, class: "text-field"
 
   .form-field
     = f.label :description
     .field
-      = f.text_area :description
+      = f.text_area :description, class: "text-field"
 
   .form-field
     = f.submit 'Save', class: "btn-blue btn"
