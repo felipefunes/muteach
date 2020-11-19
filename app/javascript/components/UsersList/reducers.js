@@ -2,34 +2,30 @@ import update from 'immutability-helper';
 
 function serializeListByIds(array) {
   return Object.values(array).reduce((result, obj) => {
-    result[obj.id] = {...obj.attributes};
+    result[obj.id] = {...obj};
     return result;
   }, {});
 }
 
 export const [
-  FETCH_COURSES_SUCCESS,
-  FETCH_COURSES,
-  INIT,
+  FETCH_USERS_SUCCESS,
   DONE,
 ] = [
-  'FETCH_COURSES_SUCCESS',
-  'FETCH_COURSES',
-  'INIT',
+  'FETCH_USERS_SUCCESS',
   'DONE',
 ];
 
 export const initialState = {
-  courses: [],
-  status: INIT,
+  users: {},
+  status: null,
 };
 
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case FETCH_COURSES_SUCCESS:
+    case FETCH_USERS_SUCCESS:
       return {
         ...state,
-        courses: serializeListByIds(action.data.data),
+        users: serializeListByIds(action.data),
         status: DONE
       };
     default:

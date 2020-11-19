@@ -1,7 +1,11 @@
 class CategoriesController < ApplicationController
   before_action :set_category, only: [:show, :edit, :update]
   def index
-    @categories = Category.all 
+    @categories = Category.all
+    respond_to do |format|
+      format.html 
+      format.json { render json: @categories, status: :ok }
+    end
   end
 
   def show

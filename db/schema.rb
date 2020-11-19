@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_09_120303) do
+ActiveRecord::Schema.define(version: 2020_11_17_024317) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,7 +38,7 @@ ActiveRecord::Schema.define(version: 2020_10_09_120303) do
     t.text "primary_objectives"
     t.text "secondary_objectives"
     t.integer "modality", default: 0
-    t.integer "lang", default: 0
+    t.string "lang", default: "0"
     t.integer "sessions_amount"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -49,7 +49,27 @@ ActiveRecord::Schema.define(version: 2020_10_09_120303) do
   create_table "courses_users", force: :cascade do |t|
     t.integer "course_id"
     t.integer "user_id"
+    t.integer "role", default: 0
     t.index ["course_id", "user_id"], name: "index_courses_users_on_course_id_and_user_id", unique: true
+  end
+
+  create_table "sessions", force: :cascade do |t|
+    t.bigint "course_id"
+    t.text "objectives"
+    t.text "description"
+    t.datetime "date"
+    t.time "from_hour"
+    t.time "to_hour"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["course_id"], name: "index_sessions_on_course_id"
+  end
+
+  create_table "sessions_users", id: false, force: :cascade do |t|
+    t.bigint "session_id", null: false
+    t.bigint "user_id", null: false
+    t.index ["session_id", "user_id"], name: "index_sessions_users_on_session_id_and_user_id"
+    t.index ["user_id", "session_id"], name: "index_sessions_users_on_user_id_and_session_id"
   end
 
   create_table "users", force: :cascade do |t|

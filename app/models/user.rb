@@ -4,7 +4,9 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :trackable
          
-  has_and_belongs_to_many :courses
+  has_and_belongs_to_many :sessions
+  has_many :courses_users
+  has_many :courses, through: :courses_users
   has_many :categories
   
   enum status: { draft: 0, active: 1, expired: 2 }
