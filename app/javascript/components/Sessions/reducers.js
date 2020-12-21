@@ -13,16 +13,23 @@ export const [
   INIT,
   DONE,
   CREATE_SESSION,
+  UPDATE_SESSION,
+  UPDATE_SELECTED_SESSION_FIELD,
+  SET_SELECTED_SESSION,
 ] = [
   'FETCH_SESSIONS_SUCCESS',
   'FETCH_SESSIONS',
   'INIT',
   'DONE',
   'CREATE_SESSION',
+  'UPDATE_SESSION',
+  'UPDATE_SELECTED_SESSION_FIELD',
+  'SET_SELECTED_SESSION',
 ];
 
 export const initialState = {
   sessions: [],
+  selected_session: null,
   status: INIT,
 };
 
@@ -42,6 +49,32 @@ export const reducer = (state = initialState, action) => {
           [action.data.id]: action.data
         }
       }
+    case UPDATE_SESSION:
+      return {
+        ...state,
+        ...{
+          sessions: update(state.sessions, {
+            [action.data.id]: {
+              $set: action.data,
+            },
+          }),
+        },
+      }
+    case SET_SELECTED_SESSION:
+      return {
+        ...state,
+        selected_session: update(state.sessions, {
+          $set: action.data,
+        }),
+      }
+    case UPDATE_SELECTED_SESSION_FIELD:
+      return {
+        ...state,
+        selected_session: {
+          ...state.selected_session,
+          [action.name]: action.data
+        }
+      };
     default:
       return;
   }

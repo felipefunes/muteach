@@ -11,7 +11,7 @@ export default function Course(props) {
           <h1 className="text-2xl font-bold mb-1">{props.name}</h1>
           <UsersList courseId={props.id} />
         </div>
-        <Sessions />
+        <Sessions courseId={props.id} />
       </div>
       
     </div>

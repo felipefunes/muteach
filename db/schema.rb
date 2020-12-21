@@ -94,8 +94,10 @@ ActiveRecord::Schema.define(version: 2020_11_17_024317) do
     t.string "phone"
     t.string "nickname"
     t.string "name"
+    t.bigint "session_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["session_id"], name: "index_users_on_session_id"
   end
 
 end
