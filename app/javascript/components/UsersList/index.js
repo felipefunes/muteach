@@ -33,7 +33,7 @@ export default function UsersList({ courseId }) {
     <table>
       <tbody>
         {usersToArr && usersToArr.map(user => (
-          <tr>
+          <tr key={user.id}>
             <td>{user.name}</td>
             <td>{user.email}</td>
           </tr>

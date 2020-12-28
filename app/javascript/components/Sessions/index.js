@@ -112,20 +112,38 @@ export default function Sessions(props) {
   }
 
   function handleFormField(e) {
+    // const isDateType = e.target.type === 'date'
+    // const value = isDateType ? new Date(e.target.value) : e.target.value
+
+    // const data = isDateType ? value.toISOString() : value.value;
+
+    const value = e.target.value
+    const date = new Date(value)
+    const now_date = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(),
+                     date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds())
+    const data = new Date(now_date)
+    console.log('data', data)
     dispatch({
       type: UPDATE_SELECTED_SESSION_FIELD,
-      data: e.target.value,
+      data: data,
       name: e.target.name,
     });
   }
-  console.log('state', state.selected_session)
 
   function formatedDate(date) {
-    const d = new Date(date);
-    const yyyy = d.getFullYear();
-    const mm = d.getMonth() + 1;
-    const dd = d.getDate();
-    return `${yyyy}-${mm}-${dd}`;
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    const finalDate = [year, month, day].join('-');
+    console.log('date', finalDate)
+    return finalDate; 
   }
 
   return (

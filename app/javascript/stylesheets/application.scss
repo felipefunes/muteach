@@ -1,6 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Text&family=Poppins:wght@300;400;600&display=swap');
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  -ms-scroll-chaining: none;
+  overscroll-behavior: contain;
+}
+*, *:before, *:after {
+  box-sizing: border-box;
+  -webkit-font-smoothing: inherit;
+  -moz-font-smoothing: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
 @import "tailwindcss/base";
 body {
   @apply text-black;
+  font-family: 'Poppins', sans-serif;
+}
+h1, h2, h3 {
+  font-family: 'DM Serif Text', serif;
 }
 a {
   @apply text-blue-700;
