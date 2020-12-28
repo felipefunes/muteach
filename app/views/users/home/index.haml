@@ -1,0 +1,4 @@
+- content_for :packs do
+  = javascript_pack_tag 'users_home', 'data-turbolinks-track': 'reload'
+
+#users-home{ data: { current_user: current_user.to_json } }

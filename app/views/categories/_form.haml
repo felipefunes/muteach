@@ -1,0 +1,20 @@
+= form_for @category do |f|
+  - if @category.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@category.errors.size, "error")} prohibited this category from being saved:"
+      %ul
+        - @category.errors.full_messages.each do |msg|
+          %li= msg
+
+  .form-field
+    = f.label :name
+    .field
+      = f.text_field :name, class: "text-field"
+
+  .form-field
+    = f.label :description
+    .field
+      = f.text_area :description, class: "text-field"
+
+  .form-field
+    = f.submit 'Save', class: "btn-blue btn"

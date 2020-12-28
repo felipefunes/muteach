@@ -1,0 +1,19 @@
+.max-w-md.mx-auto.py-10.px-6
+  %h1.text-4xl.font-bold.mb-4 Categories
+  = link_to 'New Category', new_category_path, class: 'btn btn-blue'
+
+  %table
+    %thead
+      %tr
+        %td Name
+        %td Description
+        %td Actions
+    %tbody
+      - @categories.each do |category| 
+        %tr
+          %td
+            = link_to category.name, category_path(category)
+          %td= category.description
+          %td
+            = link_to 'Edit', edit_category_path(category)
+            -# = link_to 'Delete', edit_category_path(category)
