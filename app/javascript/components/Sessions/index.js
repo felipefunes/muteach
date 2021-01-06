@@ -1,5 +1,9 @@
 import React from 'react';
 import Modal from '@material-ui/core/Modal';
+import 'date-fns';
+import {
+  KeyboardDateTimePicker
+} from '@material-ui/pickers';
 
 import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
@@ -101,7 +105,6 @@ export default function Sessions(props) {
       console.log('Success:', session);
     })
   }
-  console.log('state', state)
 
   function handleOnOpenModal(session) {
     setOpen(true)
@@ -112,38 +115,19 @@ export default function Sessions(props) {
   }
 
   function handleFormField(e) {
-    // const isDateType = e.target.type === 'date'
-    // const value = isDateType ? new Date(e.target.value) : e.target.value
-
-    // const data = isDateType ? value.toISOString() : value.value;
-
-    const value = e.target.value
-    const date = new Date(value)
-    const now_date = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(),
-                     date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds())
-    const data = new Date(now_date)
-    console.log('data', data)
     dispatch({
       type: UPDATE_SELECTED_SESSION_FIELD,
-      data: data,
+      data: e.target.value,
       name: e.target.name,
     });
   }
 
-  function formatedDate(date) {
-    var d = new Date(date),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
-
-    if (month.length < 2) 
-        month = '0' + month;
-    if (day.length < 2) 
-        day = '0' + day;
-
-    const finalDate = [year, month, day].join('-');
-    console.log('date', finalDate)
-    return finalDate; 
+  function handleDateChange(e) {
+    dispatch({
+      type: UPDATE_SELECTED_SESSION_FIELD,
+      data: e,
+      name: 'date',
+    });
   }
 
   return (
@@ -170,17 +154,34 @@ export default function Sessions(props) {
             <form onSubmit={updateSession}>
               <h3 className="text-1xl font-bold mb-4">{`Edit session ${state.selected_session.id}`}</h3>
               <div className="form-field">
-                <label>Date</label>
-                <div>
-                  <input 
-                    type="date"
-                    name="date"
-                    value={formatedDate(state.selected_session.date)}
-                    onChange={handleFormField}
+                
+                  {/* <KeyboardDatePicker
+                    disableToolbar
+                    variant="inline"
+                    format="MM/dd/yyyy"
+                    margin="normal"
+                    id="date-picker-inline"
+                    label="Date"
+                    value={state.selected_session.date}
+                    onChange={handleDateChange}
+                    KeyboardButtonProps={{
+                      'aria-label': 'change date',
+                    }}
+                  /> */}
+                  <KeyboardDateTimePicker
+                    variant="inline"
+                    ampm={false}
+                    label="Date"
+                    value={state.selected_session.date}
+                    onChange={handleDateChange}
+                    onError={console.log}
+                    disablePast
+                    format="yyyy/MM/dd HH:mm"
                   />
-                </div>
+                
+                
               </div>
-              <div className="form-field">
+              {/* <div className="form-field">
                 <div className="flex">
                   <div className="mr-1">
                     <label>From</label>
@@ -205,7 +206,7 @@ export default function Sessions(props) {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
               <div className="form-field">
                 <label>Description</label>
                 <textarea
