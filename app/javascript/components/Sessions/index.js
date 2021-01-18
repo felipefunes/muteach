@@ -154,20 +154,6 @@ export default function Sessions(props) {
             <form onSubmit={updateSession}>
               <h3 className="text-1xl font-bold mb-4">{`Edit session ${state.selected_session.id}`}</h3>
               <div className="form-field">
-                
-                  {/* <KeyboardDatePicker
-                    disableToolbar
-                    variant="inline"
-                    format="MM/dd/yyyy"
-                    margin="normal"
-                    id="date-picker-inline"
-                    label="Date"
-                    value={state.selected_session.date}
-                    onChange={handleDateChange}
-                    KeyboardButtonProps={{
-                      'aria-label': 'change date',
-                    }}
-                  /> */}
                   <KeyboardDateTimePicker
                     variant="inline"
                     ampm={false}
@@ -178,35 +164,8 @@ export default function Sessions(props) {
                     disablePast
                     format="yyyy/MM/dd HH:mm"
                   />
-                
-                
               </div>
-              {/* <div className="form-field">
-                <div className="flex">
-                  <div className="mr-1">
-                    <label>From</label>
-                    <div>
-                      <input 
-                        type="time"
-                        name="from_hour"
-                        value={state.selected_session.from_hour}
-                        onChange={handleFormField}
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <label>To</label>
-                    <div>
-                      <input 
-                        type="time"
-                        name="to_hour"
-                        value={state.selected_session.to_hour}
-                        onChange={handleFormField}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div> */}
+ 
               <div className="form-field">
                 <label>Description</label>
                 <textarea
