@@ -7,7 +7,7 @@ import {
 import { initialState, reducer } from './reducers';
 
 
-export default function UsersList({ courseId }) {
+export default function UsersList({ courseId, sessionsToArr }) {
 
   const [state, dispatch] = React.useReducer(reducer, initialState);
   const usersToArr = Object.values(state.users).map(user => user);
@@ -28,17 +28,18 @@ export default function UsersList({ courseId }) {
       });
     })
   }
-  return (
-    
-    <table>
-      <tbody>
-        {usersToArr && usersToArr.map(user => (
-          <tr key={user.id}>
-            <td>{user.name}</td>
-            <td>{user.email}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+
+  return ( 
+    <tbody>
+      {sessionsToArr && usersToArr && usersToArr.map(user => (
+        <tr key={user.id}>
+          <td>{user.name}</td>
+          <td>{user.email}</td>
+          {sessionsToArr.map(s => (
+            <td><input type="checkbox" /></td>
+          ))}
+        </tr>
+      ))}
+    </tbody>
   )
 }

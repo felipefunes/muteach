@@ -114,8 +114,8 @@ export default function Course(props) {
       <div className="flex px-20">
         <div>
           <h1 className="text-2xl font-bold mb-1">{props.name}</h1>
-          <UsersList courseId={props.id} />
         </div>
+        <table>
         <Sessions 
           courseId={props.id} 
           sessions={sessionsToArr} 
@@ -127,6 +127,11 @@ export default function Course(props) {
           sessionsToArr={sessionsToArr}
           selectedSession={state.selected_session}
         />
+        <UsersList 
+          courseId={props.id} 
+          sessionsToArr={sessionsToArr}
+        />
+      </table>
       </div>
       
     </div>

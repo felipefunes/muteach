@@ -43,16 +43,20 @@ export default function Sessions(props) {
   } 
 
   return (
-    <div className="flex">
-      <form onSubmit={(e) => createSession(e)}>
-        <button type="submit" className="btn btn-blue">+</button>
-      </form>
+    <thead>
+      <tr>
+      <td></td>  
+      <td>
+        <form onSubmit={(e) => createSession(e)}>
+          <button type="submit" className="btn btn-blue">+</button>
+        </form>
+      </td>  
       {sessionsToArr && sessionsToArr.map((s,i) => (
-        <div key={s.id}>
+        <td key={s.id}>
           <button type="button" onClick={() => handleOnOpenModal(s)} className="px-2">
             {i + 1}           
           </button>
-        </div>
+        </td>
       ))}
       <Modal
         open={open}
@@ -102,6 +106,7 @@ export default function Sessions(props) {
           )}
         </div>
       </Modal>
-    </div>
+      </tr>
+    </thead>
   )
 }
