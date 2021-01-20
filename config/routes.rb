@@ -10,6 +10,9 @@ Rails.application.routes.draw do
 
   scope module: 'courses' do
     resources :users, path: '/courses_users', only: [:index]
+    scope module: 'sessions' do
+      resources :users, path: '/courses_users', only: [:index]
+    end
   end
 
   resources :categories

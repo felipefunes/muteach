@@ -17,7 +17,6 @@ export default function Course(props) {
   const [state, dispatch] = React.useReducer(reducer, initialState);
   const sessionsToArr = Object.values(state.sessions).map(session => session);
 
-  console.log('p', props)
   const { id } = props;
 
   React.useEffect(() => {
