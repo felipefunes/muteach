@@ -4,7 +4,10 @@ class SessionsController < ApplicationController
   before_action :set_session, only: [:update]
 
   def index
-    render json: @course.sessions, status: :ok
+    render(
+      json: SessionSerializer.new(@course.sessions).serializable_hash.to_json, 
+      status: :ok
+    )
   end
 
   def create
