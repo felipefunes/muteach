@@ -1,8 +1,8 @@
 import update from 'immutability-helper';
 
 function serializeListByIds(array) {
-  return Object.values(array).reduce((result, obj) => {
-    result[obj.id] = {...obj};
+  return Object.values(array.data).reduce((result, obj) => {
+    result[obj.id] = {...obj.attributes};
     return result;
   }, {});
 }
@@ -16,6 +16,7 @@ export const [
   UPDATE_SESSION,
   UPDATE_SELECTED_SESSION_FIELD,
   SET_SELECTED_SESSION,
+  UPDATE_SESSION_USERS,
 ] = [
   'FETCH_SESSIONS_SUCCESS',
   'FETCH_SESSIONS',
@@ -25,6 +26,7 @@ export const [
   'UPDATE_SESSION',
   'UPDATE_SELECTED_SESSION_FIELD',
   'SET_SELECTED_SESSION',
+  'UPDATE_SESSION_USERS',
 ];
 
 export const initialState = {
@@ -60,6 +62,17 @@ export const reducer = (state = initialState, action) => {
           }),
         },
       }
+    case UPDATE_SESSION_USERS:
+        return {
+          ...state,
+          sessions: {
+            ...state.sessions,
+            [action.id]: {
+              ...state.sessions[action.id],
+              user_ids: action.data,
+            }
+          },
+        }
     case SET_SELECTED_SESSION:
       return {
         ...state,

@@ -9,6 +9,7 @@ import {
   INIT,
   UPDATE_SELECTED_SESSION_FIELD,
   SET_SELECTED_SESSION,
+  UPDATE_SESSION_USERS,
 } from './reducers';
 
 import { initialState, reducer } from './reducers';
@@ -61,7 +62,6 @@ export default function Course(props) {
     })
   }
 
-
   function updateSession(e) {
     e.preventDefault();
     fetch(`/courses/${id}/sessions/${state.selected_session.id}.json`, {
@@ -108,9 +108,21 @@ export default function Course(props) {
     });
   }
 
+  function handleAssistance(e) {
+    const userId = Number(e.target.name);
+    const sessionId = Number(e.target.dataset.session)
+    const session = state.sessions[sessionId]
+    const userIds = session.user_ids.includes(userId) ? session.user_ids.filter(id => id !== userId) : session.user_ids.concat(userId)
+    dispatch({
+      type: UPDATE_SESSION_USERS,
+      data: userIds,
+      id: sessionId,
+    });
+  }
+
   return (
-    <div>      
-      <div className="flex px-20">
+    <div>
+      <div className="px-20">
         <div>
           <h1 className="text-2xl font-bold mb-1">{props.name}</h1>
         </div>
@@ -129,6 +141,7 @@ export default function Course(props) {
         <UsersList 
           courseId={props.id} 
           sessionsToArr={sessionsToArr}
+          handleAssistance={handleAssistance}
         />
       </table>
       </div>
