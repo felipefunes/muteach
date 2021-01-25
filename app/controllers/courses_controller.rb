@@ -5,14 +5,19 @@ class CoursesController < ApplicationController
     @courses = Course.all 
     respond_to do |format|
       format.html 
-      format.json { render json: CourseSerializer.new(@courses).serializable_hash.to_json, status: :ok }
+      format.json { 
+        render(
+          json: CourseSerializer.new(@courses).serializable_hash.to_json, 
+          status: :ok
+        )
+      }
     end
   end
 
   def show
   end
 
-  def new
+  def new   
     @course = Course.new
   end
 

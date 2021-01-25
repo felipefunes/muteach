@@ -1,0 +1,43 @@
+.data-table {
+  margin: 20px 0;
+  @apply bg-absolutewhite max-w-full border border-gray-300 table rounded;
+
+  &:full-width {
+    @apply w-full;
+  }
+
+  tr.odd {
+    @apply bg-gray-100;
+  }
+
+  tbody {
+    tr {
+      &.hover:hover,
+      &:hover {
+        @apply bg-gray-100;
+      }
+    }
+  }
+
+  td {
+    @apply border-b border-gray-300;
+    padding: 16px;
+    word-wrap: break-word;
+    vertical-align: middle;
+  }
+
+  th {
+    padding: 14px 10px 14px 10px;
+    text-align: left;
+    white-space: nowrap;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    font-weight: 700;
+  }
+
+  .small {
+    font-size: 11px;
+  }
+}
