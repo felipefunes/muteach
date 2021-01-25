@@ -1,0 +1,13 @@
+.btn {
+  @apply font-bold py-3 px-4 rounded-xlg;
+}
+.btn-blue {
+  @apply bg-blue-500 text-white;
+}
+.btn:disabled {
+  @apply bg-gray-100;
+  cursor: not-allowed;
+}
+.btn-blue:hover {
+  @apply bg-blue-700;
+}

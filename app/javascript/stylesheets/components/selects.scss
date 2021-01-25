@@ -1,0 +1,41 @@
+.select-container {
+  @apply border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal;
+  position: relative;
+  min-width: 130px;
+  height: 3.4em;
+  line-height: 2.8em;
+  background-color: white;
+
+  select {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border: 0;
+    padding: 0 1em;
+    background: transparent;
+    -webkit-appearance: none;
+    z-index: 1;
+    font-weight: 700;
+    color: inherit;
+    cursor: pointer;
+
+    // IE 10+ hack
+    &::-ms-expand {
+      display: none;
+    }
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    right: 1em;
+    top: 48%;
+    height: 0;
+    width: 0;
+    border: 5px solid transparent;
+    border-top-color: gray;
+  }
+}

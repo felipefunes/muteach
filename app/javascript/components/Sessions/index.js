@@ -1,6 +1,7 @@
 import React from 'react';
 import Modal from '@material-ui/core/Modal';
 import 'date-fns';
+import { format } from 'date-fns';
 import {
   KeyboardDateTimePicker
 } from '@material-ui/pickers';
@@ -37,24 +38,31 @@ export default function Sessions(props) {
 
   const [open, setOpen] = React.useState(false);
 
-  function handleOnOpenModal(e) {
-    onOpenModal(e)
+  function handleOnOpenModal(session) {
+    onOpenModal(session)
     setOpen(true)
-  } 
+  }
+
+  function handleUpdateSession(e) {
+    updateSession(e);
+    setOpen(false)
+  }
 
   return (
     <thead>
       <tr>
-      <td></td>  
       <td>
-        <form onSubmit={(e) => createSession(e)}>
-          <button type="submit" className="btn btn-blue">+</button>
+        <form onSubmit={createSession}>
+          <button type="submit" className="text-blue-700">+ Add new session</button>
         </form>
       </td>  
       {sessionsToArr && sessionsToArr.map((s,i) => (
         <td key={s.id}>
-          <button type="button" onClick={() => handleOnOpenModal(s)} className="px-2">
-            {i + 1}           
+          <button type="button" onClick={() => handleOnOpenModal(s)} className="px-2 text-center">
+            <span className="block text-sm font-semibold mb-1">{i + 1}</span>
+            <span className="block text-xs text-gray-500">
+              { s.date ? format(new Date(s.date), 'dd/MM/yy') : '🗓' }
+            </span>          
           </button>
         </td>
       ))}
@@ -67,7 +75,7 @@ export default function Sessions(props) {
       >
         <div className={classes.paper} className="bg-white p-10">
           {selectedSession && (
-            <form onSubmit={updateSession}>
+            <form onSubmit={handleUpdateSession}>
               <h3 className="text-1xl font-bold mb-4">{`Edit session ${selectedSession.id}`}</h3>
               <div className="form-field">
                   <KeyboardDateTimePicker
@@ -77,7 +85,6 @@ export default function Sessions(props) {
                     value={selectedSession.date}
                     onChange={handleDateChange}
                     onError={console.log}
-                    disablePast
                     format="yyyy/MM/dd HH:mm"
                   />
               </div>
@@ -88,7 +95,7 @@ export default function Sessions(props) {
                   className="text-field" 
                   onChange={handleFormField}
                   name="description"
-                  value={selectedSession.description} 
+                  value={selectedSession.description || ''} 
                 />
               </div>
   
@@ -98,7 +105,7 @@ export default function Sessions(props) {
                   className="text-field" 
                   onChange={handleFormField}
                   name="objectives"
-                  value={selectedSession.objectives} 
+                  value={selectedSession.objectives || ''} 
                 />
               </div>
               <button type="submit" className="btn btn-blue">Update</button>

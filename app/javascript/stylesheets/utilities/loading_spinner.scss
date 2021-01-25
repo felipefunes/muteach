@@ -1,0 +1,17 @@
+
+@keyframes donut-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.loading-spinner {
+  display: inline-block;
+  border: .15em solid rgba(0, 0, 0, 0.1);
+  border-left-color: white;
+  border-radius: 50%;
+  animation: donut-spin 1.1s linear infinite;
+  transform: translateY(0);
+}

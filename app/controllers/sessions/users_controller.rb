@@ -3,9 +3,7 @@ class Sessions::UsersController < ApplicationController
   before_action :set_course
   before_action :set_session
 
-  # /courses/:course_id/sessions/:id
   def update
-    binding.pry
     render json: @course.users, status: :ok
   end
 

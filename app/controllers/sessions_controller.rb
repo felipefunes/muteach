@@ -13,7 +13,10 @@ class SessionsController < ApplicationController
   def create
     @session = @course.sessions.new
     if @session.save
-      render json: @session, status: :ok
+      render(
+        json: SessionSerializer.new(@session).serializable_hash.to_json,
+        status: :ok
+      )
     else
       render json: @session.errors, status: :unprocessable_entity
     end
@@ -21,7 +24,13 @@ class SessionsController < ApplicationController
 
   def update
     if @session.update(session_params)
-      render json: @session, status: :ok
+      if params[:session][:user_ids].present?
+        @session.update_attribute(:user_ids, params[:session][:user_ids])
+      end
+      render(
+        json: SessionSerializer.new(@session).serializable_hash.to_json,
+        status: :ok
+      )
     else
       ender json: @session.errors, status: :unprocessable_entity
     end
@@ -34,8 +43,7 @@ class SessionsController < ApplicationController
       :objectives, 
       :description, 
       :date, 
-      :from_hour,
-      :to_hour, 
+      :user_ids
     )
   end
 

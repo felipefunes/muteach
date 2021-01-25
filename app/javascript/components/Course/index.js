@@ -56,7 +56,7 @@ export default function Course(props) {
     .then(session => {
       dispatch({
         type: CREATE_SESSION,
-        data: session,
+        data: session.data.attributes,
       });
       console.log('Success:', session);
     })
@@ -79,7 +79,7 @@ export default function Course(props) {
     .then(session => {
       dispatch({
         type: UPDATE_SESSION,
-        data: session,
+        data: session.data.attributes,
       });
       console.log('Success:', session);
     })
@@ -108,16 +108,37 @@ export default function Course(props) {
     });
   }
 
+  function updateAssistance(session) {
+    fetch(`/courses/${id}/sessions/${session.id}.json`, {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ session: session }),
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    })
+    .then(response => response.json())
+    .then(session => {
+      dispatch({
+        type: UPDATE_SESSION_USERS,
+        data: session.data.attributes.user_ids,
+        id: session.data.attributes.id,
+      });
+      console.log('Success:', session);
+    })
+  }
+
   function handleAssistance(e) {
     const userId = Number(e.target.name);
     const sessionId = Number(e.target.dataset.session)
     const session = state.sessions[sessionId]
     const userIds = session.user_ids.includes(userId) ? session.user_ids.filter(id => id !== userId) : session.user_ids.concat(userId)
-    dispatch({
-      type: UPDATE_SESSION_USERS,
-      data: userIds,
-      id: sessionId,
-    });
+
+    const updateSession = {...session, user_ids: userIds}
+    updateAssistance(updateSession)
   }
 
   return (
@@ -125,27 +146,29 @@ export default function Course(props) {
       <div className="px-20">
         <div>
           <h1 className="text-2xl font-bold mb-1">{props.name}</h1>
+          <div className="text-lg">{} Students</div>
         </div>
-        <table>
-        <Sessions 
-          courseId={props.id} 
-          sessions={sessionsToArr} 
-          createSession={createSession}
-          updateSession={updateSession}
-          onOpenModal={onOpenModal}
-          handleFormField={handleFormField}
-          handleDateChange={handleDateChange}
-          sessionsToArr={sessionsToArr}
-          selectedSession={state.selected_session}
-        />
-        <UsersList 
-          courseId={props.id} 
-          sessionsToArr={sessionsToArr}
-          handleAssistance={handleAssistance}
-        />
-      </table>
+        <div className="data-table">
+          <table>
+            <Sessions 
+              courseId={props.id} 
+              sessions={sessionsToArr} 
+              createSession={createSession}
+              updateSession={updateSession}
+              onOpenModal={onOpenModal}
+              handleFormField={handleFormField}
+              handleDateChange={handleDateChange}
+              sessionsToArr={sessionsToArr}
+              selectedSession={state.selected_session}
+            />
+            <UsersList 
+              courseId={props.id} 
+              sessionsToArr={sessionsToArr}
+              handleAssistance={handleAssistance}
+            />
+          </table>
+        </div>
       </div>
-      
     </div>
   )
 }
