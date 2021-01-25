@@ -60,7 +60,7 @@ export default function Sessions(props) {
         <td key={s.id}>
           <button type="button" onClick={() => handleOnOpenModal(s)} className="px-2 text-center">
             <span className="block text-sm font-semibold mb-1">{i + 1}</span>
-            <span className="block text-xs text-gray-500">
+            <span className="block text-xs text-gray-600">
               { s.date ? format(new Date(s.date), 'dd/MM/yy') : '🗓' }
             </span>          
           </button>

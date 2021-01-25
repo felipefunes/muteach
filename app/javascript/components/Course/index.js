@@ -10,6 +10,7 @@ import {
   UPDATE_SELECTED_SESSION_FIELD,
   SET_SELECTED_SESSION,
   UPDATE_SESSION_USERS,
+  FETCH_USERS_SUCCESS,
 } from './reducers';
 
 import { initialState, reducer } from './reducers';
@@ -17,16 +18,17 @@ import { initialState, reducer } from './reducers';
 export default function Course(props) {
   const [state, dispatch] = React.useReducer(reducer, initialState);
   const sessionsToArr = Object.values(state.sessions).map(session => session);
+  const usersToArr = Object.values(state.users).map(user => user);
 
   const { id } = props;
 
   React.useEffect(() => {
     if (state.status === INIT) {
-      fetchCourses();
+      fetchSessions();
     }
   }, [state.status])
 
-  function fetchCourses() {
+  function fetchSessions() {
     fetch(`/courses/${id}/sessions.json`)
     .then(function(response) {
       return response.json();
@@ -35,6 +37,23 @@ export default function Course(props) {
       dispatch({
         type: FETCH_SESSIONS_SUCCESS,
         data: sessions,
+      });
+    })
+  }
+
+  React.useEffect(() => {
+    fetchUsers()
+  }, [])
+
+  function fetchUsers() {
+    fetch(`/courses_users.json?course_id=${id}`)
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(users) {
+      dispatch({
+        type: FETCH_USERS_SUCCESS,
+        data: users,
       });
     })
   }
@@ -146,7 +165,11 @@ export default function Course(props) {
       <div className="px-20">
         <div>
           <h1 className="text-2xl font-bold mb-1">{props.name}</h1>
-          <div className="text-lg">{} Students</div>
+          <div className="text-base text-gray-600">
+            {usersToArr.length} Students
+            <span className="text-gray-500 mx-2">{' | '}</span>
+            <button type="submit" className="text-blue-700">+ Invite students</button>
+          </div>
         </div>
         <div className="data-table">
           <table>
@@ -165,6 +188,7 @@ export default function Course(props) {
               courseId={props.id} 
               sessionsToArr={sessionsToArr}
               handleAssistance={handleAssistance}
+              usersToArr={usersToArr}
             />
           </table>
         </div>

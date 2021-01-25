@@ -1,8 +1,15 @@
 import update from 'immutability-helper';
 
-function serializeListByIds(array) {
+function serializeListFromAPIByIds(array) {
   return Object.values(array.data).reduce((result, obj) => {
     result[obj.id] = {...obj.attributes};
+    return result;
+  }, {});
+}
+
+function serializeListByIds(array) {
+  return Object.values(array).reduce((result, obj) => {
+    result[obj.id] = {...obj};
     return result;
   }, {});
 }
@@ -17,6 +24,7 @@ export const [
   UPDATE_SELECTED_SESSION_FIELD,
   SET_SELECTED_SESSION,
   UPDATE_SESSION_USERS,
+  FETCH_USERS_SUCCESS,
 ] = [
   'FETCH_SESSIONS_SUCCESS',
   'FETCH_SESSIONS',
@@ -27,10 +35,12 @@ export const [
   'UPDATE_SELECTED_SESSION_FIELD',
   'SET_SELECTED_SESSION',
   'UPDATE_SESSION_USERS',
+  'FETCH_USERS_SUCCESS',
 ];
 
 export const initialState = {
   sessions: [],
+  users: {},
   selected_session: null,
   status: INIT,
 };
@@ -40,7 +50,7 @@ export const reducer = (state = initialState, action) => {
     case FETCH_SESSIONS_SUCCESS:
       return {
         ...state,
-        sessions: serializeListByIds(action.data),
+        sessions: serializeListFromAPIByIds(action.data),
         status: DONE
       };
     case CREATE_SESSION:
@@ -87,6 +97,12 @@ export const reducer = (state = initialState, action) => {
           ...state.selected_session,
           [action.name]: action.data
         }
+      };
+    case FETCH_USERS_SUCCESS:
+      return {
+        ...state,
+        users: serializeListByIds(action.data),
+        status: DONE
       };
     default:
       return;

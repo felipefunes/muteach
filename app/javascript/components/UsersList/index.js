@@ -1,33 +1,6 @@
 import React from 'react';
 
-import {
-  FETCH_USERS_SUCCESS,
-} from './reducers';
-
-import { initialState, reducer } from './reducers';
-
-
-export default function UsersList({ courseId, sessionsToArr, handleAssistance }) {
-
-  const [state, dispatch] = React.useReducer(reducer, initialState);
-  const usersToArr = Object.values(state.users).map(user => user);
-
-  React.useEffect(() => {
-    fetchUsers()
-  }, [])
-
-  function fetchUsers() {
-    fetch(`/courses_users.json?course_id=${courseId}`)
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(users) {
-      dispatch({
-        type: FETCH_USERS_SUCCESS,
-        data: users,
-      });
-    })
-  }
+export default function UsersList({ sessionsToArr, handleAssistance, usersToArr }) {
 
   return ( 
     <tbody>
@@ -35,7 +8,7 @@ export default function UsersList({ courseId, sessionsToArr, handleAssistance })
         <tr key={user.id}>
           <td>
             <div className="text-sm font-semibold">{user.name}</div>
-            <div className="text-gray-500 text-xs">{user.email}</div>
+            <div className="text-gray-600 text-xs">{user.email}</div>
           </td>
           {sessionsToArr.map(session => (
             <td key={session.id} className="text-center">
