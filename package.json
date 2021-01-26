@@ -37,12 +37,38 @@
   },
   "version": "0.1.0",
   "devDependencies": {
-    "webpack-dev-server": "^3.11.0"
+    "webpack-dev-server": "^3.11.0",
+    "eslint-config-react-app": "^3.0.5",
+    "eslint-plugin-cypress": "^2.2.1",
+    "eslint-plugin-flowtype": "^3.2.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.2",
+    "eslint-plugin-react": "^7.11.1",
+    "eslint-plugin-react-hooks": "^2.3.0"
   },
   "engines": {
     "node": "12.x"
   },
   "scripts": {
-    "start": "./bin/webpack --watch --progress --colors"
-  }
+    "start": "./bin/webpack --watch --progress --colors",
+    "start-stripe-cli": "stripe listen --forward-to localhost:5000/webhooks/stripe --api-key sk_test_Tzd9VhqHmjSBqBq54P4T0zem000WWzvmYH --project-name cypress-gob",
+    "start-rails": "yarn start-stripe-cli & source ./spec/cypress/env-vars && bundle exec rails s -p 5000 -e cypress --pid=tmp/pids/server-cy.pid",
+    "start-rails-unstriped": "source ./spec/cypress/env-vars && bundle exec rails s -p 5000 -e cypress --pid=tmp/pids/server-cy.pid",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run --headless --browser chrome",
+    "test:jest": "NODE_PATH=app/react jest",
+    "test:specs": "./script/test",
+    "rubocop": "rubocop --require rubocop-rails",
+    "test:cy": "start-server-and-test start-rails http://localhost:5000/echo cypress:run",
+    "lint:react": "./node_modules/eslint/bin/eslint.js --ext .js app/react --max-warnings 0",
+    "lint:yaml": "YAMLLINT_IGNORE=node_modules/* yarn yamllint **/*.yml",
+    "lint": "yarn lint:react && yarn lint:yaml",
+    "prettify": "prettier --write './**/*.{js,ts,tsx,css,scss,json,yml}'"
+  },
+  "lint-staged": {
+    "./**/*.{js,ts,tsx,css,scss,json,yml}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
 }

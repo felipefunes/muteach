@@ -1,0 +1,33 @@
+{
+  "extends": "react-app",
+  "settings": {
+    "react": {
+      "version": "latest"
+    }
+  },
+  "globals": {
+    "I18n": true,
+    "alertify": true,
+    "mockPromise": true,
+    "$": true
+  },
+  "plugins": [
+    "react-hooks"
+  ],
+  "rules": {
+    "jsx-a11y/href-no-hash": "off",
+    "react/button-has-type": "warn",
+    "react/default-props-match-prop-types": "warn",
+    "react/forbid-foreign-prop-types": "warn",
+    "react/no-did-mount-set-state": "warn",
+    "react/no-did-update-set-state": "warn",
+    "react/no-unused-prop-types": "warn",
+    "react/no-unused-state": "warn",
+    "react/no-will-update-set-state": ["warn", "disallow-in-func"],
+    "react/prefer-stateless-function": "warn",
+    "react/prop-types": "warn",
+    "react/style-prop-object": "warn",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "error"
+  }
+}
