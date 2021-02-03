@@ -1,11 +1,11 @@
 import React from 'react';
-import Modal from '@material-ui/core/Modal';
 import 'date-fns';
 import { format } from 'date-fns';
 import {
   KeyboardDateTimePicker
 } from '@material-ui/pickers';
 
+import Modal from '@material-ui/core/Modal';
 import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
   modal: {

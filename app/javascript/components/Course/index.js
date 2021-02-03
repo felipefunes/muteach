@@ -189,6 +189,7 @@ export default function Course(props) {
               sessionsToArr={sessionsToArr}
               handleAssistance={handleAssistance}
               usersToArr={usersToArr}
+              onOpenModal={onOpenModal}
             />
           </table>
         </div>

@@ -25,6 +25,7 @@ export const [
   SET_SELECTED_SESSION,
   UPDATE_SESSION_USERS,
   FETCH_USERS_SUCCESS,
+  SET_SELECTED_USER,
 ] = [
   'FETCH_SESSIONS_SUCCESS',
   'FETCH_SESSIONS',
@@ -36,6 +37,7 @@ export const [
   'SET_SELECTED_SESSION',
   'UPDATE_SESSION_USERS',
   'FETCH_USERS_SUCCESS',
+  'SET_SELECTED_USER',
 ];
 
 export const initialState = {
@@ -90,6 +92,13 @@ export const reducer = (state = initialState, action) => {
           $set: action.data,
         }),
       }
+    case SET_SELECTED_USER:
+        return {
+          ...state,
+          selected_user: update(state.user, {
+            $set: action.data,
+          }),
+        }
     case UPDATE_SELECTED_SESSION_FIELD:
       return {
         ...state,
