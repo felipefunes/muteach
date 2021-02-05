@@ -11,6 +11,7 @@ import {
   SET_SELECTED_SESSION,
   UPDATE_SESSION_USERS,
   FETCH_USERS_SUCCESS,
+  SET_SELECTED_USER,
 } from './reducers';
 
 import { initialState, reducer } from './reducers';
@@ -111,6 +112,18 @@ export default function Course(props) {
     })
   }
 
+  function onOpenSessionUser(session, user) {
+    dispatch({
+      type: SET_SELECTED_SESSION,
+      data: session,
+    })
+
+    dispatch({
+      type: SET_SELECTED_USER,
+      data: user,
+    })
+  }
+
   function handleFormField(e) {
     dispatch({
       type: UPDATE_SELECTED_SESSION_FIELD,
@@ -189,7 +202,9 @@ export default function Course(props) {
               sessionsToArr={sessionsToArr}
               handleAssistance={handleAssistance}
               usersToArr={usersToArr}
-              onOpenModal={onOpenModal}
+              onOpenSessionUser={onOpenSessionUser}
+              selectedSession={state.selected_session}
+              selectedUser={state.selected_user}
             />
           </table>
         </div>

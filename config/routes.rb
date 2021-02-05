@@ -13,10 +13,13 @@ Rails.application.routes.draw do
   end
 
   resources :categories
+
   resources :courses do
     resources :sessions do
       scope module: 'sessions' do
-        resources :users
+        resources :users do
+          resources :notes
+        end
       end
     end
   end

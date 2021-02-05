@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Notes from '../Notes';
 import Modal from '@material-ui/core/Modal';
 import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
@@ -17,18 +18,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function UsersList({ 
+  courseId,
   sessionsToArr, 
   handleAssistance, 
   usersToArr, 
   handleOnOpenModal, 
-  onOpenModal,
+  onOpenSessionUser,
+  selectedSession,
+  selectedUser,
 }) {
   
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
-  function handleOnOpenModal(session) {
-    onOpenModal(session)
+  function handleOnOpenModal(session, user) {
+    onOpenSessionUser(session, user)
     setOpen(true)
   }
 
@@ -54,7 +58,7 @@ export default function UsersList({
                 onChange={handleAssistance}
                 checked={session.user_ids.includes(user.id)}
               />
-              <button type="button" className="px-2" onClick={() => handleOnOpenModal(session)}>
+              <button type="button" className="px-2" onClick={() => handleOnOpenModal(session, user)}>
                 <span className="transform rotate-90 flex" rol="img">✏️</span>
               </button>
             </td>
@@ -68,7 +72,15 @@ export default function UsersList({
         aria-describedby="simple-modal-description"
         className={classes.modal}
       >
-        <div className={classes.paper} className="bg-white p-10">Hola Perrito</div>
+        <div className={classes.paper} className="bg-white p-10">
+          {selectedSession && selectedUser && (
+            <Notes
+              courseId={courseId}
+              sessionId={selectedSession.id}
+              userId={selectedUser.id}
+            />
+          )}
+        </div>
       </Modal>
     </tbody>
   )
