@@ -2,7 +2,6 @@ import React from 'react';
 import LoadingIndicator from '../common/LoadingIndicator'
 
 import {
-  FETCH_NOTES,
   FETCH_NOTES_SUCCESS,
   INIT,
   DONE,
@@ -25,7 +24,7 @@ export default function Notes({
   }, [state.status])
 
   function fetchCourses() {
-    fetch(`/courses/${courseId}/sessions/${sessionId}/users/${userId}/notess`)
+    fetch(`/courses/${courseId}/sessions/${sessionId}/users/${userId}/notes`)
     .then(function(response) {
       return response.json();
     })
@@ -40,7 +39,7 @@ export default function Notes({
   return (
     <div className="">
       <h3>Notes</h3>
-      {notesToArr == null ? (
+      {state.status === DONE ? (
         notesToArr.map(note => (
           <div>{note.text}</div>
         ))
