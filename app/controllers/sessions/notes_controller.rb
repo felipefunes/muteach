@@ -3,22 +3,22 @@ class Sessions::NotesController < ApplicationController
   before_action :set_course
   before_action :set_session
   before_action :set_user
-  before_action :set_note, only: [:show, :update, :create, :destroy]
+  before_action :set_note, only: [:show, :update, :destroy]
 
   def index
     @notes = Note.where(
       course_id: @course.id, 
       session_id: @session.id, 
-      user_id: @user_id
+      user_id: @user.id
     )
     render json: @notes, status: :ok
   end
 
   def create
-    @note = Note.new(notes_params).merge(
+    @note = Note.new(
       course_id: @course.id, 
       session_id: @session.id, 
-      user_id: @user_id
+      user_id: @user.id
     )
     if @note.save
       render(
@@ -65,6 +65,6 @@ class Sessions::NotesController < ApplicationController
   end
 
   def set_note
-    @note = Note.find sparams[:note_id]
+    @note = Note.find params[:id]
   end
 end

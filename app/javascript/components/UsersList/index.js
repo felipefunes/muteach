@@ -74,11 +74,14 @@ export default function UsersList({
       >
         <div className={classes.paper} className="bg-white p-10">
           {selectedSession && selectedUser && (
-            <Notes
-              courseId={courseId}
-              sessionId={selectedSession.id}
-              userId={selectedUser.id}
-            />
+            <>
+              <h3 className="text-1xl font-bold mb-1">{`Details ${selectedUser.name}`}</h3>
+              <Notes
+                courseId={courseId}
+                sessionId={selectedSession.id}
+                user={selectedUser}
+              />
+            </>
           )}
         </div>
       </Modal>
