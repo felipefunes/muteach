@@ -43,7 +43,16 @@ class Sessions::NotesController < ApplicationController
   end
 
   def destroy
+    note_id = @note.id
     @note.destroy
+    if @note.destroy
+      render(
+        json: { id: note_id },
+        status: :ok
+      )
+    else
+      render json: @note.errors, status: :unprocessable_entity
+    end
   end
 
   private

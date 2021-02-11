@@ -8,6 +8,7 @@ import {
   DONE,
   UPDATE_NOTE,
   UPDATE_NOTE_FIELD,
+  DELETE_NOTE,
 } from './reducers';
 
 import { initialState, reducer } from './reducers';
@@ -84,6 +85,28 @@ export default function Notes({
     })
   }
 
+  function deleteNote(noteId) {
+    fetch(`/courses/${courseId}/sessions/${sessionId}/users/${user.id}/notes/${note.id}.json`, {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ notes: note }),
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    })
+    .then(response => response.json())
+    .then(note => {
+      dispatch({
+        type: DELETE_NOTE,
+        data: note.id,
+      });
+      console.log('Success:', noteId);
+    })
+  }
+
   function onChangeNote(e) {
     dispatch({
       type: UPDATE_NOTE_FIELD,
@@ -112,6 +135,9 @@ export default function Notes({
             </div>
             <button type="button" onClick={() => updateNote(note)}>
               Save
+            </button>
+            <button type="button" onClick={() => deleteNote(note.id)}>
+              Delete
             </button>
           </div>
         ))

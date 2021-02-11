@@ -49,12 +49,10 @@ export const reducer = (state = initialState, action) => {
         }
       }
     case DELETE_NOTE:
+      const notes = notes.filter(n => n.id !== action.data)
       return {
         ...state,
-        notes: {
-          ...state.notes,
-          [action.data.id]: action.data
-        }
+        notes: notes,
       }
     case UPDATE_NOTE:
       return {
