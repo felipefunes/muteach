@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_05_113034) do
+ActiveRecord::Schema.define(version: 2021_02_11_120313) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -51,6 +51,24 @@ ActiveRecord::Schema.define(version: 2021_02_05_113034) do
     t.integer "user_id"
     t.integer "role", default: 0
     t.index ["course_id", "user_id"], name: "index_courses_users_on_course_id_and_user_id", unique: true
+  end
+
+  create_table "evaluations", force: :cascade do |t|
+    t.bigint "session_id"
+    t.bigint "user_id"
+    t.bigint "course_id"
+    t.string "title"
+    t.text "description"
+    t.text "objectives"
+    t.integer "total_points"
+    t.integer "approval_percentage"
+    t.datetime "delivery_date"
+    t.datetime "delivered_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["course_id"], name: "index_evaluations_on_course_id"
+    t.index ["session_id"], name: "index_evaluations_on_session_id"
+    t.index ["user_id"], name: "index_evaluations_on_user_id"
   end
 
   create_table "notes", force: :cascade do |t|
