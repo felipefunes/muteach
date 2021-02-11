@@ -49,7 +49,8 @@ export const reducer = (state = initialState, action) => {
         }
       }
     case DELETE_NOTE:
-      const notes = notes.filter(n => n.id !== action.data)
+      // debugger
+      // const notes = state.notes.filter(n => n.id !== action.data)
       return {
         ...state,
         notes: notes,
@@ -59,7 +60,7 @@ export const reducer = (state = initialState, action) => {
         ...state,
         notes: {
           ...state.notes,
-          [action.data.id]: action.data
+          // [action.data.id]: action.data
         }
       }
     case UPDATE_NOTE_FIELD:

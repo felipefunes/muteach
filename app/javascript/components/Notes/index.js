@@ -85,7 +85,7 @@ export default function Notes({
     })
   }
 
-  function deleteNote(noteId) {
+  function deleteNote(note) {
     fetch(`/courses/${courseId}/sessions/${sessionId}/users/${user.id}/notes/${note.id}.json`, {
       method: 'DELETE',
       headers: {
@@ -101,9 +101,9 @@ export default function Notes({
     .then(note => {
       dispatch({
         type: DELETE_NOTE,
-        data: note.id,
+        data: note,
       });
-      console.log('Success:', noteId);
+      console.log('Success:', note);
     })
   }
 
@@ -136,7 +136,7 @@ export default function Notes({
             <button type="button" onClick={() => updateNote(note)}>
               Save
             </button>
-            <button type="button" onClick={() => deleteNote(note.id)}>
+            <button type="button" onClick={() => deleteNote(note)}>
               Delete
             </button>
           </div>

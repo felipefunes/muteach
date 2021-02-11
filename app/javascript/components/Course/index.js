@@ -173,30 +173,52 @@ export default function Course(props) {
     updateAssistance(updateSession)
   }
 
+  const [viewMode, setViewMode] = React.useState('sessions')
+
   return (
     <div>
       <div className="px-20">
         <div>
           <h1 className="text-2xl font-bold mb-1">{props.name}</h1>
-          <div className="text-base text-gray-600">
-            {usersToArr.length} Students
-            <span className="text-gray-500 mx-2">{' | '}</span>
-            <button type="submit" className="text-blue-700">+ Invite students</button>
+          <div className="text-base text-gray-600 flex justify-between">
+            <div>
+              {usersToArr.length} Students
+              <span className="text-gray-500 mx-2">{' | '}</span>
+              <button type="submit" className="text-blue-700">+ Invite students</button>
+            </div>
+            <div>
+              <button type="submit" className="text-blue-700" onClick={() => setViewMode('sessions')}>
+                Sessions
+              </button>
+              <button type="submit" className="ml-4 text-blue-700" onClick={() => setViewMode('evaluations')}>
+                Evaluations
+              </button>
+            </div>
           </div>
         </div>
         <div className="data-table">
           <table>
-            <Sessions 
-              courseId={props.id} 
-              sessions={sessionsToArr} 
-              createSession={createSession}
-              updateSession={updateSession}
-              onOpenModal={onOpenModal}
-              handleFormField={handleFormField}
-              handleDateChange={handleDateChange}
-              sessionsToArr={sessionsToArr}
-              selectedSession={state.selected_session}
-            />
+            {viewMode === 'sessions' ? (
+              <Sessions 
+                courseId={props.id} 
+                sessions={sessionsToArr} 
+                createSession={createSession}
+                updateSession={updateSession}
+                onOpenModal={onOpenModal}
+                handleFormField={handleFormField}
+                handleDateChange={handleDateChange}
+                sessionsToArr={sessionsToArr}
+                selectedSession={state.selected_session}
+              />
+            ) : (
+              <thead>
+                <tr>
+                  <td></td>
+                  <td>Evaluaciones</td>
+                </tr>
+              </thead>
+            )}
+            
             <UsersList 
               courseId={props.id} 
               sessionsToArr={sessionsToArr}
@@ -205,6 +227,7 @@ export default function Course(props) {
               onOpenSessionUser={onOpenSessionUser}
               selectedSession={state.selected_session}
               selectedUser={state.selected_user}
+              viewMode={viewMode}
             />
           </table>
         </div>
