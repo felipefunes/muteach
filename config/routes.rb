@@ -22,5 +22,8 @@ Rails.application.routes.draw do
         end
       end
     end
+
+    resources :evaluations do
+    end
   end
 end

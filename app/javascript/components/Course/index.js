@@ -1,6 +1,7 @@
 import React from 'react';
 import UsersList from '../UsersList'
 import Sessions from '../Sessions'
+import Evaluations from '../Evaluations'
 
 import {
   FETCH_SESSIONS_SUCCESS,
@@ -12,14 +13,21 @@ import {
   UPDATE_SESSION_USERS,
   FETCH_USERS_SUCCESS,
   SET_SELECTED_USER,
+  FETCH_EVALUATIONS_SUCCESS,
+  SET_SELECTED_EVALUATION,
+  UPDATE_SELECTED_EVALUATION_FIELD,
+  UPDATE_EVALUATION,
+  CREATE_EVALUATION,
 } from './reducers';
 
 import { initialState, reducer } from './reducers';
 
 export default function Course(props) {
   const [state, dispatch] = React.useReducer(reducer, initialState);
+  const [viewMode, setViewMode] = React.useState('sessions')
   const sessionsToArr = Object.values(state.sessions).map(session => session);
   const usersToArr = Object.values(state.users).map(user => user);
+  const evaluationsToArr = Object.values(state.evaluations).map(evaluation => evaluation)
 
   const { id } = props;
 
@@ -45,6 +53,49 @@ export default function Course(props) {
   React.useEffect(() => {
     fetchUsers()
   }, [])
+
+  function fetchEvaluations() {
+    fetch(`/courses/${id}/evaluations.json`)
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(evaluations) {
+      dispatch({
+        type: FETCH_EVALUATIONS_SUCCESS,
+        data: evaluations,
+      });
+    })
+  }
+
+  function createEvaluation(e) {
+    e.preventDefault();
+    fetch(`/courses/${id}/evaluations.json`, {
+      method: 'POST', // or 'PUT'
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ evaluation: state.selected_evaluation }),
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    })
+    .then(response => response.json())
+    .then(evaluation => {
+      dispatch({
+        type: CREATE_EVALUATION,
+        data: evaluation,
+      });
+      console.log('Success:', evaluation);
+    })
+  }
+
+  React.useEffect(() => {
+    if (viewMode === 'evaluations' && state.evaluations.length === 0) {
+      fetchEvaluations();
+    }
+
+  }, [viewMode])
 
   function fetchUsers() {
     fetch(`/courses_users.json?course_id=${id}`)
@@ -112,6 +163,23 @@ export default function Course(props) {
     })
   }
 
+  function setNewEvaluation() {
+    const evaluation = {
+      title: '',
+      description: '',
+      objectives: '',
+      total_points: '',
+      approval_percentage: '',
+      delivery_date: '',
+      attachment_url: '',
+    }
+
+    dispatch({
+      type: SET_SELECTED_EVALUATION,
+      data: evaluation,
+    })
+  }
+
   function onOpenSessionUser(session, user) {
     dispatch({
       type: SET_SELECTED_SESSION,
@@ -122,6 +190,14 @@ export default function Course(props) {
       type: SET_SELECTED_USER,
       data: user,
     })
+  }
+
+  function handleEvaluationField(e) {
+    dispatch({
+      type: UPDATE_SELECTED_EVALUATION_FIELD,
+      data: e.target.value,
+      name: e.target.name,
+    });
   }
 
   function handleFormField(e) {
@@ -173,8 +249,6 @@ export default function Course(props) {
     updateAssistance(updateSession)
   }
 
-  const [viewMode, setViewMode] = React.useState('sessions')
-
   return (
     <div>
       <div className="px-20">
@@ -211,17 +285,19 @@ export default function Course(props) {
                 selectedSession={state.selected_session}
               />
             ) : (
-              <thead>
-                <tr>
-                  <td></td>
-                  <td>Evaluaciones</td>
-                </tr>
-              </thead>
+              <Evaluations 
+                setNewEvaluation={setNewEvaluation}
+                selectedEvaluation={state.selected_evaluation}
+                handleEvaluationField={handleEvaluationField}
+                createEvaluation={createEvaluation}
+                evaluationsToArr={evaluationsToArr}
+              />
             )}
             
             <UsersList 
               courseId={props.id} 
               sessionsToArr={sessionsToArr}
+              evaluationsToArr={evaluationsToArr}
               handleAssistance={handleAssistance}
               usersToArr={usersToArr}
               onOpenSessionUser={onOpenSessionUser}

@@ -54,8 +54,6 @@ ActiveRecord::Schema.define(version: 2021_02_11_120313) do
   end
 
   create_table "evaluations", force: :cascade do |t|
-    t.bigint "session_id"
-    t.bigint "user_id"
     t.bigint "course_id"
     t.string "title"
     t.text "description"
@@ -63,12 +61,10 @@ ActiveRecord::Schema.define(version: 2021_02_11_120313) do
     t.integer "total_points"
     t.integer "approval_percentage"
     t.datetime "delivery_date"
-    t.datetime "delivered_at"
+    t.string "attachment_url"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["course_id"], name: "index_evaluations_on_course_id"
-    t.index ["session_id"], name: "index_evaluations_on_session_id"
-    t.index ["user_id"], name: "index_evaluations_on_user_id"
   end
 
   create_table "notes", force: :cascade do |t|
@@ -124,8 +120,10 @@ ActiveRecord::Schema.define(version: 2021_02_11_120313) do
     t.string "phone"
     t.string "nickname"
     t.string "name"
+    t.bigint "session_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["session_id"], name: "index_users_on_session_id"
   end
 
 end

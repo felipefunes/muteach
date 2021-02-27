@@ -26,7 +26,6 @@ export default function Sessions(props) {
   const classes = useStyles();
 
   const { 
-    sessions,
     createSession,
     updateSession,
     onOpenModal,

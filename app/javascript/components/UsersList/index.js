@@ -20,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
 export default function UsersList({ 
   courseId,
   sessionsToArr, 
+  evaluationsToArr,
   handleAssistance, 
   usersToArr, 
   handleOnOpenModal, 
@@ -66,7 +67,11 @@ export default function UsersList({
               </td>
             ))
           ) : (
-            <td>{`${user.name} evaluations`}</td>
+            evaluationsToArr && evaluationsToArr.map(evaluation => (
+              <td>
+                <input type="number" />
+              </td>
+            ))
           )}
         </tr>
       ))}
