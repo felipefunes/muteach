@@ -62,6 +62,7 @@ export default function Sessions(props) {
             <button type="submit" className="text-blue-700">+ Create evaluation</button>
           </form>
         </td>  
+        
         {evaluationsToArr && evaluationsToArr.map((e,i) => (
           <td key={e.id}>
             {`${i + 1}. `}
