@@ -30,7 +30,7 @@ export default function Sessions(props) {
     updateSession,
     onOpenModal,
     handleEvaluationField,
-    handleDateChange,
+    handleEvaluationDateChange,
     evaluationsToArr,
     selectedEvaluation,
     setNewEvaluation,
@@ -78,7 +78,6 @@ export default function Sessions(props) {
           <div className={classes.paper} className="bg-white p-10">
             {selectedEvaluation && (
               <form onSubmit={createEvaluation}>
-                <h3 className="text-1xl font-bold mb-4">{`Edit evaluation ${selectedEvaluation.id}`}</h3>
                 <div className="form-field">
                   <label>Title</label>
                   <input 
@@ -117,18 +116,19 @@ export default function Sessions(props) {
                     value={selectedEvaluation.attachment_url}
                   />
                 </div>
-                <div className="form-field">
-                  <label>Points</label>
-                  <input 
-                    type="text" 
-                    className="text-field" 
-                    name="total_points" 
-                    onChange={handleEvaluationField} 
-                    value={selectedEvaluation.total_points}
-                  />
-                </div>
-                <div className="form-field">
-                  <label>Approval percentage</label>
+                <div className="form-field flex">
+                  <div className="pr-3">
+                    <label>Points</label>
+                    <input 
+                      type="text" 
+                      className="text-field" 
+                      name="total_points" 
+                      onChange={handleEvaluationField} 
+                      value={selectedEvaluation.total_points}
+                    />
+                  </div>
+                  <div>
+                  <label>Approval %</label>
                   <input 
                     type="text" 
                     className="text-field" 
@@ -136,14 +136,16 @@ export default function Sessions(props) {
                     onChange={handleEvaluationField} 
                     value={selectedEvaluation.approval_percentage}
                   />
+                  </div>
+                  
                 </div>
                 <div className="form-field">
                     <KeyboardDateTimePicker
                       variant="inline"
                       ampm={false}
-                      label="Date"
+                      label="Delivery at"
                       value={selectedEvaluation.delivery_date}
-                      onChange={handleDateChange}
+                      onChange={handleEvaluationDateChange}
                       onError={console.log}
                       format="yyyy/MM/dd HH:mm"
                     />

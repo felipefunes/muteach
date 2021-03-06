@@ -16,7 +16,6 @@ import {
   FETCH_EVALUATIONS_SUCCESS,
   SET_SELECTED_EVALUATION,
   UPDATE_SELECTED_EVALUATION_FIELD,
-  UPDATE_EVALUATION,
   CREATE_EVALUATION,
 } from './reducers';
 
@@ -170,7 +169,7 @@ export default function Course(props) {
       objectives: '',
       total_points: '',
       approval_percentage: '',
-      delivery_date: '',
+      delivery_date: null,
       attachment_url: '',
     }
 
@@ -213,6 +212,14 @@ export default function Course(props) {
       type: UPDATE_SELECTED_SESSION_FIELD,
       data: e,
       name: 'date',
+    });
+  }
+
+  function handleEvaluationDateChange(e) {
+    dispatch({
+      type: UPDATE_SELECTED_EVALUATION_FIELD,
+      data: e,
+      name: 'delivery_date',
     });
   }
 
@@ -291,6 +298,7 @@ export default function Course(props) {
                 handleEvaluationField={handleEvaluationField}
                 createEvaluation={createEvaluation}
                 evaluationsToArr={evaluationsToArr}
+                handleEvaluationDateChange={handleEvaluationDateChange}
               />
             )}
             
