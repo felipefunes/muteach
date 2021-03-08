@@ -4,8 +4,12 @@ class SessionsController < ApplicationController
   before_action :set_session, only: [:update]
 
   def index
+    sessions = SessionSerializer.new(
+      @course.sessions.includes(:users)
+    ).serializable_hash.to_json
+    
     render(
-      json: SessionSerializer.new(@course.sessions.includes(:users)).serializable_hash.to_json, 
+      json: sessions, 
       status: :ok
     )
   end
@@ -32,7 +36,7 @@ class SessionsController < ApplicationController
         status: :ok
       )
     else
-      ender json: @session.errors, status: :unprocessable_entity
+      render json: @session.errors, status: :unprocessable_entity
     end
   end
 

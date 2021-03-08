@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   end
 
   resources :categories
+  resources :scores, only: [:create, :update]
 
   resources :courses do
     resources :sessions do
@@ -23,7 +24,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :evaluations do
-    end
+    resources :evaluations
+    resources :scores, only: [:index], path: 'user/:user_id/scores'
   end
 end

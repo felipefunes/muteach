@@ -23,11 +23,11 @@ export default function Notes({
 
   React.useEffect(() => {
     if (state.status === INIT) {
-      fetchCourses();
+      fetchNotes();
     }
   }, [state.status])
 
-  function fetchCourses() {
+  function fetchNotes() {
     fetch(`/courses/${courseId}/sessions/${sessionId}/users/${user.id}/notes.json`)
     .then(function(response) {
       return response.json();
@@ -40,7 +40,7 @@ export default function Notes({
     })
   }
 
-  function newNote(e) {
+  function createNote(e) {
     e.preventDefault();
     fetch(`/courses/${courseId}/sessions/${sessionId}/users/${user.id}/notes.json`, {
       method: 'POST', // or 'PUT'
@@ -118,7 +118,7 @@ export default function Notes({
   return (
     <div>
       <div className="font-bold">Notes</div>
-      <form onSubmit={newNote}>
+      <form onSubmit={createNote}>
         <button type="submit" className="text-blue-700">New Note</button>
       </form>
       

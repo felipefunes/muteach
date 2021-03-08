@@ -1,5 +1,5 @@
 import React from 'react';
-
+import UserScores from '../UserScores';
 import Notes from '../Notes';
 import Modal from '@material-ui/core/Modal';
 import { makeStyles } from '@material-ui/core/styles';
@@ -55,7 +55,7 @@ export default function UsersList({
             sessionsToArr && sessionsToArr.map(session => (
               <td key={session.id} className="text-center">
                 <input 
-                  type="checkbox" 
+                  type="checkbox"
                   name={user.id} 
                   data-session={session.id} 
                   onChange={handleAssistance}
@@ -67,11 +67,11 @@ export default function UsersList({
               </td>
             ))
           ) : (
-            evaluationsToArr && evaluationsToArr.map(evaluation => (
-              <td>
-                <input type="number" />
-              </td>
-            ))
+            <UserScores 
+              courseId={courseId}
+              evaluations={evaluationsToArr}
+              userId={user.id}
+            />
           )}
         </tr>
       ))}

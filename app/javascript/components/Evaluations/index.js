@@ -54,6 +54,12 @@ export default function Sessions(props) {
     setOpen(true);
   }
 
+  function onCreateEvaluation(e) {
+    e.preventDefault();
+    createEvaluation();
+    setOpen(false);
+  }
+
   return (
     <thead>
       <tr>
@@ -62,7 +68,7 @@ export default function Sessions(props) {
             <button type="submit" className="text-blue-700">+ Create evaluation</button>
           </form>
         </td>  
-        
+
         {evaluationsToArr && evaluationsToArr.map((e,i) => (
           <td key={e.id}>
             {`${i + 1}. `}
@@ -78,7 +84,7 @@ export default function Sessions(props) {
         >
           <div className={classes.paper} className="bg-white p-10">
             {selectedEvaluation && (
-              <form onSubmit={createEvaluation}>
+              <form onSubmit={onCreateEvaluation}>
                 <div className="form-field">
                   <label>Title</label>
                   <input 
