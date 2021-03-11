@@ -94,6 +94,17 @@ export const reducer = (state = initialState, action) => {
           }),
         },
       }
+    case UPDATE_EVALUATION:
+      return {
+        ...state,
+        ...{
+          evaluations: update(state.evaluations, {
+            [action.data.id]: {
+              $set: action.data,
+            },
+          }),
+        },
+      }
     case UPDATE_SESSION_USERS:
         return {
           ...state,

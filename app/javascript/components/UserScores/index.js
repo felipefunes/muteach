@@ -81,25 +81,85 @@ export default function UserScores({ evaluations, courseId, userId }) {
     });
   }
 
+ 
+  const scoreToPercentage = (evaluation_id) => {
+    const id = Number(evaluation_id);
+    const evaluation = evaluations.find(e => e['id'] === id);
+    const score = state.scores[id] ? state.scores[id].points : newScore;
+    const totalPoints = evaluation.total_points;
+    if (!totalPoints || score === '') return null
+    return ((score * 100) / totalPoints).toFixed(1)
+  }
+
+  const scoreOverMinimum = (evaluation_id) => {
+    const id = Number(evaluation_id);
+    const evaluation = evaluations.find(e => e['id'] === id);
+    const approvalPercentage = evaluation.approval_percentage;
+    if (!approvalPercentage) return true
+    return scoreToPercentage(id) > approvalPercentage;
+  }
+
   return (
     evaluations && evaluations.map(evaluation => (
-      <td key={evaluation.id}>
+      <td key={evaluation.id} className="text-right font-mono">
         {state.scores[evaluation.id] ? (
-          <input 
-            type="number" 
+          <>
+          <input
+            style={{ width: '4em' }}
+            className="text-right bg-transparent p-0"
+            type="text" 
             value={state.scores[evaluation.id].points}
             name={evaluation.id}
             onChange={onChangeScore} 
-            onBlur={updateScore} 
+            onBlur={updateScore}
+            onKeyUp={event => {
+              if (event.key === 'Enter') {
+                event.preventDefault();
+                updateScore(event);
+                event.target.blur();
+              }
+            }}
           />
+          {state.scores[evaluation.id].points && (
+            <>
+              <span className="text-gray-600 text-xs ml-1">p</span>
+              <div 
+                className={`${scoreOverMinimum(evaluation.id) ? 'text-green-600' : 'text-red'} ml-2 font-bold text-xs`}
+              >
+                {scoreToPercentage(evaluation.id) && `${scoreToPercentage(evaluation.id)}%`}
+              </div>
+            </>
+          )}
+          </>
         ) : (
-          <input 
-            type="number"
-            value={newScore}
-            name={evaluation.id}
-            onChange={(e) => setNewScore(e.target.value)} 
-            onBlur={createScore} 
-          />
+            <>
+            <input
+              style={{ width: '4em' }}
+              className="text-right bg-transparent p-0"
+              type="text"
+              value={newScore}
+              name={evaluation.id}
+              onChange={(e) => setNewScore(Number(e.target.value))} 
+              onBlur={createScore}
+              onKeyUp={event => {
+                if (event.key === 'Enter') {
+                  event.preventDefault();
+                  createScore(event);
+                  event.target.blur();
+                }
+              }}
+            />
+            {newScore && (
+              <>
+                <span className="text-gray-600 text-xs ml-1">p</span>
+                <div 
+                  className={`${scoreOverMinimum(evaluation.id) ? 'text-green-600' : 'text-red'} ml-2 font-bold text-xs`}
+                >
+                  {scoreToPercentage(evaluation.id) && `${scoreToPercentage(evaluation.id)}%`}
+                </div>
+              </>
+            )}
+            </>
         )}
       </td>
     ))

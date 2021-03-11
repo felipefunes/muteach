@@ -17,6 +17,7 @@ import {
   SET_SELECTED_EVALUATION,
   UPDATE_SELECTED_EVALUATION_FIELD,
   CREATE_EVALUATION,
+  UPDATE_EVALUATION,
 } from './reducers';
 
 import { initialState, reducer } from './reducers';
@@ -66,8 +67,7 @@ export default function Course(props) {
     })
   }
 
-  function createEvaluation(e) {
-    e.preventDefault();
+  function createEvaluation() {
     fetch(`/courses/${id}/evaluations.json`, {
       method: 'POST', // or 'PUT'
       headers: {
@@ -83,6 +83,28 @@ export default function Course(props) {
     .then(evaluation => {
       dispatch({
         type: CREATE_EVALUATION,
+        data: evaluation,
+      });
+      console.log('Success:', evaluation);
+    })
+  }
+
+  function updateEvaluation() {
+    fetch(`/courses/${id}/evaluations/${state.selected_evaluation.id}.json`, {
+      method: 'PUT', // or 'PUT'
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ evaluation: state.selected_evaluation }),
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    })
+    .then(response => response.json())
+    .then(evaluation => {
+      dispatch({
+        type: UPDATE_EVALUATION,
         data: evaluation,
       });
       console.log('Success:', evaluation);
@@ -159,6 +181,13 @@ export default function Course(props) {
     dispatch({
       type: SET_SELECTED_SESSION,
       data: session,
+    })
+  }
+
+  function onOpenEvaluationModal(evaluation) {
+    dispatch({
+      type: SET_SELECTED_EVALUATION,
+      data: evaluation,
     })
   }
 
@@ -258,7 +287,7 @@ export default function Course(props) {
 
   return (
     <div>
-      <div className="px-20">
+      <div className="px-6">
         <div>
           <h1 className="text-2xl font-bold mb-1">{props.name}</h1>
           <div className="text-base text-gray-600 flex justify-between">
@@ -271,14 +300,14 @@ export default function Course(props) {
               <button type="submit" className="text-blue-700" onClick={() => setViewMode('sessions')}>
                 Sessions
               </button>
-              <button type="submit" className="ml-4 text-blue-700" onClick={() => setViewMode('evaluations')}>
+              <button type="submit" className="ml-6 text-blue-700" onClick={() => setViewMode('evaluations')}>
                 Evaluations
               </button>
             </div>
           </div>
         </div>
         <div className="data-table">
-          <table>
+          <table className="text-sm">
             {viewMode === 'sessions' ? (
               <Sessions 
                 courseId={props.id} 
@@ -298,7 +327,9 @@ export default function Course(props) {
                 handleEvaluationField={handleEvaluationField}
                 createEvaluation={createEvaluation}
                 evaluationsToArr={evaluationsToArr}
+                updateEvaluation={updateEvaluation}
                 handleEvaluationDateChange={handleEvaluationDateChange}
+                onOpenEvaluationModal={onOpenEvaluationModal}
               />
             )}
             

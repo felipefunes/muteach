@@ -27,8 +27,8 @@ export default function Sessions(props) {
 
   const { 
     createEvaluation,
-    updateSession,
-    onOpenModal,
+    updateEvaluation,
+    onOpenEvaluationModal,
     handleEvaluationField,
     handleEvaluationDateChange,
     evaluationsToArr,
@@ -38,24 +38,31 @@ export default function Sessions(props) {
 
   const [open, setOpen] = React.useState(false);
 
-  function handleOnOpenModal(session) {
-    onOpenModal(session)
+  function handleOnOpenModal(evaluation) {
+    onOpenEvaluationModal(evaluation)
     setOpen(true)
   }
 
-  function handleUpdateEvaluation(e) {
-    updateSession(e);
-    setOpen(false)
-  }
-
-  function onSetNewSession(e) {
+  function onSetNewEvaluation(e) {
     e.preventDefault();
     setNewEvaluation();
     setOpen(true);
   }
 
-  function onCreateEvaluation(e) {
+  function saveModalInfo(e) {
     e.preventDefault();
+    if (selectedEvaluation && selectedEvaluation.id) {
+      return handleUpdateEvaluation(e)
+    }
+    onCreateEvaluation(e)
+  }
+
+  function handleUpdateEvaluation(e) {
+    updateEvaluation(e);
+    setOpen(false)
+  }
+
+  function onCreateEvaluation(e) {
     createEvaluation();
     setOpen(false);
   }
@@ -64,15 +71,21 @@ export default function Sessions(props) {
     <thead>
       <tr>
         <td>
-          <form onSubmit={onSetNewSession}>
-            <button type="submit" className="text-blue-700">+ Create evaluation</button>
+          <form onSubmit={onSetNewEvaluation}>
+            <button type="submit" className="text-blue-700">
+              + Create evaluation
+            </button>
           </form>
         </td>  
 
-        {evaluationsToArr && evaluationsToArr.map((e,i) => (
-          <td key={e.id}>
-            {`${i + 1}. `}
-            {e.title}
+        {evaluationsToArr && evaluationsToArr.map(e => (
+          <td key={e.id} className="text-right">
+            <button 
+              type="button" 
+              onClick={() => handleOnOpenModal(e)} 
+            >
+              {e.title}
+            </button>
           </td>
         ))}
         <Modal
@@ -82,22 +95,22 @@ export default function Sessions(props) {
           aria-describedby="simple-modal-description"
           className={classes.modal}
         >
-          <div className={classes.paper} className="bg-white p-10">
+          <div className={classes.paper} className="bg-white p-10 text-sm focus:outline-none max-h-full">
             {selectedEvaluation && (
-              <form onSubmit={onCreateEvaluation}>
+              <form onSubmit={saveModalInfo} className="overflow-y-auto">
                 <div className="form-field">
-                  <label>Title</label>
                   <input 
                     type="text" 
-                    className="text-field" 
+                    placeholder="Add title"
+                    className="text-field font-bold text-base" 
                     name="title" 
                     onChange={handleEvaluationField} 
                     value={selectedEvaluation.title}
                   />
                 </div>
                 <div className="form-field">
-                  <label>Description</label>
                   <textarea
+                    placeholder="Add description"
                     className="text-field" 
                     onChange={handleEvaluationField}
                     name="description"
@@ -105,8 +118,8 @@ export default function Sessions(props) {
                   />
                 </div>
                 <div className="form-field">
-                  <label>Objectives</label>
                   <textarea
+                    placeholder="Add objectives"
                     className="text-field" 
                     onChange={handleEvaluationField}
                     name="objectives"
@@ -114,8 +127,8 @@ export default function Sessions(props) {
                   />
                 </div>
                 <div className="form-field">
-                  <label>Attachment url</label>
                   <input 
+                    placeholder="Add attachment url"
                     type="text" 
                     className="text-field" 
                     name="attachment_url" 
@@ -125,8 +138,8 @@ export default function Sessions(props) {
                 </div>
                 <div className="form-field flex">
                   <div className="pr-3">
-                    <label>Points</label>
                     <input 
+                      placeholder="Add total points"
                       type="text" 
                       className="text-field" 
                       name="total_points" 
@@ -135,9 +148,9 @@ export default function Sessions(props) {
                     />
                   </div>
                   <div>
-                  <label>Approval %</label>
                   <input 
                     type="text" 
+                    placeholder="Add approval %"
                     className="text-field" 
                     name="approval_percentage" 
                     onChange={handleEvaluationField} 
