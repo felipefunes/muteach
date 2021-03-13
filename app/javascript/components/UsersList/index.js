@@ -11,7 +11,6 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
@@ -82,10 +81,11 @@ export default function UsersList({
         aria-describedby="simple-modal-description"
         className={classes.modal}
       >
-        <div className={classes.paper} className="bg-white p-10">
+        <div className={`${classes.paper} modal-container`}>
+
           {selectedSession && selectedUser && (
             <>
-              <h3 className="text-1xl font-bold mb-1">{`Details ${selectedUser.name}`}</h3>
+              <h3 className="text-xl font-bold mb-3">{`Details ${selectedUser.name}`}</h3>
               <Notes
                 courseId={courseId}
                 sessionId={selectedSession.id}
@@ -93,6 +93,9 @@ export default function UsersList({
               />
             </>
           )}
+          <div className="flex text-rifth">
+            <button type="button" className="btn btn-blue mt-4" onClick={() => setOpen(false)}>Save</button>
+          </div>
         </div>
       </Modal>
     </tbody>

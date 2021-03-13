@@ -15,7 +15,6 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
@@ -95,9 +94,9 @@ export default function Sessions(props) {
           aria-describedby="simple-modal-description"
           className={classes.modal}
         >
-          <div className={classes.paper} className="bg-white p-10 text-sm focus:outline-none max-h-full">
+          <div className={`${classes.paper} modal-container`}>
             {selectedEvaluation && (
-              <form onSubmit={saveModalInfo} className="overflow-y-auto">
+              <form onSubmit={saveModalInfo}>
                 <div className="form-field">
                   <input 
                     type="text" 
@@ -105,7 +104,7 @@ export default function Sessions(props) {
                     className="text-field font-bold text-base" 
                     name="title" 
                     onChange={handleEvaluationField} 
-                    value={selectedEvaluation.title}
+                    value={selectedEvaluation.title || ''}
                   />
                 </div>
                 <div className="form-field">
@@ -133,7 +132,7 @@ export default function Sessions(props) {
                     className="text-field" 
                     name="attachment_url" 
                     onChange={handleEvaluationField} 
-                    value={selectedEvaluation.attachment_url}
+                    value={selectedEvaluation.attachment_url || ' '}
                   />
                 </div>
                 <div className="form-field flex">
@@ -144,7 +143,7 @@ export default function Sessions(props) {
                       className="text-field" 
                       name="total_points" 
                       onChange={handleEvaluationField} 
-                      value={selectedEvaluation.total_points}
+                      value={selectedEvaluation.total_points || ''}
                     />
                   </div>
                   <div>
@@ -154,7 +153,7 @@ export default function Sessions(props) {
                     className="text-field" 
                     name="approval_percentage" 
                     onChange={handleEvaluationField} 
-                    value={selectedEvaluation.approval_percentage}
+                    value={selectedEvaluation.approval_percentage || ''}
                   />
                   </div>
                   
@@ -170,8 +169,10 @@ export default function Sessions(props) {
                       format="yyyy/MM/dd HH:mm"
                     />
                 </div>
-                
-                <button type="submit" className="btn btn-blue">Save</button>
+                <div className="flex justify-between pb-3 pt-8 text-gray-600">
+                  <button type="submit" className="text-xs">🗑 Delete evaluation</button>
+                  <button type="submit" className="btn btn-blue">Save</button>
+                </div>
               </form>
             )}
           </div>

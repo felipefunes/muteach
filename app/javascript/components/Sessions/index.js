@@ -15,7 +15,6 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
@@ -72,7 +71,7 @@ export default function Sessions(props) {
           aria-describedby="simple-modal-description"
           className={classes.modal}
         >
-          <div className={classes.paper} className="bg-white p-10">
+          <div className={`${classes.paper} modal-container`}>
             {selectedSession && (
               <form onSubmit={handleUpdateSession}>
                 <h3 className="text-1xl font-bold mb-4">{`Edit session ${selectedSession.id}`}</h3>
@@ -107,7 +106,10 @@ export default function Sessions(props) {
                     value={selectedSession.objectives || ''} 
                   />
                 </div>
-                <button type="submit" className="btn btn-blue">Update</button>
+                <div className="flex justify-between pb-3 pt-8 text-gray-600">
+                  <button type="submit" className="text-xs">🗑 Delete session</button>
+                  <button type="submit" className="btn btn-blue">Update</button>
+                </div>
               </form>
             )}
           </div>

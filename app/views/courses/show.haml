@@ -1,7 +1,9 @@
 :ruby
   course = {
     name: @course.name,
-    id: @course.id
+    id: @course.id,
+    sessions_count: @course.session_ids.length,
+    evaluations_count: @course.evaluation_ids.length,
   }
 - content_for :packs do
   = javascript_pack_tag 'course', 'data-turbolinks-track': 'reload'

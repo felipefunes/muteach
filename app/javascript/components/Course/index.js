@@ -29,7 +29,7 @@ export default function Course(props) {
   const usersToArr = Object.values(state.users).map(user => user);
   const evaluationsToArr = Object.values(state.evaluations).map(evaluation => evaluation)
 
-  const { id } = props;
+  const { id, sessionsCount, evaluationsCount } = props;
 
   React.useEffect(() => {
     if (state.status === INIT) {
@@ -289,62 +289,72 @@ export default function Course(props) {
     <div>
       <div className="px-6">
         <div>
-          <h1 className="text-2xl font-bold mb-1">{props.name}</h1>
-          <div className="text-base text-gray-600 flex justify-between">
-            <div>
+          <div className="flex mb-3 items-center">
+            <h1 className="text-2xl font-bold mb-1">{props.name}</h1>
+            <span className="text-gray-400 mx-2">{' • '}</span>
+            <div className="text-base text-gray-600">
               {usersToArr.length} Students
-              <span className="text-gray-500 mx-2">{' | '}</span>
-              <button type="submit" className="text-blue-700">+ Invite students</button>
-            </div>
-            <div>
-              <button type="submit" className="text-blue-700" onClick={() => setViewMode('sessions')}>
-                Sessions
-              </button>
-              <button type="submit" className="ml-6 text-blue-700" onClick={() => setViewMode('evaluations')}>
-                Evaluations
-              </button>
             </div>
           </div>
+          <div>
+            <button 
+              type="submit" 
+              className={viewMode === 'sessions' ? 'text-gray-600' : 'text-blue-700'} 
+              onClick={() => setViewMode('sessions')}
+            >
+              {`${sessionsCount} Sessions`}
+            </button>
+            <span className="text-gray-400 mx-3">{' | '}</span>
+            <button 
+              type="submit" 
+              className={viewMode === 'evaluations' ? 'text-gray-600' : 'text-blue-700'} 
+              onClick={() => setViewMode('evaluations')}
+            >
+              {`${evaluationsCount} Evaluations`}
+            </button>
+          </div>
         </div>
-        <div className="data-table">
-          <table className="text-sm">
-            {viewMode === 'sessions' ? (
-              <Sessions 
+        <div className="w-full overflow-x-auto">
+          <div className="data-table">
+            <table className="text-sm">
+              {viewMode === 'sessions' ? (
+                <Sessions 
+                  courseId={props.id} 
+                  sessions={sessionsToArr} 
+                  createSession={createSession}
+                  updateSession={updateSession}
+                  onOpenModal={onOpenModal}
+                  handleFormField={handleFormField}
+                  handleDateChange={handleDateChange}
+                  sessionsToArr={sessionsToArr}
+                  selectedSession={state.selected_session}
+                />
+              ) : (
+                <Evaluations 
+                  setNewEvaluation={setNewEvaluation}
+                  selectedEvaluation={state.selected_evaluation}
+                  handleEvaluationField={handleEvaluationField}
+                  createEvaluation={createEvaluation}
+                  evaluationsToArr={evaluationsToArr}
+                  updateEvaluation={updateEvaluation}
+                  handleEvaluationDateChange={handleEvaluationDateChange}
+                  onOpenEvaluationModal={onOpenEvaluationModal}
+                />
+              )}
+              
+              <UsersList 
                 courseId={props.id} 
-                sessions={sessionsToArr} 
-                createSession={createSession}
-                updateSession={updateSession}
-                onOpenModal={onOpenModal}
-                handleFormField={handleFormField}
-                handleDateChange={handleDateChange}
                 sessionsToArr={sessionsToArr}
-                selectedSession={state.selected_session}
-              />
-            ) : (
-              <Evaluations 
-                setNewEvaluation={setNewEvaluation}
-                selectedEvaluation={state.selected_evaluation}
-                handleEvaluationField={handleEvaluationField}
-                createEvaluation={createEvaluation}
                 evaluationsToArr={evaluationsToArr}
-                updateEvaluation={updateEvaluation}
-                handleEvaluationDateChange={handleEvaluationDateChange}
-                onOpenEvaluationModal={onOpenEvaluationModal}
+                handleAssistance={handleAssistance}
+                usersToArr={usersToArr}
+                onOpenSessionUser={onOpenSessionUser}
+                selectedSession={state.selected_session}
+                selectedUser={state.selected_user}
+                viewMode={viewMode}
               />
-            )}
-            
-            <UsersList 
-              courseId={props.id} 
-              sessionsToArr={sessionsToArr}
-              evaluationsToArr={evaluationsToArr}
-              handleAssistance={handleAssistance}
-              usersToArr={usersToArr}
-              onOpenSessionUser={onOpenSessionUser}
-              selectedSession={state.selected_session}
-              selectedUser={state.selected_user}
-              viewMode={viewMode}
-            />
-          </table>
+            </table>
+          </div>
         </div>
       </div>
     </div>

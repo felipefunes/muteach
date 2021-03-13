@@ -79,7 +79,7 @@ export default function Notes({
     .then(note => {
       dispatch({
         type: UPDATE_NOTE,
-        data: note.data.attributes,
+        data: note,
       });
       console.log('Success:', note);
     })
@@ -117,27 +117,25 @@ export default function Notes({
 
   return (
     <div>
-      <div className="font-bold">Notes</div>
       <form onSubmit={createNote}>
-        <button type="submit" className="text-blue-700">New Note</button>
+        <button type="submit" className="text-blue-700 mb-3">+ Add a note</button>
       </form>
       
       {state.status === DONE ? (
-        notesToArr.map(note => (
-          <div key={note.id}>
-            <div className="form-field">
+        notesToArr.reverse().map(note => (
+          <div key={note.id} className="mb-4">
+            <div className="py-2">
               <textarea
                 className="text-field"
                 name={note.id}
                 onChange={onChangeNote}
                 value={note.text || ''} 
+                onBlur={() => updateNote(note)}
               />
             </div>
-            <button type="button" onClick={() => updateNote(note)}>
-              Save
-            </button>
-            <button type="button" onClick={() => deleteNote(note)}>
-              Delete
+            <button className="text-xs text-gray-600" type="button" onClick={() => deleteNote(note)}>
+              🗑
+              Delete note
             </button>
           </div>
         ))

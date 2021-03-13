@@ -49,18 +49,18 @@ export const reducer = (state = initialState, action) => {
         }
       }
     case DELETE_NOTE:
-      // debugger
-      // const notes = state.notes.filter(n => n.id !== action.data)
+      const notes = 
+        Object.values(state.notes).filter(n => n.id !== action.data.id)
       return {
         ...state,
-        notes: notes,
+        notes: serializeListByIds(notes),
       }
     case UPDATE_NOTE:
       return {
         ...state,
         notes: {
           ...state.notes,
-          // [action.data.id]: action.data
+          [action.data.id]: action.data
         }
       }
     case UPDATE_NOTE_FIELD:

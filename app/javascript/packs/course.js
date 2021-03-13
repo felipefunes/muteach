@@ -12,6 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const props = {
     name: data.name,
     id: data.id,
+    sessionsCount: data.sessionsCount,
+    evaluationsCount: data.evaluationsCount,
   }
 
   ReactDOM.render(
