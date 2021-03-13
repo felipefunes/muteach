@@ -2,7 +2,7 @@ class CoursesController < ApplicationController
   before_action :set_course, only: [:show, :edit, :update]
 
   def index
-    @courses = Course.includes(:users) 
+    @courses = Course.includes(:users, :category) 
     respond_to do |format|
       format.html 
       format.json { 
