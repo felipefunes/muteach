@@ -1,0 +1,7 @@
+.avatar {
+  @apply rounded-full flex items-center justify-center bg-cover w-10 h-10 border border-gray-300 bg-absolutewhite text-purple font-bold text-lg;
+}
+.avatar--jumbo {
+  width: 6rem;
+  height: 6rem;
+}

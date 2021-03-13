@@ -1,4 +1,4 @@
-%nav.flex.items-center.justify-between.flex-wrap.py-5.px-6.border-b.border-gray-200.fixed.top-0.left-0.right-0.bg-white
+%nav.z-50.flex.items-center.justify-between.flex-wrap.py-5.px-6.border-b.border-gray-200.fixed.top-0.left-0.right-0.bg-white
   .flex.items-center.flex-shrink-0.mr-6.content-between
     .text-3xl.font-bold
       = link_to root_path, class: 'text-black' do
@@ -7,9 +7,10 @@
     - if Rails.env.development?
       - if user_signed_in?
         = link_to edit_user_path(current_user), class: 'flex items-center black' do
-          .rounded-full.flex.items-center.justify-center.bg-cover.w-8.h-8.border.border-gray-100{style: "background-image: url('#{image_path('user.svg')}')"}
-          - if current_user.name.present?
-            = current_user.name
+
+          .avatar{ style: current_user.avatar.attached? ? "background-image: url('#{url_for(current_user.avatar)}')" : nil }
+            = current_user.name_first_letter unless current_user.avatar.attached?
+          
         %button.text-2xl.ml-4.mt-2
           🔔
         = button_to "logout", destroy_user_session_path, method: :delete

@@ -20,7 +20,8 @@ class UsersController < ApplicationController
       :phone,
       :languages,
       :website,
-      :nickname
+      :nickname,
+      :avatar
     )
   end
 end
