@@ -70,17 +70,16 @@ export default function UsersHome({currentUser}) {
             ) : (
               coursesToArr.map(course => (
                 <li key={course.id}>
-                  <a href={`/courses/${course.id}`} className="flex border-solid border border-gray-400 rounded-xlg p-6 mb-5 text-black">
+                  <a href={`/courses/${course.id}`} className="flex justify-between border-solid border border-gray-300 rounded bg-absolutewhite p-6 mb-2 text-black">
                     <div>
-                      <h3 className="text-2xl font-bold mb-1">{course.name}</h3>
-                      {/* <div className="mb-2">3 julio 2020 - 10 octubre 2020</div> */}
-                      <p className="mb-3">{course.description}</p>
-                      <div>{`💵 $${course.price}`}</div>
+                      <h3 className="text-xl font-bold">{course.name}</h3>
+                      <p className="mb-2 text-sm text-gray-500">{course.category_name}</p>
+                      {course.description && <p className="mb-3 text-base text-gray-600">{course.description}</p>}
+                      {course.price && <div>{`💵 $${course.price}`}</div>}
                     </div>
-                    <img src="https://pbs.twimg.com/ad_img/1305151499081785345/Zd9bXo-Q?format=jpg&name=900x900" alt="" style={{width: '180px'}} className="ml-4" />
                     {!course.user_ids.includes(currentUser.id) && (
                       <div>
-                        <button type="button" className="btn btn-blue" onClick={(e) => {e.preventDefault(); joinCourse(course.id)}}>Join now</button>
+                        <button type="button" className="btn btn-blue text-xs" onClick={(e) => {e.preventDefault(); joinCourse(course.id)}}>Join course</button>
                       </div>
                     )}
                   </a>

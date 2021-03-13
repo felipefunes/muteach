@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 
 import {
   INIT,
@@ -42,17 +41,6 @@ export default function MainInfo({ setStep }) {
 
   function onSubmit(e) {
     e.preventDefault();
-    // axios.post('//courses.json', 
-    //   { course: state.course_fields }
-    // )
-    // .then(function (response) {
-    //   console.log('Success:', response);
-    //   setStep(2)
-    // })
-    // .catch(function (error) {
-    //   console.log('Errors:', error);
-    // });
-
     fetch('/courses.json', {
       method: 'POST', // or 'PUT'
       headers: {
