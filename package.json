@@ -18,9 +18,12 @@
     "@types/react-big-calendar": "^0.24.7",
     "@types/react-dom": "^16.9.8",
     "axios": "^0.20.0",
+    "babel-eslint": "^10.1.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "date-fns": "^2.16.1",
+    "husky": "^5.1.3",
     "immutability-helper": "^3.1.1",
+    "lint-staged": "^10.5.4",
     "lodash": "^4.17.20",
     "moment": "^2.29.1",
     "node-sass": "^4.14.1",
@@ -30,6 +33,7 @@
     "react-dom": "^16.13.1",
     "react-json-pretty": "^2.2.0",
     "react-redux": "^7.2.1",
+    "react-router-dom": "^5.2.0",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "tailwindcss": "^1.4.6",
@@ -37,12 +41,46 @@
   },
   "version": "0.1.0",
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.16.1",
+    "@typescript-eslint/parser": "^4.16.1",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-react-app": "^6.0.0",
+    "eslint-plugin-cypress": "^2.2.1",
+    "eslint-plugin-flowtype": "^5.3.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.22.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
     "webpack-dev-server": "^3.11.0"
   },
   "engines": {
     "node": "12.x"
   },
   "scripts": {
-    "start": "./bin/webpack --watch --progress --colors"
+    "start": "./bin/webpack --watch --progress --colors",
+    "start-stripe-cli": "stripe listen --forward-to localhost:5000/webhooks/stripe --api-key sk_test_Tzd9VhqHmjSBqBq54P4T0zem000WWzvmYH --project-name cypress-gob",
+    "start-rails": "yarn start-stripe-cli & source ./spec/cypress/env-vars && bundle exec rails s -p 5000 -e cypress --pid=tmp/pids/server-cy.pid",
+    "start-rails-unstriped": "source ./spec/cypress/env-vars && bundle exec rails s -p 5000 -e cypress --pid=tmp/pids/server-cy.pid",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run --headless --browser chrome",
+    "test:jest": "NODE_PATH=app/react jest",
+    "test:specs": "./script/test",
+    "rubocop": "rubocop --require rubocop-rails",
+    "test:cy": "start-server-and-test start-rails http://localhost:5000/echo cypress:run",
+    "lint:react": "./node_modules/eslint/bin/eslint.js --ext .js app/react --max-warnings 0",
+    "lint:yaml": "YAMLLINT_IGNORE=node_modules/* yarn yamllint **/*.yml",
+    "lint": "yarn lint:react && yarn lint:yaml",
+    "prettify": "prettier --write './**/*.{js,ts,tsx,css,scss,json,yml}'"
+  },
+  "lint-staged": {
+    "./**/*.{js,ts,tsx,css,scss,json,yml}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn lint && lint-staged"
+    }
   }
 }

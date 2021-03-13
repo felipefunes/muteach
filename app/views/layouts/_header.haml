@@ -12,6 +12,7 @@
             = current_user.name
         %button.text-2xl.ml-4.mt-2
           🔔
+        = button_to "logout", destroy_user_session_path, method: :delete
       - else
         = link_to t('log_in'), new_user_session_path, class: 'ml-4'
         = link_to t('sign_up'), new_user_registration_path, class: 'ml-4'

@@ -1,6 +1,7 @@
 import React from 'react';
 import UsersList from '../UsersList'
 import Sessions from '../Sessions'
+import Evaluations from '../Evaluations'
 
 import {
   FETCH_SESSIONS_SUCCESS,
@@ -11,16 +12,24 @@ import {
   SET_SELECTED_SESSION,
   UPDATE_SESSION_USERS,
   FETCH_USERS_SUCCESS,
+  SET_SELECTED_USER,
+  FETCH_EVALUATIONS_SUCCESS,
+  SET_SELECTED_EVALUATION,
+  UPDATE_SELECTED_EVALUATION_FIELD,
+  CREATE_EVALUATION,
+  UPDATE_EVALUATION,
 } from './reducers';
 
 import { initialState, reducer } from './reducers';
 
 export default function Course(props) {
   const [state, dispatch] = React.useReducer(reducer, initialState);
+  const [viewMode, setViewMode] = React.useState('sessions')
   const sessionsToArr = Object.values(state.sessions).map(session => session);
   const usersToArr = Object.values(state.users).map(user => user);
+  const evaluationsToArr = Object.values(state.evaluations).map(evaluation => evaluation)
 
-  const { id } = props;
+  const { id, sessionsCount, evaluationsCount } = props;
 
   React.useEffect(() => {
     if (state.status === INIT) {
@@ -44,6 +53,70 @@ export default function Course(props) {
   React.useEffect(() => {
     fetchUsers()
   }, [])
+
+  function fetchEvaluations() {
+    fetch(`/courses/${id}/evaluations.json`)
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(evaluations) {
+      dispatch({
+        type: FETCH_EVALUATIONS_SUCCESS,
+        data: evaluations,
+      });
+    })
+  }
+
+  function createEvaluation() {
+    fetch(`/courses/${id}/evaluations.json`, {
+      method: 'POST', // or 'PUT'
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ evaluation: state.selected_evaluation }),
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    })
+    .then(response => response.json())
+    .then(evaluation => {
+      dispatch({
+        type: CREATE_EVALUATION,
+        data: evaluation,
+      });
+      console.log('Success:', evaluation);
+    })
+  }
+
+  function updateEvaluation() {
+    fetch(`/courses/${id}/evaluations/${state.selected_evaluation.id}.json`, {
+      method: 'PUT', // or 'PUT'
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ evaluation: state.selected_evaluation }),
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    })
+    .then(response => response.json())
+    .then(evaluation => {
+      dispatch({
+        type: UPDATE_EVALUATION,
+        data: evaluation,
+      });
+      console.log('Success:', evaluation);
+    })
+  }
+
+  React.useEffect(() => {
+    if (viewMode === 'evaluations' && state.evaluations.length === 0) {
+      fetchEvaluations();
+    }
+
+  }, [viewMode])
 
   function fetchUsers() {
     fetch(`/courses_users.json?course_id=${id}`)
@@ -111,6 +184,50 @@ export default function Course(props) {
     })
   }
 
+  function onOpenEvaluationModal(evaluation) {
+    dispatch({
+      type: SET_SELECTED_EVALUATION,
+      data: evaluation,
+    })
+  }
+
+  function setNewEvaluation() {
+    const evaluation = {
+      title: '',
+      description: '',
+      objectives: '',
+      total_points: '',
+      approval_percentage: '',
+      delivery_date: null,
+      attachment_url: '',
+    }
+
+    dispatch({
+      type: SET_SELECTED_EVALUATION,
+      data: evaluation,
+    })
+  }
+
+  function onOpenSessionUser(session, user) {
+    dispatch({
+      type: SET_SELECTED_SESSION,
+      data: session,
+    })
+
+    dispatch({
+      type: SET_SELECTED_USER,
+      data: user,
+    })
+  }
+
+  function handleEvaluationField(e) {
+    dispatch({
+      type: UPDATE_SELECTED_EVALUATION_FIELD,
+      data: e.target.value,
+      name: e.target.name,
+    });
+  }
+
   function handleFormField(e) {
     dispatch({
       type: UPDATE_SELECTED_SESSION_FIELD,
@@ -124,6 +241,14 @@ export default function Course(props) {
       type: UPDATE_SELECTED_SESSION_FIELD,
       data: e,
       name: 'date',
+    });
+  }
+
+  function handleEvaluationDateChange(e) {
+    dispatch({
+      type: UPDATE_SELECTED_EVALUATION_FIELD,
+      data: e,
+      name: 'delivery_date',
     });
   }
 
@@ -162,35 +287,74 @@ export default function Course(props) {
 
   return (
     <div>
-      <div className="px-20">
+      <div className="px-6">
         <div>
-          <h1 className="text-2xl font-bold mb-1">{props.name}</h1>
-          <div className="text-base text-gray-600">
-            {usersToArr.length} Students
-            <span className="text-gray-500 mx-2">{' | '}</span>
-            <button type="submit" className="text-blue-700">+ Invite students</button>
+          <div className="flex mb-3 items-center">
+            <h1 className="text-2xl font-bold mb-1">{props.name}</h1>
+            <span className="text-gray-400 mx-2">{' • '}</span>
+            <div className="text-base text-gray-600">
+              {usersToArr.length} Students
+            </div>
+          </div>
+          <div>
+            <button 
+              type="submit" 
+              className={viewMode === 'sessions' ? 'text-gray-600' : 'text-blue-700'} 
+              onClick={() => setViewMode('sessions')}
+            >
+              {`${sessionsCount} Sessions`}
+            </button>
+            <span className="text-gray-400 mx-3">{' | '}</span>
+            <button 
+              type="submit" 
+              className={viewMode === 'evaluations' ? 'text-gray-600' : 'text-blue-700'} 
+              onClick={() => setViewMode('evaluations')}
+            >
+              {`${evaluationsCount} Evaluations`}
+            </button>
           </div>
         </div>
-        <div className="data-table">
-          <table>
-            <Sessions 
-              courseId={props.id} 
-              sessions={sessionsToArr} 
-              createSession={createSession}
-              updateSession={updateSession}
-              onOpenModal={onOpenModal}
-              handleFormField={handleFormField}
-              handleDateChange={handleDateChange}
-              sessionsToArr={sessionsToArr}
-              selectedSession={state.selected_session}
-            />
-            <UsersList 
-              courseId={props.id} 
-              sessionsToArr={sessionsToArr}
-              handleAssistance={handleAssistance}
-              usersToArr={usersToArr}
-            />
-          </table>
+        <div className="w-full overflow-x-auto">
+          <div className="data-table">
+            <table className="text-sm">
+              {viewMode === 'sessions' ? (
+                <Sessions 
+                  courseId={props.id} 
+                  sessions={sessionsToArr} 
+                  createSession={createSession}
+                  updateSession={updateSession}
+                  onOpenModal={onOpenModal}
+                  handleFormField={handleFormField}
+                  handleDateChange={handleDateChange}
+                  sessionsToArr={sessionsToArr}
+                  selectedSession={state.selected_session}
+                />
+              ) : (
+                <Evaluations 
+                  setNewEvaluation={setNewEvaluation}
+                  selectedEvaluation={state.selected_evaluation}
+                  handleEvaluationField={handleEvaluationField}
+                  createEvaluation={createEvaluation}
+                  evaluationsToArr={evaluationsToArr}
+                  updateEvaluation={updateEvaluation}
+                  handleEvaluationDateChange={handleEvaluationDateChange}
+                  onOpenEvaluationModal={onOpenEvaluationModal}
+                />
+              )}
+              
+              <UsersList 
+                courseId={props.id} 
+                sessionsToArr={sessionsToArr}
+                evaluationsToArr={evaluationsToArr}
+                handleAssistance={handleAssistance}
+                usersToArr={usersToArr}
+                onOpenSessionUser={onOpenSessionUser}
+                selectedSession={state.selected_session}
+                selectedUser={state.selected_user}
+                viewMode={viewMode}
+              />
+            </table>
+          </div>
         </div>
       </div>
     </div>

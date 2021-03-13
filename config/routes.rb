@@ -13,11 +13,18 @@ Rails.application.routes.draw do
   end
 
   resources :categories
+  resources :scores, only: [:create, :update]
+
   resources :courses do
     resources :sessions do
       scope module: 'sessions' do
-        resources :users
+        resources :users do
+          resources :notes
+        end
       end
     end
+
+    resources :evaluations
+    resources :scores, only: [:index], path: 'user/:user_id/scores'
   end
 end

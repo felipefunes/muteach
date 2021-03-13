@@ -25,6 +25,12 @@ export const [
   SET_SELECTED_SESSION,
   UPDATE_SESSION_USERS,
   FETCH_USERS_SUCCESS,
+  SET_SELECTED_USER,
+  FETCH_EVALUATIONS_SUCCESS,
+  SET_SELECTED_EVALUATION,
+  UPDATE_SELECTED_EVALUATION_FIELD,
+  UPDATE_EVALUATION,
+  CREATE_EVALUATION,
 ] = [
   'FETCH_SESSIONS_SUCCESS',
   'FETCH_SESSIONS',
@@ -36,12 +42,20 @@ export const [
   'SET_SELECTED_SESSION',
   'UPDATE_SESSION_USERS',
   'FETCH_USERS_SUCCESS',
+  'SET_SELECTED_USER',
+  'FETCH_EVALUATIONS_SUCCESS',
+  'SET_SELECTED_EVALUATION',
+  'UPDATE_SELECTED_EVALUATION_FIELD',
+  'UPDATE_EVALUATION',
+  'CREATE_EVALUATION',
 ];
 
 export const initialState = {
   sessions: [],
+  evaluations: [],
   users: {},
   selected_session: null,
+  selected_evaluation: null,
   status: INIT,
 };
 
@@ -61,11 +75,30 @@ export const reducer = (state = initialState, action) => {
           [action.data.id]: action.data
         }
       }
+    case CREATE_EVALUATION:
+      return {
+        ...state,
+        evaluations: {
+          ...state.evaluations,
+          [action.data.id]: action.data
+        }
+      }
     case UPDATE_SESSION:
       return {
         ...state,
         ...{
           sessions: update(state.sessions, {
+            [action.data.id]: {
+              $set: action.data,
+            },
+          }),
+        },
+      }
+    case UPDATE_EVALUATION:
+      return {
+        ...state,
+        ...{
+          evaluations: update(state.evaluations, {
             [action.data.id]: {
               $set: action.data,
             },
@@ -90,6 +123,20 @@ export const reducer = (state = initialState, action) => {
           $set: action.data,
         }),
       }
+    case SET_SELECTED_EVALUATION:
+      return {
+        ...state,
+        selected_evaluation: update(state.evaluations, {
+          $set: action.data,
+        })
+      }
+    case SET_SELECTED_USER:
+        return {
+          ...state,
+          selected_user: update(state.user, {
+            $set: action.data,
+          }),
+        }
     case UPDATE_SELECTED_SESSION_FIELD:
       return {
         ...state,
@@ -98,11 +145,24 @@ export const reducer = (state = initialState, action) => {
           [action.name]: action.data
         }
       };
+    case UPDATE_SELECTED_EVALUATION_FIELD:
+      return {
+        ...state,
+        selected_evaluation: {
+          ...state.selected_evaluation,
+          [action.name]: action.data
+        }
+      };
     case FETCH_USERS_SUCCESS:
       return {
         ...state,
         users: serializeListByIds(action.data),
         status: DONE
+      };
+    case FETCH_EVALUATIONS_SUCCESS:
+      return {
+        ...state,
+        evaluations: serializeListByIds(action.data),
       };
     default:
       return;

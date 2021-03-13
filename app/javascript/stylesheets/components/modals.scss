@@ -1,0 +1,7 @@
+.modal-container {
+  @apply bg-white p-10 text-sm max-w-full max-h-full overflow-x-auto;
+  width: 380px;
+  &:focus {
+    @apply outline-none
+  }
+}
