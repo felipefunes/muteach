@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  include Rails.application.routes.url_helpers
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -23,10 +25,9 @@ class User < ApplicationRecord
     (name || email_local_part).first.upcase
   end
 
-  # def avatar_url(size: [100, 100] )
-  #   if avatar.attached?
-  #     variant = avatar.variant(resize_to_limit: size)
-  #     Rails.application.routes.url_helpers.rails_representation_url(variant)
-  #   end
-  # end
+  def avatar_url 
+    if avatar.attached?
+      rails_blob_path(avatar, disposition: "attachment", only_path: true)
+    end
+  end
 end

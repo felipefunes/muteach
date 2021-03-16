@@ -2,9 +2,12 @@
   %h2.text-4xl.font-bold.mb-4
     Edit profile
   = form_for(current_user) do |f|
+    .form-field
+      = f.label :name
+      = f.text_field :name, class: "text-field"
     .form_field
       .relative.avatar.avatar--jumbo
-        = image_tag current_user.avatar.attached? ? url_for(current_user.avatar) : '', id: "avatar-img", class: "object-cover avatar avatar--jumbo absolute inset-0"
+        = image_tag current_user.avatar.attached? ? url_for(current_user.avatar) : '', id: "avatar-img", class: "object-cover avatar avatar--jumbo absolute inset-0 #{current_user.avatar.attached? ? "" : "opacity-0"}"
         = f.file_field :avatar, id: "avatar", class: "absolute inset-0 avatar avatar--jumbo opacity-0 cursor-pointer"
 
     .form-field
@@ -34,10 +37,6 @@
     .form-field
       = f.label :nickname
       = f.text_field :nickname, class: "text-field"
-
-    .form-field
-      = f.label :name
-      = f.text_field :name, class: "text-field"
     
     .actions
       = f.submit "Update", class: 'btn btn-blue w-full'
@@ -58,9 +57,11 @@
     }
 
     var avatarInput = document.getElementById('avatar');
+    var image = document.getElementById('avatar-img');
     if (avatarInput) {
       avatarInput.addEventListener('change', function() {
-        readURL(this, document.getElementById('avatar-img'));
+        readURL(this, image);
+        image.classList.remove('opacity-0')
       });
     }
   })();

@@ -25,7 +25,8 @@ class CoursesController < ApplicationController
     @course = Course.new(course_params)
     if @course.save
       CoursesUser.create(course: @course, user: current_user, role: :teacher)
-      render json: @course, status: :ok
+      @course.cover_img.attach(params[:cover_img])
+      render json: CourseSerializer.new(@courses).serializable_hash.to_json, status: :ok
     else
       render json: @course.errors, status: :unprocessable_entity
     end
@@ -58,7 +59,8 @@ class CoursesController < ApplicationController
       :students_quota, 
       :price, :category_id,
       :primary_objectives, 
-      :sessions_amount
+      :sessions_amount,
+      :cover_img
     )
   end
 end
