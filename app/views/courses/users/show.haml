@@ -1,0 +1,19 @@
+%h1= @user.name
+
+- if @notes.any?
+  %h3 Notes
+  %ul
+    - @notes.each do |note|
+      %li
+        = note.text
+
+- if @evaluations.any?
+  %h3 Evaluations
+  %ul
+    - @evaluations.each do |evaluation|
+      %li
+        %div
+          = evaluation.title
+        %div
+          - score = @scores.detect { |s| s.evaluation_id == evaluation.id }
+          = score.points if score.present?

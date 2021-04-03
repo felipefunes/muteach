@@ -119,7 +119,7 @@ export default function Course(props) {
   }, [viewMode])
 
   function fetchUsers() {
-    fetch(`/courses_users.json?course_id=${id}`)
+    fetch(`/courses/${id}/users.json`)
     .then(function(response) {
       return response.json();
     })

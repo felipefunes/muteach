@@ -11,6 +11,7 @@ class User < ApplicationRecord
   has_many :courses, through: :courses_users
   has_many :categories
   has_many :notes
+  has_many :scores
 
   has_one_attached :avatar
   

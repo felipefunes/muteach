@@ -65,9 +65,8 @@ export default function MainInfo({ setStep }) {
     })
     .then(response => response.json())
     .then(course => {
-      debugger
       console.log('Success:', course);
-      windows.location = `/courses/${course.id}`
+      window.location = `/courses/${course.data.id}`
       // setStep(2)
     })
     
@@ -155,22 +154,22 @@ export default function MainInfo({ setStep }) {
               />
             </div>
           </div>
+          <div className="justify-between form-field flex">
+            <div></div>
+            <button type="submit" className="btn btn-blue">
+              Save
+            </button>
+          </div>
         </div>
         <div className="col-span-1">
-          <div className="form-field text-center relative">
+          {/* <div className="form-field text-center relative">
             <input onChange={ handleSelectedImage } type="file" name="cover_img" className="absolute inset-0 opacity-0 cursor-pointer" />
             <div className={`border-4 rounded-lg p-10 border-dashed bg-cover bg-center ${imgUrl.length > 0 ? "border-transparent" : "border-gray-300"}`} style={{backgroundImage: `url(${imgUrl})`}}>
               <div className="text-4xl">📷</div>
               <label className={`mb-3 ${imgUrl.length > 0 ? "text-white" : ""}`}>Select an Image</label>
             </div>
-          </div>
+          </div> */}
         </div>
-      </div>
-      <div className="justify-between form-field flex">
-        <div></div>
-        <button type="submit" className="btn btn-blue">
-          Save
-        </button>
       </div>
     </form>
   )
