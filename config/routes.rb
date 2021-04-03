@@ -8,14 +8,17 @@ Rails.application.routes.draw do
     resources :join_courses, only: [:create]
   end
 
-  scope module: 'courses' do
-    resources :users, path: '/courses_users', only: [:index]
-  end
+  # scope module: 'courses' do
+  #   resources :users, path: '/courses_users/:course_id'
+  # end
 
   resources :categories
   resources :scores, only: [:create, :update]
 
   resources :courses do
+    scope module: 'courses' do
+      resources :users
+    end
     resources :sessions do
       scope module: 'sessions' do
         resources :users do
@@ -26,5 +29,10 @@ Rails.application.routes.draw do
 
     resources :evaluations
     resources :scores, only: [:index], path: 'user/:user_id/scores'
+  end
+
+  scope :reveniu do
+    get 'success', to: "reveniu#create"
+    get 'cancel', to: "reveniu#destroy"
   end
 end

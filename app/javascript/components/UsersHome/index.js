@@ -58,9 +58,9 @@ export default function UsersHome({currentUser}) {
         
         <ul>
           <li><span className="flex text-xl font-bold mb-5"><a href="/courses/new" className="btn btn-blue">Crear curso</a></span></li>
-          <li><a className="flex text-xl font-bold leading-10 mb-2" href="#">🎓 Bitácora</a></li>
+          {/* <li><a className="flex text-xl font-bold leading-10 mb-2" href="#">🎓 Bitácora</a></li>
           <li><a className="flex text-xl font-bold leading-10 mb-2" href="#">🗓 My schedule</a></li>
-          <li><a className="flex text-xl font-bold leading-10 mb-2" href="#">🙂 Profile</a></li>
+          <li><a className="flex text-xl font-bold leading-10 mb-2" href="#">🙂 Profile</a></li> */}
         </ul>
       </div>
       <div className="col-span-4">

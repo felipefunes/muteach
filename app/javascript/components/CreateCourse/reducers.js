@@ -17,6 +17,7 @@ export const initialState = {
     sessions_amount: '',
     price: '',
     students_quota: '',
+    cover_img: '',
   },
   status: INIT,
 };

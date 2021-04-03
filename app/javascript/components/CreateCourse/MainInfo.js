@@ -10,6 +10,7 @@ import { initialState, reducer } from './reducers';
 export default function MainInfo({ setStep }) {
   const [state, dispatch] = React.useReducer(reducer, initialState);
   const [categories, setCategories] = React.useState([]);
+  const [imgUrl, setImgUrl] = React.useState('')
 
   function onSubmit(e) {
     e.preventDefault();
@@ -39,6 +40,16 @@ export default function MainInfo({ setStep }) {
     });
   }
 
+  function handleSelectedImage(e) {
+    dispatch({
+      type: UPDATE_FIELD,
+      data: e.target.files[0],
+      name: e.target.name,
+    });
+    const objectURL = URL.createObjectURL(e.target.files[0])
+    setImgUrl(objectURL)
+  }
+
   function onSubmit(e) {
     e.preventDefault();
     fetch('/courses.json', {
@@ -53,9 +64,10 @@ export default function MainInfo({ setStep }) {
       console.error('Error:', error);
     })
     .then(response => response.json())
-    .then(data => {
-      console.log('Success:', data);
-      setStep(2)
+    .then(course => {
+      console.log('Success:', course);
+      window.location = `/courses/${course.data.id}`
+      // setStep(2)
     })
     
     
@@ -142,21 +154,22 @@ export default function MainInfo({ setStep }) {
               />
             </div>
           </div>
-        </div>
-        <div className="col-span-1">
-          <div className="form-field text-center">
-            <div className="border-4 border-gray-300 rounded-lg p-10 border-dashed">
-              <div className="text-4xl">📷</div>
-              <label className="mb-3">Select an Image</label>
-            </div>
+          <div className="justify-between form-field flex">
+            <div></div>
+            <button type="submit" className="btn btn-blue">
+              Save
+            </button>
           </div>
         </div>
-      </div>
-      <div className="justify-between form-field flex">
-        <div></div>
-        <button type="submit" className="btn btn-blue">
-          Next step →
-        </button>
+        <div className="col-span-1">
+          {/* <div className="form-field text-center relative">
+            <input onChange={ handleSelectedImage } type="file" name="cover_img" className="absolute inset-0 opacity-0 cursor-pointer" />
+            <div className={`border-4 rounded-lg p-10 border-dashed bg-cover bg-center ${imgUrl.length > 0 ? "border-transparent" : "border-gray-300"}`} style={{backgroundImage: `url(${imgUrl})`}}>
+              <div className="text-4xl">📷</div>
+              <label className={`mb-3 ${imgUrl.length > 0 ? "text-white" : ""}`}>Select an Image</label>
+            </div>
+          </div> */}
+        </div>
       </div>
     </form>
   )

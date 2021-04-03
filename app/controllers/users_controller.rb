@@ -2,6 +2,7 @@ class UsersController < ApplicationController
   before_action :authenticate_user!
 
   def update
+   
     if current_user.update(user_params)
       redirect_to home_index_path, notice: 'Profile was successfully updated.'
     else
