@@ -312,6 +312,8 @@ export default function Course(props) {
             >
               {`${evaluationsCount} Evaluations`}
             </button>
+            <span className="text-gray-400 mx-3">{' | '}</span>
+            <a href={`/courses/${props.id}/users/new`}>+ Add student</a>
           </div>
         </div>
         <div className="w-full overflow-x-auto">
