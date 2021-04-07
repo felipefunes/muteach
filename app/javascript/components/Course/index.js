@@ -7,6 +7,7 @@ import {
   FETCH_SESSIONS_SUCCESS,
   UPDATE_SESSION,
   CREATE_SESSION,
+  DELETE_SESSION,
   INIT,
   UPDATE_SELECTED_SESSION_FIELD,
   SET_SELECTED_SESSION,
@@ -47,6 +48,75 @@ export default function Course(props) {
         type: FETCH_SESSIONS_SUCCESS,
         data: sessions,
       });
+    })
+  }
+
+  function createSession(e) {
+    e.preventDefault();
+    fetch(`/courses/${id}/sessions.json`, {
+      method: 'POST', // or 'PUT'
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ session: {} }),
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    })
+    .then(response => response.json())
+    .then(session => {
+      dispatch({
+        type: CREATE_SESSION,
+        data: session.data.attributes,
+      });
+      console.log('Success:', session);
+    })
+  }
+
+  function updateSession(e) {
+    e.preventDefault();
+    fetch(`/courses/${id}/sessions/${state.selected_session.id}.json`, {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ session: state.selected_session }),
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    })
+    .then(response => response.json())
+    .then(session => {
+      dispatch({
+        type: UPDATE_SESSION,
+        data: session.data.attributes,
+      });
+      console.log('Success:', session);
+    })
+  }
+
+  function deleteSession(session) {
+    if (!window.confirm("Do you relly want to delete this session?")) return
+    fetch(`/courses/${id}/sessions/${session.id}.json`, {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ session: session }),
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    })
+    .then(response => response.json())
+    .then(session => {
+      dispatch({
+        type: DELETE_SESSION,
+        data: session,
+      });
+      console.log('Success:', session);
     })
   }
 
@@ -128,52 +198,6 @@ export default function Course(props) {
         type: FETCH_USERS_SUCCESS,
         data: users,
       });
-    })
-  }
-
-  function createSession(e) {
-    e.preventDefault();
-    fetch(`/courses/${id}/sessions.json`, {
-      method: 'POST', // or 'PUT'
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ session: {} }),
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    })
-    .then(response => response.json())
-    .then(session => {
-      dispatch({
-        type: CREATE_SESSION,
-        data: session.data.attributes,
-      });
-      console.log('Success:', session);
-    })
-  }
-
-  function updateSession(e) {
-    e.preventDefault();
-    fetch(`/courses/${id}/sessions/${state.selected_session.id}.json`, {
-      method: 'PUT',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ session: state.selected_session }),
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    })
-    .then(response => response.json())
-    .then(session => {
-      dispatch({
-        type: UPDATE_SESSION,
-        data: session.data.attributes,
-      });
-      console.log('Success:', session);
     })
   }
 
@@ -330,6 +354,7 @@ export default function Course(props) {
                   handleDateChange={handleDateChange}
                   sessionsToArr={sessionsToArr}
                   selectedSession={state.selected_session}
+                  deleteSession={deleteSession}
                 />
               ) : (
                 <Evaluations 
