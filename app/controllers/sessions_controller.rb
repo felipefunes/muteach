@@ -1,7 +1,7 @@
 class SessionsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_course
-  before_action :set_session, only: [:update]
+  before_action :set_session, only: [:update, :destroy]
 
   def index
     sessions = SessionSerializer.new(
@@ -19,6 +19,19 @@ class SessionsController < ApplicationController
     if @session.save
       render(
         json: SessionSerializer.new(@session).serializable_hash.to_json,
+        status: :ok
+      )
+    else
+      render json: @session.errors, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    session_id = @session.id
+    @session.destroy
+    if @session.destroy
+      render(
+        json: { id: session_id },
         status: :ok
       )
     else

@@ -32,6 +32,7 @@ export default function Sessions(props) {
     handleDateChange,
     sessionsToArr,
     selectedSession,
+    deleteSession,
    } = props
 
   const [open, setOpen] = React.useState(false);
@@ -44,6 +45,11 @@ export default function Sessions(props) {
   function handleUpdateSession(e) {
     updateSession(e);
     setOpen(false)
+  }
+
+  async function handleDeleteSession(session) {
+    const deletion = await deleteSession(session);
+    return setOpen(false)
   }
 
   return (
@@ -107,7 +113,9 @@ export default function Sessions(props) {
                   />
                 </div>
                 <div className="flex justify-between pb-3 pt-8 text-gray-600">
-                  <button type="submit" className="text-xs">🗑 Delete session</button>
+                  <button type="button" className="text-xs" onClick={()=> handleDeleteSession(selectedSession)}>
+                    🗑 Delete session
+                  </button>
                   <button type="submit" className="btn btn-blue">Update</button>
                 </div>
               </form>

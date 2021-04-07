@@ -22,6 +22,7 @@ export const [
   CREATE_SESSION,
   UPDATE_SESSION,
   UPDATE_SELECTED_SESSION_FIELD,
+  DELETE_SESSION,
   SET_SELECTED_SESSION,
   UPDATE_SESSION_USERS,
   FETCH_USERS_SUCCESS,
@@ -39,6 +40,7 @@ export const [
   'CREATE_SESSION',
   'UPDATE_SESSION',
   'UPDATE_SELECTED_SESSION_FIELD',
+  'DELETE_SESSION',
   'SET_SELECTED_SESSION',
   'UPDATE_SESSION_USERS',
   'FETCH_USERS_SUCCESS',
@@ -66,6 +68,13 @@ export const reducer = (state = initialState, action) => {
         ...state,
         sessions: serializeListFromAPIByIds(action.data),
         status: DONE
+      };
+    case DELETE_SESSION:
+      const sessions = 
+        Object.values(state.sessions).filter(s => s.id !== action.data.id)
+      return {
+        ...state,
+        sessions: serializeListByIds(sessions),
       };
     case CREATE_SESSION:
       return {
