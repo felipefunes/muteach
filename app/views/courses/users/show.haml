@@ -1,19 +1,27 @@
-%h1= @user.name
+.max-w-xl.mx-auto.py-10.px-6
+  %h1.text-4xl.font-bold.mb-4.leading-tight.mb-10
+    = @user.name
 
-- if @notes.any?
-  %h3 Notes
-  %ul
-    - @notes.each do |note|
-      %li
-        = note.text
+  - if @notes.any?
+    .mb-10
+      %h3.text-2xl.font-bold.mb-1= "Notes (#{@notes.size})"
+      %ul
+        - @notes.each do |note|
+          %li.border-b.border-gray-300.py-6
+            .mb-2
+              = note.text
+            .text-gray-500.text-sm
+              = time_tag note.created_at
 
-- if @evaluations.any?
-  %h3 Evaluations
-  %ul
-    - @evaluations.each do |evaluation|
-      %li
-        %div
-          = evaluation.title
-        %div
-          - score = @scores.detect { |s| s.evaluation_id == evaluation.id }
-          = score.points if score.present?
+
+  - if @evaluations.any?
+    .mb-10
+      %h3.text-2xl.font-bold.mb-1= "Evaluations (#{@evaluations.size})"
+      %ul
+        - @evaluations.each do |evaluation|
+          %li.flex.justify-between.border-b.border-gray-300.py-4
+            %div
+              = evaluation.title
+            %div
+              - score = @scores.detect { |s| s.evaluation_id == evaluation.id }
+              = "#{score.points} pts" if score.points.present?
