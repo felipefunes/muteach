@@ -5,7 +5,7 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable
-        #  :validatable
+        #  :validatable # Removed temporally to create fake users for prototipe validation
          
   has_and_belongs_to_many :sessions
   has_many :courses_users
@@ -31,5 +31,14 @@ class User < ApplicationRecord
     if avatar.attached?
       rails_blob_path(avatar, disposition: "attachment", only_path: true)
     end
+  end
+
+  def attendance_days_by_course(course)
+    @attendance_days_by_course ||= 
+      course.sessions.joins(:sessions_users).where(sessions_users: {user_id: id}).size
+  end
+  
+  def attendance_percentage_by_course(course)
+    (attendance_days_by_course(course) * 100) / course.sessions.size
   end
 end

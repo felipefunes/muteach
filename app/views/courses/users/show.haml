@@ -1,27 +1,44 @@
 .max-w-xl.mx-auto.py-10.px-6
+  %h2.text-xl.font-bold.mb-4
+    = link_to course_path(@course), class: "text-gray-500" do
+      = "← #{@course.name}"
   %h1.text-4xl.font-bold.mb-4.leading-tight.mb-10
     = @user.name
+  .flex.text-center.mb-10
+    %div{class: "w-1/2 font-black"}
+      .text-purple.inline-block
+        .flex.border-8.border-solid.border-purple.rounded-full.text-4xl.mb-2.w-32.h-32.justify-center.items-center
+          = "#{@user.attendance_days_by_course(@course)}/#{@course.sessions.size}"
+      .text-gray-600
+        Attendance
+    %div{class: "w-1/2 font-black"}
+      .text-purple.inline-block
+        .flex.border-8.border-solid.border-purple.rounded-full.text-4xl.mb-2.w-32.h-32.justify-center.items-center
+          = "#{@user.attendance_percentage_by_course(@course)}%"
+      .text-gray-600
+        Attendance percentage
+
 
   - if @notes.any?
-    .mb-10
-      %h3.text-2xl.font-bold.mb-1= "Notes (#{@notes.size})"
+    .mb-10.border-solid.border.border-gray-300.rounded.bg-absolutewhite
+      %h3.p-6.text-2xl.font-bold.mb-1= "Notes (#{@notes.size})"
       %ul
         - @notes.each do |note|
-          %li.border-b.border-gray-300.py-6
+          %li.border-b.border-gray-300.p-6
             .mb-2
               = note.text
-            .text-gray-500.text-sm
+            .text-gray-300.text-sm
               = time_tag note.created_at
 
 
   - if @evaluations.any?
-    .mb-10
-      %h3.text-2xl.font-bold.mb-1= "Evaluations (#{@evaluations.size})"
+    .mb-10.border-solid.border.border-gray-300.rounded.bg-absolutewhite.p-6
+      %h3.p-6.text-2xl.font-bold.mb-1= "Evaluations (#{@evaluations.size})"
       %ul
         - @evaluations.each do |evaluation|
-          %li.flex.justify-between.border-b.border-gray-300.py-4
+          %li.flex.justify-between.border-b.border-gray-300.py-4.px-6
             %div
               = evaluation.title
             %div
               - score = @scores.detect { |s| s.evaluation_id == evaluation.id }
-              = "#{score.points} pts" if score.points.present?
+              = "#{score&.points} pts" if score&.points.present?

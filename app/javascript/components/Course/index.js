@@ -326,7 +326,7 @@ export default function Course(props) {
               className={viewMode === 'sessions' ? 'text-gray-600' : 'text-blue-700'} 
               onClick={() => setViewMode('sessions')}
             >
-              {`${sessionsCount} Sessions`}
+              {`${sessionsToArr?.length || sessionsCount} Sessions`}
             </button>
             <span className="text-gray-400 mx-3">{' | '}</span>
             <button 
@@ -334,7 +334,7 @@ export default function Course(props) {
               className={viewMode === 'evaluations' ? 'text-gray-600' : 'text-blue-700'} 
               onClick={() => setViewMode('evaluations')}
             >
-              {`${evaluationsCount} Evaluations`}
+              {`${evaluationsToArr?.length || evaluationsCount} Evaluations`}
             </button>
             <span className="text-gray-400 mx-3">{' | '}</span>
             <a href={`/courses/${props.id}/users/new`}>+ Add student</a>

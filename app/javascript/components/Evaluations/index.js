@@ -82,6 +82,7 @@ export default function Sessions(props) {
             <button 
               type="button" 
               onClick={() => handleOnOpenModal(e)} 
+              className="w-full h-full"
             >
               {e.title}
             </button>
