@@ -4,11 +4,8 @@ import Sessions from '../Sessions'
 import Evaluations from '../Evaluations'
 
 import {
-  FETCH_SESSIONS_SUCCESS,
   UPDATE_SESSION,
-  CREATE_SESSION,
   DELETE_SESSION,
-  INIT,
   UPDATE_SELECTED_SESSION_FIELD,
   SET_SELECTED_SESSION,
   UPDATE_SESSION_USERS,
@@ -23,102 +20,17 @@ import {
 
 import { initialState, reducer } from './reducers';
 
+export const CourseContext = React.createContext()
+
 export default function Course(props) {
   const [state, dispatch] = React.useReducer(reducer, initialState);
+
   const [viewMode, setViewMode] = React.useState('sessions')
-  const sessionsToArr = Object.values(state.sessions).map(session => session);
   const usersToArr = Object.values(state.users).map(user => user);
+  const sessionsToArr = Object.values(state.sessions).map(session => session);
   const evaluationsToArr = Object.values(state.evaluations).map(evaluation => evaluation)
 
   const { id, sessionsCount, evaluationsCount } = props;
-
-  React.useEffect(() => {
-    if (state.status === INIT) {
-      fetchSessions();
-    }
-  }, [state.status])
-
-  function fetchSessions() {
-    fetch(`/courses/${id}/sessions.json`)
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(sessions) {
-      dispatch({
-        type: FETCH_SESSIONS_SUCCESS,
-        data: sessions,
-      });
-    })
-  }
-
-  function createSession(e) {
-    e.preventDefault();
-    fetch(`/courses/${id}/sessions.json`, {
-      method: 'POST', // or 'PUT'
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ session: {} }),
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    })
-    .then(response => response.json())
-    .then(session => {
-      dispatch({
-        type: CREATE_SESSION,
-        data: session.data.attributes,
-      });
-      console.log('Success:', session);
-    })
-  }
-
-  function updateSession(e) {
-    e.preventDefault();
-    fetch(`/courses/${id}/sessions/${state.selected_session.id}.json`, {
-      method: 'PUT',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ session: state.selected_session }),
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    })
-    .then(response => response.json())
-    .then(session => {
-      dispatch({
-        type: UPDATE_SESSION,
-        data: session.data.attributes,
-      });
-      console.log('Success:', session);
-    })
-  }
-
-  function deleteSession(session) {
-    if (!window.confirm("Do you relly want to delete this session?")) return
-    fetch(`/courses/${id}/sessions/${session.id}.json`, {
-      method: 'DELETE',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ session: session }),
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    })
-    .then(response => response.json())
-    .then(session => {
-      dispatch({
-        type: DELETE_SESSION,
-        data: session,
-      });
-      console.log('Success:', session);
-    })
-  }
 
   React.useEffect(() => {
     fetchUsers()
@@ -201,13 +113,6 @@ export default function Course(props) {
     })
   }
 
-  function onOpenModal(session) {
-    dispatch({
-      type: SET_SELECTED_SESSION,
-      data: session,
-    })
-  }
-
   function onOpenEvaluationModal(evaluation) {
     dispatch({
       type: SET_SELECTED_EVALUATION,
@@ -249,22 +154,6 @@ export default function Course(props) {
       type: UPDATE_SELECTED_EVALUATION_FIELD,
       data: e.target.value,
       name: e.target.name,
-    });
-  }
-
-  function handleFormField(e) {
-    dispatch({
-      type: UPDATE_SELECTED_SESSION_FIELD,
-      data: e.target.value,
-      name: e.target.name,
-    });
-  }
-
-  function handleDateChange(e) {
-    dispatch({
-      type: UPDATE_SELECTED_SESSION_FIELD,
-      data: e,
-      name: 'date',
     });
   }
 
@@ -310,80 +199,73 @@ export default function Course(props) {
   }
 
   return (
-    <div>
-      <div className="px-6">
-        <div>
-          <div className="flex mb-3 items-center">
-            <h1 className="text-2xl font-bold mb-1">{props.name}</h1>
-            <span className="text-gray-400 mx-2">{' • '}</span>
-            <div className="text-base text-gray-600">
-              {usersToArr.length} Students
+    <CourseContext.Provider value={{state, dispatch}}>
+      <div>
+        <div className="px-6">
+          <div>
+            <div className="flex mb-3 items-center">
+              <h1 className="text-2xl font-bold mb-1">{props.name}</h1>
+              <span className="text-gray-400 mx-2">{' • '}</span>
+              <div className="text-base text-gray-600">
+                {usersToArr.length} Students
+              </div>
+            </div>
+            <div>
+              <button 
+                type="submit" 
+                className={viewMode === 'sessions' ? 'text-gray-600' : 'text-blue-700'} 
+                onClick={() => setViewMode('sessions')}
+              >
+                {`${sessionsToArr?.length || sessionsCount} Sessions`}
+              </button>
+              <span className="text-gray-400 mx-3">{' | '}</span>
+              <button 
+                type="submit" 
+                className={viewMode === 'evaluations' ? 'text-gray-600' : 'text-blue-700'} 
+                onClick={() => setViewMode('evaluations')}
+              >
+                {`${evaluationsToArr?.length || evaluationsCount} Evaluations`}
+              </button>
+              <span className="text-gray-400 mx-3">{' | '}</span>
+              <a href={`/courses/${props.id}/users/new`}>+ Add student</a>
             </div>
           </div>
-          <div>
-            <button 
-              type="submit" 
-              className={viewMode === 'sessions' ? 'text-gray-600' : 'text-blue-700'} 
-              onClick={() => setViewMode('sessions')}
-            >
-              {`${sessionsToArr?.length || sessionsCount} Sessions`}
-            </button>
-            <span className="text-gray-400 mx-3">{' | '}</span>
-            <button 
-              type="submit" 
-              className={viewMode === 'evaluations' ? 'text-gray-600' : 'text-blue-700'} 
-              onClick={() => setViewMode('evaluations')}
-            >
-              {`${evaluationsToArr?.length || evaluationsCount} Evaluations`}
-            </button>
-            <span className="text-gray-400 mx-3">{' | '}</span>
-            <a href={`/courses/${props.id}/users/new`}>+ Add student</a>
-          </div>
-        </div>
-        <div className="w-full overflow-x-auto">
-          <div className="data-table">
-            <table className="text-sm">
-              {viewMode === 'sessions' ? (
-                <Sessions 
+          <div className="w-full overflow-x-auto">
+            <div className="data-table">
+              <table className="text-sm">
+                {viewMode === 'sessions' ? (
+                  <Sessions 
+                    courseId={props.id}
+                  />
+                ) : (
+                  <Evaluations 
+                    setNewEvaluation={setNewEvaluation}
+                    selectedEvaluation={state.selected_evaluation}
+                    handleEvaluationField={handleEvaluationField}
+                    createEvaluation={createEvaluation}
+                    evaluationsToArr={evaluationsToArr}
+                    updateEvaluation={updateEvaluation}
+                    handleEvaluationDateChange={handleEvaluationDateChange}
+                    onOpenEvaluationModal={onOpenEvaluationModal}
+                  />
+                )}
+                
+                <UsersList 
                   courseId={props.id} 
-                  sessions={sessionsToArr} 
-                  createSession={createSession}
-                  updateSession={updateSession}
-                  onOpenModal={onOpenModal}
-                  handleFormField={handleFormField}
-                  handleDateChange={handleDateChange}
                   sessionsToArr={sessionsToArr}
-                  selectedSession={state.selected_session}
-                  deleteSession={deleteSession}
-                />
-              ) : (
-                <Evaluations 
-                  setNewEvaluation={setNewEvaluation}
-                  selectedEvaluation={state.selected_evaluation}
-                  handleEvaluationField={handleEvaluationField}
-                  createEvaluation={createEvaluation}
                   evaluationsToArr={evaluationsToArr}
-                  updateEvaluation={updateEvaluation}
-                  handleEvaluationDateChange={handleEvaluationDateChange}
-                  onOpenEvaluationModal={onOpenEvaluationModal}
+                  handleAssistance={handleAssistance}
+                  usersToArr={usersToArr}
+                  onOpenSessionUser={onOpenSessionUser}
+                  selectedSession={state.selected_session}
+                  selectedUser={state.selected_user}
+                  viewMode={viewMode}
                 />
-              )}
-              
-              <UsersList 
-                courseId={props.id} 
-                sessionsToArr={sessionsToArr}
-                evaluationsToArr={evaluationsToArr}
-                handleAssistance={handleAssistance}
-                usersToArr={usersToArr}
-                onOpenSessionUser={onOpenSessionUser}
-                selectedSession={state.selected_session}
-                selectedUser={state.selected_user}
-                viewMode={viewMode}
-              />
-            </table>
+              </table>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </CourseContext.Provider>
   )
 }

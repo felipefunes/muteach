@@ -20,31 +20,137 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Sessions(props) {
+import {
+  FETCH_SESSIONS_SUCCESS,
+  UPDATE_SESSION,
+  CREATE_SESSION,
+  DELETE_SESSION,
+  INIT,
+  UPDATE_SELECTED_SESSION_FIELD,
+  SET_SELECTED_SESSION,
+} from '../Course/reducers';
+
+import { CourseContext } from '../Course/index'
+
+export default function Sessions({ courseId }) {
+  const { state, dispatch } = React.useContext(CourseContext);
+  const sessionsToArr = Object.values(state.sessions).map(session => session);
   
   const classes = useStyles();
 
-  const { 
-    createSession,
-    updateSession,
-    onOpenModal,
-    handleFormField,
-    handleDateChange,
-    sessionsToArr,
-    selectedSession,
-    deleteSession,
-   } = props
-
   const [open, setOpen] = React.useState(false);
 
-  function handleOnOpenModal(session) {
-    onOpenModal(session)
+  React.useEffect(() => {
+    if (state.status === INIT) {
+      fetchSessions();
+    }
+  }, [state.status])
+
+  function fetchSessions() {
+    fetch(`/courses/${courseId}/sessions.json`)
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(sessions) {
+      dispatch({
+        type: FETCH_SESSIONS_SUCCESS,
+        data: sessions,
+      });
+    })
+  }
+
+  function createSession(e) {
+    e.preventDefault();
+    fetch(`/courses/${courseId}/sessions.json`, {
+      method: 'POST', // or 'PUT'
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ session: {} }),
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    })
+    .then(response => response.json())
+    .then(session => {
+      dispatch({
+        type: CREATE_SESSION,
+        data: session.data.attributes,
+      });
+      console.log('Success:', session);
+    })
+  }
+
+  function updateSession(e) {
+    e.preventDefault();
+    fetch(`/courses/${courseId}/sessions/${state.selected_session.id}.json`, {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ session: state.selected_session }),
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    })
+    .then(response => response.json())
+    .then(session => {
+      dispatch({
+        type: UPDATE_SESSION,
+        data: session.data.attributes,
+      });
+      setOpen(false)
+      console.log('Success:', session);
+    })
+  }
+
+  function deleteSession(session) {
+    if (!window.confirm("Do you relly want to delete this session?")) return
+    fetch(`/courses/${courseId}/sessions/${session.id}.json`, {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ session: session }),
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    })
+    .then(response => response.json())
+    .then(session => {
+      dispatch({
+        type: DELETE_SESSION,
+        data: session,
+      });
+      console.log('Success:', session);
+    })
+  }
+
+  function onOpenModal(session) {
+    dispatch({
+      type: SET_SELECTED_SESSION,
+      data: session,
+    })
     setOpen(true)
   }
 
-  function handleUpdateSession(e) {
-    updateSession(e);
-    setOpen(false)
+  function handleFormField(e) {
+    dispatch({
+      type: UPDATE_SELECTED_SESSION_FIELD,
+      data: e.target.value,
+      name: e.target.name,
+    });
+  }
+
+  function handleDateChange(e) {
+    dispatch({
+      type: UPDATE_SELECTED_SESSION_FIELD,
+      data: e,
+      name: 'date',
+    });
   }
 
   async function handleDeleteSession(session) {
@@ -62,7 +168,7 @@ export default function Sessions(props) {
         </td>  
         {sessionsToArr && sessionsToArr.map((s,i) => (
           <td key={s.id}>
-            <button type="button" onClick={() => handleOnOpenModal(s)} className="px-2 text-center">
+            <button type="button" onClick={() => onOpenModal(s)} className="px-2 text-center">
               <span className="block text-sm font-semibold mb-1">{i + 1}</span>
               <span className="block text-xs text-gray-600">
                 { s.date ? format(new Date(s.date), 'dd/MM/yy') : '🗓' }
@@ -78,15 +184,15 @@ export default function Sessions(props) {
           className={classes.modal}
         >
           <div className={`${classes.paper} modal-container`}>
-            {selectedSession && (
-              <form onSubmit={handleUpdateSession}>
-                <h3 className="text-1xl font-bold mb-4">{`Edit session ${selectedSession.id}`}</h3>
+            {state.selected_session && (
+              <form onSubmit={updateSession}>
+                <h3 className="text-1xl font-bold mb-4">{`Edit session ${state.selected_session.id}`}</h3>
                 <div className="form-field">
                     <KeyboardDateTimePicker
                       variant="inline"
                       ampm={false}
                       label="Date"
-                      value={selectedSession.date}
+                      value={state.selected_session.date}
                       onChange={handleDateChange}
                       onError={console.log}
                       format="yyyy/MM/dd HH:mm"
@@ -99,7 +205,7 @@ export default function Sessions(props) {
                     className="text-field" 
                     onChange={handleFormField}
                     name="description"
-                    value={selectedSession.description || ''} 
+                    value={state.selected_session.description || ''} 
                   />
                 </div>
     
@@ -109,11 +215,11 @@ export default function Sessions(props) {
                     className="text-field" 
                     onChange={handleFormField}
                     name="objectives"
-                    value={selectedSession.objectives || ''} 
+                    value={state.selected_session.objectives || ''} 
                   />
                 </div>
                 <div className="flex justify-between pb-3 pt-8 text-gray-600">
-                  <button type="button" className="text-xs" onClick={()=> handleDeleteSession(selectedSession)}>
+                  <button type="button" className="text-xs" onClick={()=> handleDeleteSession(state.selected_session)}>
                     🗑 Delete session
                   </button>
                   <button type="submit" className="btn btn-blue">Update</button>
