@@ -20,26 +20,109 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Sessions(props) {
+import {
+  FETCH_EVALUATIONS_SUCCESS,
+  SET_SELECTED_EVALUATION,
+  UPDATE_SELECTED_EVALUATION_FIELD,
+  CREATE_EVALUATION,
+  UPDATE_EVALUATION,
+} from '../Course/reducers';
+
+import { CourseContext } from '../Course/index'
+
+export default function Sessions({ 
+  selectedEvaluation,
+  courseId,
+  isActive,
+ }) {
+  const { state, dispatch } = React.useContext(CourseContext);
   
   const classes = useStyles();
 
-  const { 
-    createEvaluation,
-    updateEvaluation,
-    onOpenEvaluationModal,
-    handleEvaluationField,
-    handleEvaluationDateChange,
-    evaluationsToArr,
-    selectedEvaluation,
-    setNewEvaluation,
-   } = props
+  const evaluationsToArr = Object.values(state.evaluations).map(evaluation => evaluation)
 
   const [open, setOpen] = React.useState(false);
 
+  React.useEffect(() => {
+    if (isActive && state.evaluations.length === 0) {
+      fetchEvaluations();
+    }
+
+  }, [isActive])
+
+  function fetchEvaluations() {
+    fetch(`/courses/${courseId}/evaluations.json`)
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(evaluations) {
+      dispatch({
+        type: FETCH_EVALUATIONS_SUCCESS,
+        data: evaluations,
+      });
+    })
+  }
+
+  function createEvaluation() {
+    fetch(`/courses/${courseId}/evaluations.json`, {
+      method: 'POST', // or 'PUT'
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ evaluation: state.selected_evaluation }),
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    })
+    .then(response => response.json())
+    .then(evaluation => {
+      dispatch({
+        type: CREATE_EVALUATION,
+        data: evaluation,
+      });
+      setOpen(false)
+      console.log('Success:', evaluation);
+    })
+  }
+
+  function updateEvaluation() {
+    fetch(`/courses/${courseId}/evaluations/${state.selected_evaluation.id}.json`, {
+      method: 'PUT', // or 'PUT'
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ evaluation: state.selected_evaluation }),
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    })
+    .then(response => response.json())
+    .then(evaluation => {
+      dispatch({
+        type: UPDATE_EVALUATION,
+        data: evaluation,
+      });
+      setOpen(false)
+      console.log('Success:', evaluation);
+    })
+  }
+
   function handleOnOpenModal(evaluation) {
-    onOpenEvaluationModal(evaluation)
+    dispatch({
+      type: SET_SELECTED_EVALUATION,
+      data: evaluation,
+    })
     setOpen(true)
+  }
+
+  function handleEvaluationField(e) {
+    dispatch({
+      type: UPDATE_SELECTED_EVALUATION_FIELD,
+      data: e.target.value,
+      name: e.target.name,
+    });
   }
 
   function onSetNewEvaluation(e) {
@@ -51,19 +134,34 @@ export default function Sessions(props) {
   function saveModalInfo(e) {
     e.preventDefault();
     if (selectedEvaluation && selectedEvaluation.id) {
-      return handleUpdateEvaluation(e)
+      return updateEvaluation(e)
     }
-    onCreateEvaluation(e)
+    createEvaluation(e)
   }
 
-  function handleUpdateEvaluation(e) {
-    updateEvaluation(e);
-    setOpen(false)
+  function setNewEvaluation() {
+    const evaluation = {
+      title: '',
+      description: '',
+      objectives: '',
+      total_points: '',
+      approval_percentage: '',
+      delivery_date: null,
+      attachment_url: '',
+    }
+
+    dispatch({
+      type: SET_SELECTED_EVALUATION,
+      data: evaluation,
+    })
   }
 
-  function onCreateEvaluation(e) {
-    createEvaluation();
-    setOpen(false);
+  function handleEvaluationDateChange(e) {
+    dispatch({
+      type: UPDATE_SELECTED_EVALUATION_FIELD,
+      data: e,
+      name: 'delivery_date',
+    });
   }
 
   return (
@@ -84,7 +182,7 @@ export default function Sessions(props) {
               onClick={() => handleOnOpenModal(e)} 
               className="w-full h-full"
             >
-              {e.title}
+              {e.title ? e.title : 'Edit'}
             </button>
           </td>
         ))}

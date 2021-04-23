@@ -4,9 +4,6 @@ import Sessions from '../Sessions'
 import Evaluations from '../Evaluations'
 
 import {
-  UPDATE_SESSION,
-  DELETE_SESSION,
-  UPDATE_SELECTED_SESSION_FIELD,
   SET_SELECTED_SESSION,
   UPDATE_SESSION_USERS,
   FETCH_USERS_SUCCESS,
@@ -36,70 +33,6 @@ export default function Course(props) {
     fetchUsers()
   }, [])
 
-  function fetchEvaluations() {
-    fetch(`/courses/${id}/evaluations.json`)
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(evaluations) {
-      dispatch({
-        type: FETCH_EVALUATIONS_SUCCESS,
-        data: evaluations,
-      });
-    })
-  }
-
-  function createEvaluation() {
-    fetch(`/courses/${id}/evaluations.json`, {
-      method: 'POST', // or 'PUT'
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ evaluation: state.selected_evaluation }),
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    })
-    .then(response => response.json())
-    .then(evaluation => {
-      dispatch({
-        type: CREATE_EVALUATION,
-        data: evaluation,
-      });
-      console.log('Success:', evaluation);
-    })
-  }
-
-  function updateEvaluation() {
-    fetch(`/courses/${id}/evaluations/${state.selected_evaluation.id}.json`, {
-      method: 'PUT', // or 'PUT'
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ evaluation: state.selected_evaluation }),
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    })
-    .then(response => response.json())
-    .then(evaluation => {
-      dispatch({
-        type: UPDATE_EVALUATION,
-        data: evaluation,
-      });
-      console.log('Success:', evaluation);
-    })
-  }
-
-  React.useEffect(() => {
-    if (viewMode === 'evaluations' && state.evaluations.length === 0) {
-      fetchEvaluations();
-    }
-
-  }, [viewMode])
-
   function fetchUsers() {
     fetch(`/courses/${id}/users.json`)
     .then(function(response) {
@@ -113,30 +46,6 @@ export default function Course(props) {
     })
   }
 
-  function onOpenEvaluationModal(evaluation) {
-    dispatch({
-      type: SET_SELECTED_EVALUATION,
-      data: evaluation,
-    })
-  }
-
-  function setNewEvaluation() {
-    const evaluation = {
-      title: '',
-      description: '',
-      objectives: '',
-      total_points: '',
-      approval_percentage: '',
-      delivery_date: null,
-      attachment_url: '',
-    }
-
-    dispatch({
-      type: SET_SELECTED_EVALUATION,
-      data: evaluation,
-    })
-  }
-
   function onOpenSessionUser(session, user) {
     dispatch({
       type: SET_SELECTED_SESSION,
@@ -147,22 +56,6 @@ export default function Course(props) {
       type: SET_SELECTED_USER,
       data: user,
     })
-  }
-
-  function handleEvaluationField(e) {
-    dispatch({
-      type: UPDATE_SELECTED_EVALUATION_FIELD,
-      data: e.target.value,
-      name: e.target.name,
-    });
-  }
-
-  function handleEvaluationDateChange(e) {
-    dispatch({
-      type: UPDATE_SELECTED_EVALUATION_FIELD,
-      data: e,
-      name: 'delivery_date',
-    });
   }
 
   function updateAssistance(session) {
@@ -239,14 +132,9 @@ export default function Course(props) {
                   />
                 ) : (
                   <Evaluations 
-                    setNewEvaluation={setNewEvaluation}
+                    courseId={id}
+                    isActive={viewMode === 'evaluations'}
                     selectedEvaluation={state.selected_evaluation}
-                    handleEvaluationField={handleEvaluationField}
-                    createEvaluation={createEvaluation}
-                    evaluationsToArr={evaluationsToArr}
-                    updateEvaluation={updateEvaluation}
-                    handleEvaluationDateChange={handleEvaluationDateChange}
-                    onOpenEvaluationModal={onOpenEvaluationModal}
                   />
                 )}
                 
