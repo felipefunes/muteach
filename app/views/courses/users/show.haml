@@ -4,19 +4,20 @@
       = "← #{@course.name}"
   %h1.text-4xl.font-bold.mb-4.leading-tight.mb-10
     = @user.name
-  .flex.text-center.mb-10
-    %div{class: "w-1/2 font-black"}
-      .text-purple.inline-block
-        .flex.border-8.border-solid.border-purple.rounded-full.text-4xl.mb-2.w-32.h-32.justify-center.items-center
-          = "#{@user.attendance_days_by_course(@course)}/#{@course.sessions.size}"
-      .text-gray-600
-        Attendance
-    %div{class: "w-1/2 font-black"}
-      .text-purple.inline-block
-        .flex.border-8.border-solid.border-purple.rounded-full.text-4xl.mb-2.w-32.h-32.justify-center.items-center
-          = "#{@user.attendance_percentage_by_course(@course)}%"
-      .text-gray-600
-        Attendance percentage
+  - if @course.sessions.any?
+    .flex.text-center.mb-10
+      %div{class: "w-1/2 font-black"}
+        .text-purple.inline-block
+          .flex.border-8.border-solid.border-purple.rounded-full.text-4xl.mb-2.w-32.h-32.justify-center.items-center
+            = "#{@user.attendance_days_by_course(@course)}/#{@course.sessions.size}"
+        .text-gray-600
+          Attendance
+      %div{class: "w-1/2 font-black"}
+        .text-purple.inline-block
+          .flex.border-8.border-solid.border-purple.rounded-full.text-4xl.mb-2.w-32.h-32.justify-center.items-center
+            = "#{@user.attendance_percentage_by_course(@course)}%"
+        .text-gray-600
+          Attendance percentage
 
 
   - if @notes.any?
