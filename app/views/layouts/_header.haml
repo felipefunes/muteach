@@ -5,14 +5,12 @@
         = image_tag "muteach-logo.svg", width: 150
   .flex.items-center
     - if user_signed_in?
+      = button_to "Logout", destroy_user_session_path, method: :delete, class: "mr-4 bg-transparent text-blue-700 cursor-pointer"
       = link_to edit_user_path(current_user), class: 'flex items-center black' do
 
         .avatar{ style: current_user.avatar.attached? ? "background-image: url('#{url_for(current_user.avatar)}')" : nil }
           = current_user.name_first_letter unless current_user.avatar.attached?
         
-      %button.text-2xl.ml-4.mt-2
-        🔔
-      = button_to "logout", destroy_user_session_path, method: :delete
     - else
       = link_to t('log_in'), new_user_session_path, class: 'ml-4'
       - if Rails.env.development?
