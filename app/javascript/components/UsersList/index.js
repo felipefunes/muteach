@@ -48,7 +48,12 @@ export default function UsersList({
         <tr key={user.id}>
           <td>
             <a href={`/courses/${courseId}/users/${user.id}`} className="text-sm font-semibold text-black">{user.name}</a>
-            <div className="text-gray-600 text-xs">{user.email}</div>
+            <div>
+              <a href={`mailto:${user.email}`}>
+                <span className="text-gray-600 text-xs">{user.email}</span>
+              </a>
+            </div>
+            
           </td>
           {viewMode === 'sessions' ? (
             sessionsToArr && sessionsToArr.map(session => (
