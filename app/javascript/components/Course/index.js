@@ -103,30 +103,32 @@ export default function Course(props) {
               <div className="text-base text-gray-600">
                 {usersToArr.length} Students
               </div>
+              <span className="text-gray-400 mx-2">{' • '}</span>
+              <a href={`/courses/${props.id}/users/new`}>
+                <UserAddIcon className="h-5 w-5 mr-1 inline-block align-text-top"/>
+                Add student
+              </a>
             </div>
             <div>
               <button 
                 type="submit" 
-                className={viewMode === 'sessions' ? 'text-gray-600' : 'text-blue-700'} 
+                className={viewMode === 'sessions' ? 'text-gray-700 font-bold cursor-default' : 'text-gray-600 hover:text-blue-700'} 
                 onClick={() => setViewMode('sessions')}
               >
-                <CalendarIcon className="h-5 w-5 mr-1 inline-block align-text-top"/>
+                <CalendarIcon className="h-6 w-6 mr-2 inline-block align-text-top"/>
                 {`Sessions (${sessionsToArr?.length || sessionsCount})`}
               </button>
               <span className="text-gray-400 mx-3">{' | '}</span>
               <button 
                 type="submit" 
-                className={viewMode === 'evaluations' ? 'text-gray-600' : 'text-blue-700'} 
+                className={viewMode === 'evaluations' ? 'text-gray-700 font-bold cursor-default' : 'text-gray-600 hover:text-blue-700'} 
                 onClick={() => setViewMode('evaluations')}
               >
-                <ClipboardCheckIcon className="h-5 w-5 mr-1 inline-block align-text-top"/>
+                <ClipboardCheckIcon className="h-6 w-6 mr-2 inline-block align-text-top"/>
                 {`Evaluations (${evaluationsToArr?.length || evaluationsCount})`}
               </button>
-              <span className="text-gray-400 mx-3">{' | '}</span>
-              <a href={`/courses/${props.id}/users/new`}>
-                <UserAddIcon className="h-5 w-5 mr-1 inline-block align-text-top"/>
-                Add student
-              </a>
+              {/* <span className="text-gray-400 mx-3">{' | '}</span> */}
+              
             </div>
           </div>
           <div className="w-full overflow-x-auto">
