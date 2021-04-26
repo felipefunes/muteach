@@ -1101,6 +1101,11 @@
     postcss "7.0.32"
     purgecss "^2.3.0"
 
+"@heroicons/react@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@heroicons/react/-/react-1.0.1.tgz#66d25f6441920bd5c2146ea27fd33995885452dd"
+  integrity sha512-uikw2gKCmqnvjVxitecWfFLMOKyL9BTFcU4VM3hHj9OMwpkCr5Ke+MRMyY2/aQVmsYs4VTq7NCFX05MYwAHi3g==
+
 "@material-ui/core@^4.11.0":
   version "4.11.0"
   resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-4.11.0.tgz#b69b26e4553c9e53f2bfaf1053e216a0af9be15a"
@@ -4480,6 +4485,11 @@ hash.js@^1.0.0, hash.js@^1.0.3:
   dependencies:
     inherits "^2.0.3"
     minimalistic-assert "^1.0.1"
+
+heroicons@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/heroicons/-/heroicons-1.0.1.tgz#b40f487e2e7139bab58194e5ec610fe5f46ba079"
+  integrity sha512-vPUhWJQlpNOwNzn0WZ1JBzvsU/Gj9cBSgULPp6pF+Ckihk4+yY4JeOcZQn8XirA7S+OkVz2jNqWP7O+r5xapyA==
 
 hex-color-regex@^1.1.0:
   version "1.1.0"

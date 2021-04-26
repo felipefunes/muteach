@@ -2,6 +2,7 @@ import React from 'react';
 import UsersList from '../UsersList'
 import Sessions from '../Sessions'
 import Evaluations from '../Evaluations'
+import { UserAddIcon } from '@heroicons/react/outline'
 
 import {
   SET_SELECTED_SESSION,
@@ -120,7 +121,10 @@ export default function Course(props) {
                 {`${evaluationsToArr?.length || evaluationsCount} Evaluations`}
               </button>
               <span className="text-gray-400 mx-3">{' | '}</span>
-              <a href={`/courses/${props.id}/users/new`}>+ Add student</a>
+              <a href={`/courses/${props.id}/users/new`}>
+                <UserAddIcon className="h-5 w-5 mr-1 inline-block align-text-top"/>
+                Add student
+              </a>
             </div>
           </div>
           <div className="w-full overflow-x-auto">

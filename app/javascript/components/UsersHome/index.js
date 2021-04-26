@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LoadingIndicator from '../common/LoadingIndicator'
-
+import { UserIcon, LogoutIcon } from '@heroicons/react/outline'
 import {
   FETCH_COURSES_SUCCESS,
   FETCH_COURSES,
@@ -56,12 +56,20 @@ export default function UsersHome({currentUser}) {
     <div className="max-w-screen-lg container mx-auto grid grid-cols-5 gap-4 pt-10">
       <div className="col-span-1">
         <ul>
-          <li><span className="flex text-xl font-bold mb-5"><a href="/courses/new" className="btn btn-blue">+ New course</a></span></li>
-          <li><a className="flex text-xl font-bold leading-9 mb-2" href={`/users/${currentUser.id}/edit`}>Your profile</a></li>
+          <li><span className="flex text-xl font-bold mb-8"><a href="/courses/new" className="btn btn-blue">+ New course</a></span></li>
+          <li className="mb-4">
+            <a className="flex items-center text-xl font-bold leading-9" href={`/users/${currentUser.id}/edit`}>
+              <UserIcon className="h-8 w-8 text-gray-600 mr-2"/>
+              Your profile
+            </a>
+          </li>
           <li>
-            <form className="button_to" method="post" action="/users/sign_out">
+            <form className="button_to flex items-center" method="post" action="/users/sign_out">
+              <LogoutIcon className="h-8 w-8 text-gray-600 mr-2"/>
               <input type="hidden" name="_method" value="delete" />
-              <input className="flex text-xl font-bold leading-9 mb-2 bg-transparent text-blue-700 " type="submit" value="Logout" />
+              <button className="text-xl font-bold leading-9 bg-transparent text-blue-700 " type="submit">
+                Logout
+              </button>
             </form>
           </li>
         </ul>
@@ -75,7 +83,7 @@ export default function UsersHome({currentUser}) {
             ) : (coursesToArr.length > 0 ? (
                   <React.Fragment>
                   <h3 className="text-4xl mb-3 font-extrabold leading-normal">{`Your courses (${coursesToArr.length})`}</h3>
-                  {coursesToArr.map(course => (
+                  {coursesToArr.sort((a,b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()).map(course => (
                     <li key={course.id}>
                       <a href={`/courses/${course.id}`} className="flex justify-between border-solid border border-gray-300 rounded bg-absolutewhite p-6 mb-2 text-black">
                         <div>
@@ -96,7 +104,7 @@ export default function UsersHome({currentUser}) {
               ) : (
                 <div className="text-center border-solid border border-gray-300 rounded bg-absolutewhite p-10 mb-2 text-black">
                   <p className="text-4xl">🤓</p>
-                  <p className="text-xl font-bold">You haven't created any course yet.</p>
+                  <p className="text-xl font-bold mb-1">You haven't created any course yet.</p>
                   <p>Press the blue button to create the first one and start managing your classes.</p>
                 </div>
               )

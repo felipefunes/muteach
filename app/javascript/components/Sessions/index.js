@@ -4,9 +4,10 @@ import { format } from 'date-fns';
 import {
   KeyboardDateTimePicker
 } from '@material-ui/pickers';
-
+import Tooltip from '@material-ui/core/Tooltip';
 import Modal from '@material-ui/core/Modal';
 import { makeStyles } from '@material-ui/core/styles';
+
 const useStyles = makeStyles((theme) => ({
   modal: {
     display: 'flex',
@@ -16,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
+    padding: theme.spacing(4),
   },
 }));
 
@@ -168,11 +169,15 @@ export default function Sessions({ courseId }) {
         </td>  
         {sessionsToArr && sessionsToArr.map((s,i) => (
           <td key={s.id}>
-            <button type="button" onClick={() => onOpenModal(s)} className="px-2 text-center">
-              <span className="block text-sm font-semibold mb-1">{i + 1}</span>
-              <span className="block text-xs text-gray-600">
-                { s.date ? format(new Date(s.date), 'dd/MM/yy') : '🗓' }
-              </span>          
+            <button type="button" onClick={() => onOpenModal(s)} className="px-2 text-center hover:text-blue-700">
+              <Tooltip title="Edit session">
+                <span className="block text-xs font-semibold mb-1 font-mono hover:text-blue-700">
+                  {i + 1}{') '}
+                  <span className="text-gray-600 font-normal hover:text-blue-700">
+                    { s.date ? format(new Date(s.date), 'dd/MM/yy') : '--/--/--' }
+                  </span>
+                </span>
+              </Tooltip>
             </button>
           </td>
         ))}
@@ -186,7 +191,9 @@ export default function Sessions({ courseId }) {
           <div className={`${classes.paper} modal-container`}>
             {state.selected_session && (
               <form onSubmit={updateSession}>
-                <h3 className="text-1xl font-bold mb-4">{`Edit session ${state.selected_session.id}`}</h3>
+                <h3 className="text-xl font-bold mt-1">
+                  {`Edit session ${state.selected_session.id}`}
+                </h3>
                 <div className="form-field">
                     <KeyboardDateTimePicker
                       variant="inline"
@@ -222,7 +229,7 @@ export default function Sessions({ courseId }) {
                   <button type="button" className="text-xs" onClick={()=> handleDeleteSession(state.selected_session)}>
                     🗑 Delete session
                   </button>
-                  <button type="submit" className="btn btn-blue">Update</button>
+                  <button type="submit" className="btn btn-blue">Update session</button>
                 </div>
               </form>
             )}

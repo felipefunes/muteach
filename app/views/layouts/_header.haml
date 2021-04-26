@@ -8,6 +8,8 @@
       -# = button_to "Logout", destroy_user_session_path, method: :delete, class: "mr-4 bg-transparent text-blue-700 cursor-pointer"
       = link_to edit_user_path(current_user), class: 'flex items-center black' do
 
+        .font-bold.text-gray-600.mr-2.text-sm
+          = current_user.name || current_user.email_local_part
         .avatar{ style: current_user.avatar.attached? ? "background-image: url('#{url_for(current_user.avatar)}')" : nil }
           = current_user.name_first_letter unless current_user.avatar.attached?
         

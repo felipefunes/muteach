@@ -1,6 +1,6 @@
 class CourseSerializer
   include JSONAPI::Serializer
-  attributes :name, :description, :id, :user_ids, :session_ids, :evaluation_ids
+  attributes :name, :description, :id, :user_ids, :session_ids, :evaluation_ids, :created_at, :updated_at
 
   attribute :category_name do |object|
     object.category.name
