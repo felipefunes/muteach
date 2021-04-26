@@ -22,24 +22,28 @@
 
   - if @notes.any?
     .mb-10.border-solid.border.border-gray-300.rounded.bg-absolutewhite
-      %h3.p-6.text-2xl.font-bold.mb-1= "Notes (#{@notes.size})"
+      %h3.p-6.pb-0.text-2xl.font-bold.mb-1= "Notes (#{@notes.size})"
       %ul
         - @notes.each do |note|
           %li.border-b.border-gray-300.p-6
             .mb-2
               = note.text
-            .text-gray-400.text-sm
+            .text-gray-500.text-sm
               = time_tag note.created_at
 
 
   - if @evaluations.any?
-    .mb-10.border-solid.border.border-gray-300.rounded.bg-absolutewhite.p-6
-      %h3.p-6.text-2xl.font-bold.mb-1= "Evaluations (#{@evaluations.size})"
+    .mb-10.border-solid.border.border-gray-300.rounded.bg-absolutewhite
+      %h3.p-6.pb-0.text-2xl.font-bold.mb-1= "Evaluations (#{@evaluations.size})"
       %ul
         - @evaluations.each do |evaluation|
           %li.flex.justify-between.border-b.border-gray-300.py-4.px-6
-            %div
-              = evaluation.title
+            .text-bold
+              = evaluation.title.present? ? evaluation.title : "Untitled"
             %div
               - score = @scores.detect { |s| s.evaluation_id == evaluation.id }
-              = "#{score&.points} pts" if score&.points.present?
+              - if score&.points.present?
+                ="#{score&.points} pts"
+              - else
+                %span.text-gray-600
+                  Pending evaluation
