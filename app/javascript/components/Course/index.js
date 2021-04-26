@@ -2,7 +2,7 @@ import React from 'react';
 import UsersList from '../UsersList'
 import Sessions from '../Sessions'
 import Evaluations from '../Evaluations'
-import { UserAddIcon } from '@heroicons/react/outline'
+import { UserAddIcon, ClipboardCheckIcon, CalendarIcon } from '@heroicons/react/outline'
 
 import {
   SET_SELECTED_SESSION,
@@ -110,7 +110,8 @@ export default function Course(props) {
                 className={viewMode === 'sessions' ? 'text-gray-600' : 'text-blue-700'} 
                 onClick={() => setViewMode('sessions')}
               >
-                {`${sessionsToArr?.length || sessionsCount} Sessions`}
+                <CalendarIcon className="h-5 w-5 mr-1 inline-block align-text-top"/>
+                {`Sessions (${sessionsToArr?.length || sessionsCount})`}
               </button>
               <span className="text-gray-400 mx-3">{' | '}</span>
               <button 
@@ -118,7 +119,8 @@ export default function Course(props) {
                 className={viewMode === 'evaluations' ? 'text-gray-600' : 'text-blue-700'} 
                 onClick={() => setViewMode('evaluations')}
               >
-                {`${evaluationsToArr?.length || evaluationsCount} Evaluations`}
+                <ClipboardCheckIcon className="h-5 w-5 mr-1 inline-block align-text-top"/>
+                {`Evaluations (${evaluationsToArr?.length || evaluationsCount})`}
               </button>
               <span className="text-gray-400 mx-3">{' | '}</span>
               <a href={`/courses/${props.id}/users/new`}>
