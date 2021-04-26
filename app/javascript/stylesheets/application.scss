@@ -24,6 +24,17 @@ a {
   @apply text-blue-700;
 }
 
+.js-flash-msg {
+  transition: 0.3s ease-out;
+  opacity: 1;
+  transform: scale3d(1,1,1);
+}
+
+.js-flash-msg--fade-off {
+  opacity: 0;
+  transform: scale3d(0,0,0);
+}
+
 @import "./utilities/loading_spinner";
 @import "./components/buttons";
 @import "./components/forms";

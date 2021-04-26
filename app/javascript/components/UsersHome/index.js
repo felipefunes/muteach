@@ -59,7 +59,7 @@ export default function UsersHome({currentUser}) {
           <li><span className="flex text-xl font-bold mb-5"><a href="/courses/new" className="btn btn-blue">+ New course</a></span></li>
           <li><a className="flex text-xl font-bold leading-9 mb-2" href={`/users/${currentUser.id}/edit`}>Your profile</a></li>
           <li>
-            <form class="button_to" method="post" action="/users/sign_out">
+            <form className="button_to" method="post" action="/users/sign_out">
               <input type="hidden" name="_method" value="delete" />
               <input className="flex text-xl font-bold leading-9 mb-2 bg-transparent text-blue-700 " type="submit" value="Logout" />
             </form>

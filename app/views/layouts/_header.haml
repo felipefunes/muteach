@@ -1,4 +1,4 @@
-%nav.z-50.flex.items-center.justify-between.flex-wrap.py-5.px-6.border-b.border-gray-200.fixed.top-0.left-0.right-0.bg-white
+%nav.z-40.flex.items-center.justify-between.flex-wrap.py-5.px-6.border-b.border-gray-200.fixed.top-0.left-0.right-0.bg-white
   .flex.items-center.flex-shrink-0.mr-6.content-between
     .text-3xl.font-bold
       = link_to root_path, class: 'text-black' do
@@ -12,6 +12,6 @@
           = current_user.name_first_letter unless current_user.avatar.attached?
         
     - else
-      = link_to t('log_in'), new_user_session_path, class: 'ml-5'
+      = link_to t('log_in'), new_user_session_path, class: 'ml-5 font-bold'
       - if Rails.env.development?
-        = link_to t('sign_up'), new_user_registration_path, class: 'ml-5'
+        = link_to t('sign_up'), new_user_registration_path, class: 'ml-5 font-bold'

@@ -17,7 +17,7 @@
   <body class="pt-20 bg-white">
     <%= render 'layouts/header' %>
     <% flash.each do |type, msg| %>
-      <div class="js-flash-msg text-center font-semibold text-lg text-white py-4 <%= type.to_s == 'alert' ? 'bg-red-600' : 'bg-green-600' %>">
+      <div style="left: 50%; width: 300px; margin-left: -150px; top: 50px" class="js-flash-msg z-50 text-center font-semibold text-lg bg-white py-4 px-6 shadow-xl text-green-600 border-green-200 fixed border left-1/2 rounded-lg <%= type.to_s == 'alert' ? 'text-red-600 border-red-200' : 'text-green-600 border-green-200' %>">
         <%= msg %>
       </div>
     <% end %>
