@@ -111,8 +111,9 @@ export default function UsersList({
 
           {selectedSession && selectedUser && (
             <>
-              <h3 className="text-xl font-bold mt-1 mb-3">
-                {`Session ${sessionsToArr.findIndex(s => s.id === selectedSession.id) + 1}: ${selectedUser.name}'s notes`}
+              <h4 className="text-md font-bold mt-1 leading-tight text-gray-600">{`Session ${sessionsToArr.findIndex(s => s.id === selectedSession.id) + 1}: `}</h4>
+              <h3 className="text-xl font-bold mb-3">
+                {`${selectedUser.name}'s notes`}
               </h3>
               <Notes
                 courseId={courseId}
