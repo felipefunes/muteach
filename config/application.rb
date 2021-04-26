@@ -15,5 +15,14 @@ module Muteach
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
+    
+
+    # Enable the asset pipeline
+     config.assets.enabled = true
+ 
+     # Version of your assets, change this if you want to expire all your assets
+     config.assets.version = '1.0'
+ 
+     config.encoding = "utf-8"
   end
 end
