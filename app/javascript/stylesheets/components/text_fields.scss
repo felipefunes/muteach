@@ -6,3 +6,6 @@
 .text-field:focus {
   @apply outline-none shadow-outline;
 }
+textarea.text-field {
+  min-height: 7em;
+}

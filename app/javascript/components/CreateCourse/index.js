@@ -63,7 +63,7 @@ export default function CreateCourse() {
   
   return (
     <div className="max-w-screen-lg container mx-auto mb-10">
-       <h1 className="text-4xl font-bold mb-4">Crear un curso</h1>
+       <h1 className="text-4xl font-bold mb-4">Create course</h1>
       {renderStep()}
     </div>
   )

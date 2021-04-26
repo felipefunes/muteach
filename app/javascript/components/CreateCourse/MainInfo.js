@@ -110,8 +110,8 @@ export default function MainInfo({ setStep }) {
             </textarea>
           </div>
 
-          {/* <div className="form-field">
-            <label>Objetivos</label>
+          <div className="form-field">
+            <label>Objectives</label>
             <textarea 
               className="text-field"
               onChange={handleFormField}
@@ -119,7 +119,7 @@ export default function MainInfo({ setStep }) {
               value={state.course_fields.primary_objectives}
             >
             </textarea>
-          </div> */}
+          </div>
 
           {/* <div className="form-field">
             <label>Sessions amount</label>
@@ -131,7 +131,7 @@ export default function MainInfo({ setStep }) {
               value={state.course_fields.sessions_amount}
             />
           </div> */}
-          <div className="flex">
+          {/* <div className="flex">
             <div className="form-field mr-4 flex-grow">
               <label>Price</label>
               <input 
@@ -153,11 +153,11 @@ export default function MainInfo({ setStep }) {
                 value={state.course_fields.students_quota}
               />
             </div>
-          </div>
+          </div> */}
           <div className="justify-between form-field flex">
             <div></div>
             <button type="submit" className="btn btn-blue">
-              Save
+              Save Course
             </button>
           </div>
         </div>
