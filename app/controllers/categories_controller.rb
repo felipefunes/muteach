@@ -1,5 +1,7 @@
 class CategoriesController < ApplicationController
   before_action :set_category, only: [:show, :edit, :update]
+  before_action :authenticate_sysadmin!, except: [:show]
+
   def index
     @categories = Category.all
     respond_to do |format|
