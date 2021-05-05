@@ -35,4 +35,6 @@ Rails.application.routes.draw do
     get 'success', to: "reveniu#create"
     get 'cancel', to: "reveniu#destroy"
   end
+
+  resources :direct_uploads, only: [:create], controller: "direct_uploads"
 end

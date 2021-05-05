@@ -2,18 +2,19 @@ import React from 'react';
 import UsersList from '../UsersList'
 import Sessions from '../Sessions'
 import Evaluations from '../Evaluations'
-import { UserAddIcon, ClipboardCheckIcon, CalendarIcon } from '@heroicons/react/outline'
+import CourseFiles from '../CourseFiles'
+import { 
+  UserAddIcon, 
+  ClipboardCheckIcon, 
+  CalendarIcon, 
+  FolderOpenIcon 
+} from '@heroicons/react/outline'
 
 import {
   SET_SELECTED_SESSION,
   UPDATE_SESSION_USERS,
   FETCH_USERS_SUCCESS,
   SET_SELECTED_USER,
-  FETCH_EVALUATIONS_SUCCESS,
-  SET_SELECTED_EVALUATION,
-  UPDATE_SELECTED_EVALUATION_FIELD,
-  CREATE_EVALUATION,
-  UPDATE_EVALUATION,
 } from './reducers';
 
 import { initialState, reducer } from './reducers';
@@ -127,36 +128,50 @@ export default function Course(props) {
                 <ClipboardCheckIcon className="h-6 w-6 mr-2 inline-block align-text-top"/>
                 {`Evaluations (${evaluationsToArr?.length || evaluationsCount})`}
               </button>
-              {/* <span className="text-gray-400 mx-3">{' | '}</span> */}
+              <span className="text-gray-400 mx-3">{' | '}</span>
+              <button 
+                type="submit" 
+                className={viewMode === 'files' ? 'text-gray-700 font-bold cursor-default' : 'text-gray-600 hover:text-blue-700'} 
+                onClick={() => setViewMode('files')}
+              >
+                <FolderOpenIcon className="h-6 w-6 mr-2 inline-block align-text-top"/>
+                {`Files (0)`}
+              </button>
               
             </div>
           </div>
           <div className="w-full overflow-x-auto">
             <div className="data-table">
               <table className="text-sm">
-                {viewMode === 'sessions' ? (
-                  <Sessions 
-                    courseId={props.id}
-                  />
-                ) : (
-                  <Evaluations 
-                    courseId={id}
-                    isActive={viewMode === 'evaluations'}
-                    selectedEvaluation={state.selected_evaluation}
-                  />
-                )}
-                
-                <UsersList 
-                  courseId={props.id} 
-                  sessionsToArr={sessionsToArr}
-                  evaluationsToArr={evaluationsToArr}
-                  handleAssistance={handleAssistance}
-                  usersToArr={usersToArr}
-                  onOpenSessionUser={onOpenSessionUser}
-                  selectedSession={state.selected_session}
-                  selectedUser={state.selected_user}
-                  viewMode={viewMode}
-                />
+                {viewMode === 'files' ? (
+                    <CourseFiles />
+                  ) : (
+                    <React.Fragment>
+                      {viewMode === 'sessions' ? (
+                          <Sessions 
+                            courseId={props.id}
+                          />
+                        ) : (
+                          <Evaluations 
+                            courseId={id}
+                            isActive={viewMode === 'evaluations'}
+                            selectedEvaluation={state.selected_evaluation}
+                          />
+                        )
+                      }
+                      <UsersList 
+                        courseId={props.id} 
+                        sessionsToArr={sessionsToArr}
+                        evaluationsToArr={evaluationsToArr}
+                        handleAssistance={handleAssistance}
+                        usersToArr={usersToArr}
+                        onOpenSessionUser={onOpenSessionUser}
+                        selectedSession={state.selected_session}
+                        selectedUser={state.selected_user}
+                        viewMode={viewMode}
+                      />
+                  </React.Fragment>
+                  )}
               </table>
             </div>
           </div>

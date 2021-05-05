@@ -8,6 +8,7 @@ class Course < ApplicationRecord
   has_many :evaluations
 
   has_one_attached :cover_img
+  has_many_attached :files
 
   
   enum lang: { english: 0, active: 1, expired: 2 }

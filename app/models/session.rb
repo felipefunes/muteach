@@ -3,4 +3,6 @@ class Session < ApplicationRecord
   belongs_to :course
   has_many :notes
   has_many :evaluations
+  
+  has_many_attached :files
 end
