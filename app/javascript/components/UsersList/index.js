@@ -18,6 +18,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+import {
+  CLEAN_CURRENT_NOTES,
+} from '../Course/reducers';
+import { CourseContext } from '../Course/index'
+
 export default function UsersList({ 
   courseId,
   sessionsToArr, 
@@ -32,7 +37,16 @@ export default function UsersList({
 }) {
   
   const classes = useStyles();
+  const { state, dispatch } = React.useContext(CourseContext);
   const [open, setOpen] = React.useState(false);
+  
+  function handleCloseModal() {
+    setOpen(false)
+    dispatch({
+      type: CLEAN_CURRENT_NOTES,
+      data: [],
+    });
+  }
 
   function handleOnOpenModal(session, user) {
     onOpenSessionUser(session, user)
@@ -67,7 +81,7 @@ export default function UsersList({
             sessionsToArr && sessionsToArr.map(session => (
               <td key={session.id} className="text-center">
                 <Tooltip title={session.user_ids.includes(user.id) ? 'Remove attendance' : 'Mark as present'}>
-                  <span className="inline-block relative">
+                  <span className="inline-block relative align-middle">
                     <input 
                       type="checkbox"
                       name={user.id} 
@@ -85,8 +99,9 @@ export default function UsersList({
                   </span>
                 </Tooltip>
                 <Tooltip title="Student notes">
-                  <button type="button" className="px-2" onClick={() => handleOnOpenModal(session, user)}>
-                    <DocumentTextIcon className="h-4 w-4 text-gray-600 ml-2 hover:text-blue-700"/>
+                  <button type="button" className="ml-1 px-2 inline-flex align-middle" onClick={() => handleOnOpenModal(session, user)}>
+                    <span className="text-gray-600 text-xs">{user.notes_count.find(c => c.session_id === session.id)?.count}</span>
+                    <DocumentTextIcon className="h-4 w-4 text-gray-600 hover:text-blue-700"/>
                   </button>
                 </Tooltip>
               </td>
@@ -102,7 +117,7 @@ export default function UsersList({
       ))}
       <Modal
         open={open}
-        onClose={() => setOpen(false)}
+        onClose={() => handleCloseModal()}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
         className={classes.modal}

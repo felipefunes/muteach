@@ -1,5 +1,6 @@
 class CoursesController < ApplicationController
   before_action :set_course, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
 
   def index
     @courses = current_user.courses.includes(:users, :category)
@@ -76,5 +77,11 @@ class CoursesController < ApplicationController
       :primary_objectives, 
       :sessions_amount,
     )
+  end
+
+  def check_access
+    unless @course.user_ids.include(current_user.id)
+      render plain: "404 Not Found", status: 404
+    end
   end
 end

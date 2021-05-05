@@ -5,7 +5,7 @@ class Courses::UsersController < ApplicationController
 
   def index
     @users = @course.users.only_students
-    render json: @users, status: :ok
+    render json: UserBasicSerializer.new(@users).serializable_hash.to_json, status: :ok
   end
 
   def show

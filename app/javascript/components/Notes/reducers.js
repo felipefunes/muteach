@@ -34,46 +34,7 @@ export const initialState = {
 
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case FETCH_NOTES_SUCCESS:
-      return {
-        ...state,
-        notes: serializeListByIds(action.data),
-        status: DONE
-      };
-    case CREATE_NOTE:
-      return {
-        ...state,
-        notes: {
-          ...state.notes,
-          [action.data.id]: action.data
-        }
-      }
-    case DELETE_NOTE:
-      const notes = 
-        Object.values(state.notes).filter(n => n.id !== action.data.id)
-      return {
-        ...state,
-        notes: serializeListByIds(notes),
-      }
-    case UPDATE_NOTE:
-      return {
-        ...state,
-        notes: {
-          ...state.notes,
-          [action.data.id]: action.data
-        }
-      }
-    case UPDATE_NOTE_FIELD:
-      return {
-        ...state,
-        notes: {
-          ...state.notes,
-          [action.name]: {
-            ...state.notes[action.name],
-            text: action.data
-          }
-        }
-      };
+    
     default:
       return;
   }

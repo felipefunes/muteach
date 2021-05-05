@@ -2,30 +2,31 @@ import React from 'react';
 import LoadingIndicator from '../common/LoadingIndicator'
 
 import {
-  FETCH_NOTES_SUCCESS,
+  FETCH_CURRENT_NOTES,
   CREATE_NOTE,
   INIT,
   DONE,
   UPDATE_NOTE,
   UPDATE_NOTE_FIELD,
   DELETE_NOTE,
-} from './reducers';
+  UPDATE_NOTES_COUNT,
+} from '../Course/reducers';
 
-import { initialState, reducer } from './reducers';
+import { CourseContext } from '../Course/index'
 
 export default function Notes({
   courseId,
   sessionId,
   user,
 }) {
-  const [state, dispatch] = React.useReducer(reducer, initialState);
-  const notesToArr = Object.values(state.notes).map(note => note);
+  const { state, dispatch } = React.useContext(CourseContext);
+  const notesToArr = Object.values(state.current_notes).map(note => note);
 
   React.useEffect(() => {
-    if (state.status === INIT) {
+    if (state.current_notes_status === INIT) {
       fetchNotes();
     }
-  }, [state.status])
+  }, [state.current_notes_status])
 
   function fetchNotes() {
     fetch(`/courses/${courseId}/sessions/${sessionId}/users/${user.id}/notes.json`)
@@ -34,7 +35,7 @@ export default function Notes({
     })
     .then(function(notes) {
       dispatch({
-        type: FETCH_NOTES_SUCCESS,
+        type: FETCH_CURRENT_NOTES,
         data: notes,
       });
     })
@@ -60,6 +61,14 @@ export default function Notes({
         data: note,
       });
       console.log('Success:', note);
+    }).then(()=>{
+      dispatch({
+        type: UPDATE_NOTES_COUNT,
+        data: {
+          user_id: user.id,
+          session_id: sessionId,
+        },
+      });
     })
   }
 
@@ -104,6 +113,14 @@ export default function Notes({
         data: note,
       });
       console.log('Success:', note);
+    }).then(()=>{
+      dispatch({
+        type: UPDATE_NOTES_COUNT,
+        data: {
+          user_id: user.id,
+          session_id: sessionId,
+        },
+      });
     })
   }
 
@@ -121,7 +138,7 @@ export default function Notes({
         <button type="submit" className="text-blue-700 mb-3">+ Add a note</button>
       </form>
       
-      {state.status === DONE ? (
+      {state.current_notes_status === DONE ? (
         notesToArr.reverse().map(note => (
           <div key={note.id} className="mb-4">
             <div className="py-2">

@@ -99,10 +99,10 @@ export default function Course(props) {
       <div>
         <div className="px-6">
           <div className="flex mb-4 items-center text-sm">
-              <a href="/" className="text-gray-600">
-                <ArrowSmLeftIcon className="h-5 w-5 text-gray-600 mr-1 inline-block align-text-top"/>
-                <span>Back to courses</span>
-              </a>
+            <a href="/" className="text-gray-600">
+              <ArrowSmLeftIcon className="h-5 w-5 text-gray-600 mr-1 inline-block align-text-top"/>
+              <span>Back to courses</span>
+            </a>
           </div>
           <div>
             <div className="flex mb-0 items-center">
