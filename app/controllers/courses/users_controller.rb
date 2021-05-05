@@ -9,9 +9,10 @@ class Courses::UsersController < ApplicationController
   end
 
   def show
-    @notes = @user.notes.where(course_id: @course.id).where.not(text: [nil, ""])
+    @notes = @user.notes.where(course_id: @course.id).where.not(text: [nil, ""]).order(:session_id)
     @evaluations = @course.evaluations
     @scores = @user.scores.where(course_id: @course.id)
+    @sessions = @course.sessions
   end
 
   def new
