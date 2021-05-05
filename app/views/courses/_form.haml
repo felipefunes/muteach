@@ -17,7 +17,7 @@
   
   .form-field
     .select-container
-      = f.select(:category_id, options_for_select(Category.all.map{ |c| [c.name.titleize, c.id] }, { selected: @course.category_id }))
+      = f.select(:category_id, options_for_select(Category.order(:name).all.map{ |c| [c.name.titleize, c.id] }, { selected: @course.category_id }))
 
   .form-field
     = f.label :description
@@ -32,9 +32,4 @@
   .form-field
     = f.submit 'Save course', class: "btn-blue btn"
 
-
-
-.my-10.py-10.text-md 
-  = link_to course_path(@course), method: :delete, class: 'text-red' do
-    Delete course
 
