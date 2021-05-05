@@ -9,4 +9,16 @@ class CourseSerializer
   attribute :image_url do |object|
     url_for(object.cover_img) if object.cover_img.attached?
   end
+
+  attribute :sessions_count do |object|
+    object.session_ids.length
+  end
+
+  attribute :evaluations_count do |object|
+    object.evaluation_ids.length
+  end
+
+  attribute :users_count do |object|
+    object.users.only_students.size
+  end
 end

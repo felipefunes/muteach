@@ -1,5 +1,5 @@
 class CoursesController < ApplicationController
-  before_action :set_course, only: [:show, :edit, :update]
+  before_action :set_course, only: [:show, :edit, :update, :destroy]
 
   def index
     @courses = current_user.courses.includes(:users, :category)
@@ -25,9 +25,22 @@ class CoursesController < ApplicationController
     @course = Course.new(course_params)
     if @course.save
       CoursesUser.create(course: @course, user: current_user, role: :teacher)
-      render json: CourseSerializer.new(@course).serializable_hash.to_json, status: :ok
+      respond_to do |format|
+        format.html {
+          redirect_to course_path(@course), notice: "The course has been created successfully"
+        }
+        format.json { 
+          render json: CourseSerializer.new(@course).serializable_hash.to_json, status: :ok
+        }
+      end
+      
     else
-      render json: @course.errors, status: :unprocessable_entity
+      format.html {
+          render action: :new
+        }
+        format.json { 
+          render json: @course.errors, status: :unprocessable_entity
+        }
     end
   end
 
@@ -43,6 +56,9 @@ class CoursesController < ApplicationController
   end
 
   def destroy
+    course_name = @course.name
+    @course.destroy
+    redirect_to root_path, notice: "The course #{course_name} was deleted"
   end
 
   private

@@ -261,7 +261,7 @@ export default function Sessions({
                     <KeyboardDateTimePicker
                       variant="inline"
                       ampm={false}
-                      label="Delivery at"
+                      label="Delivery at (Date and hour)"
                       value={selectedEvaluation.delivery_date}
                       onChange={handleEvaluationDateChange}
                       onError={console.log}

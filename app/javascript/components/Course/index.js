@@ -2,18 +2,20 @@ import React from 'react';
 import UsersList from '../UsersList'
 import Sessions from '../Sessions'
 import Evaluations from '../Evaluations'
-import { UserAddIcon, ClipboardCheckIcon, CalendarIcon } from '@heroicons/react/outline'
+import { 
+  UserAddIcon, 
+  ClipboardCheckIcon, 
+  CalendarIcon,
+  PencilAltIcon,
+  ArrowSmLeftIcon,
+} from '@heroicons/react/outline'
+import Tooltip from '@material-ui/core/Tooltip';
 
 import {
   SET_SELECTED_SESSION,
   UPDATE_SESSION_USERS,
   FETCH_USERS_SUCCESS,
   SET_SELECTED_USER,
-  FETCH_EVALUATIONS_SUCCESS,
-  SET_SELECTED_EVALUATION,
-  UPDATE_SELECTED_EVALUATION_FIELD,
-  CREATE_EVALUATION,
-  UPDATE_EVALUATION,
 } from './reducers';
 
 import { initialState, reducer } from './reducers';
@@ -96,19 +98,31 @@ export default function Course(props) {
     <CourseContext.Provider value={{state, dispatch}}>
       <div>
         <div className="px-6">
-          <div>
-            <div className="flex mb-3 items-center">
-              <h1 className="text-2xl font-bold mb-1">{props.name}</h1>
-              <span className="text-gray-400 mx-2">{' • '}</span>
-              <div className="text-base text-gray-600">
-                {usersToArr.length} Students
-              </div>
-              <span className="text-gray-400 mx-2">{' • '}</span>
-              <a href={`/courses/${props.id}/users/new`}>
-                <UserAddIcon className="h-5 w-5 mr-1 inline-block align-text-top"/>
-                Add student
+          <div className="flex mb-4 items-center text-sm">
+              <a href="/" className="text-gray-600">
+                <ArrowSmLeftIcon className="h-5 w-5 text-gray-600 mr-1 inline-block align-text-top"/>
+                <span>Back to courses</span>
               </a>
+          </div>
+          <div>
+            <div className="flex mb-0 items-center">
+              <h1 className="text-2xl font-bold mb-1 mr-2">{props.name}</h1>
+              <Tooltip title="Edit course">
+                <a href={`/courses/${props.id}/edit`}>
+                  <PencilAltIcon className="h-5 w-5 text-gray-600 mr-1 inline-block align-text-top"/>
+                </a>
+              </Tooltip>
             </div>
+            <div className="text-sm flex mb-6 items-center">
+              <div className="text-gray-600">
+                  {usersToArr.length} Students
+                </div>
+                <span className="text-gray-400 mx-2">{' • '}</span>
+                <a href={`/courses/${props.id}/users/new`}>
+                  <UserAddIcon className="h-4 w-4 mr-1 inline-block align-text-top"/>
+                  Add student
+                </a>
+              </div>
             <div>
               <button 
                 type="submit" 

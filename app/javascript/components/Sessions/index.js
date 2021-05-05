@@ -198,7 +198,7 @@ export default function Sessions({ courseId }) {
                     <KeyboardDateTimePicker
                       variant="inline"
                       ampm={false}
-                      label="Date"
+                      label="Date and hour"
                       value={state.selected_session.date}
                       onChange={handleDateChange}
                       onError={console.log}

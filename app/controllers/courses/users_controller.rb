@@ -4,7 +4,7 @@ class Courses::UsersController < ApplicationController
   before_action :set_user, only: [:show]
 
   def index
-    @users = @course.users.includes(:courses_users).where(courses_users: {role: "student"})
+    @users = @course.users.only_students
     render json: @users, status: :ok
   end
 
