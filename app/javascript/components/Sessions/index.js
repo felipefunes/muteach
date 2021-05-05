@@ -192,7 +192,7 @@ export default function Sessions({ courseId }) {
             {state.selected_session && (
               <form onSubmit={updateSession}>
                 <h3 className="text-xl font-bold mt-1">
-                  {`Edit session ${state.selected_session.id}`}
+                  {`Edit session ${sessionsToArr.indexOf(state.selected_session) + 1}`}
                 </h3>
                 <div className="form-field">
                     <KeyboardDateTimePicker
