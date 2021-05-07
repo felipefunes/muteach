@@ -80,6 +80,12 @@ export default function UsersList({
           {viewMode === 'sessions' ? (
             sessionsToArr && sessionsToArr.map(session => (
               <td key={session.id} className="text-center">
+                <Tooltip title="Student notes">
+                  <button type="button" className="mr-1 px-2 inline-flex align-middle" onClick={() => handleOnOpenModal(session, user)}>
+                    <span className="text-gray-600 text-xs">{user.notes_count.find(c => c.session_id === session.id)?.count}</span>
+                    <DocumentTextIcon className="h-4 w-4 text-gray-600 hover:text-blue-700"/>
+                  </button>
+                </Tooltip>
                 <Tooltip title={session.user_ids.includes(user.id) ? 'Remove attendance' : 'Mark as present'}>
                   <span className="inline-block relative align-middle">
                     <input 
@@ -93,17 +99,12 @@ export default function UsersList({
                     {session.user_ids.includes(user.id) ? (
                       <CheckIcon className="h-4 w-4 hover:text-red-600 z-0 text-green-600"/>
                     ) : (
-                      <CalendarIcon className="h-4 w-4 hover:text-green-600 z-0 text-gray-400"/>
+                      <CalendarIcon className="h-4 w-4 hover:text-green-600 z-0 text-gray-600"/>
                     )}
                     
                   </span>
                 </Tooltip>
-                <Tooltip title="Student notes">
-                  <button type="button" className="ml-1 px-2 inline-flex align-middle" onClick={() => handleOnOpenModal(session, user)}>
-                    <span className="text-gray-600 text-xs">{user.notes_count.find(c => c.session_id === session.id)?.count}</span>
-                    <DocumentTextIcon className="h-4 w-4 text-gray-600 hover:text-blue-700"/>
-                  </button>
-                </Tooltip>
+                
               </td>
             ))
           ) : (

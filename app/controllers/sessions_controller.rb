@@ -5,7 +5,7 @@ class SessionsController < ApplicationController
 
   def index
     sessions = SessionSerializer.new(
-      @course.sessions.includes(:users)
+      @course.sessions.includes(:users).reorder(date: :asc)
     ).serializable_hash.to_json
     
     render(

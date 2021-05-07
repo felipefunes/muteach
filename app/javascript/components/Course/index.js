@@ -114,7 +114,7 @@ export default function Course(props) {
               </a>
             </div>
           </div>
-          <div>
+          <div className="flex justify-between items-center">
             <div className="flex mb-2 items-center">
               <h1 className="text-2xl font-bold mb-1 mr-3">{props.name}</h1>
               <Tooltip title="Edit course">
@@ -130,7 +130,7 @@ export default function Course(props) {
                 onClick={() => setViewMode('sessions')}
               >
                 <CalendarIcon className="h-6 w-6 mr-2 inline-block align-text-top"/>
-                {`Sessions (${sessionsToArr?.length || sessionsCount})`}
+                {`${sessionsToArr?.length || sessionsCount} Sessions`}
               </button>
               <span className="text-gray-400 mx-3">{' | '}</span>
               <button 
@@ -139,7 +139,7 @@ export default function Course(props) {
                 onClick={() => setViewMode('evaluations')}
               >
                 <ClipboardCheckIcon className="h-6 w-6 mr-2 inline-block align-text-top"/>
-                {`Evaluations (${evaluationsToArr?.length || evaluationsCount})`}
+                {`${evaluationsToArr?.length || evaluationsCount} Evaluations`}
               </button>
               {/* <span className="text-gray-400 mx-3">{' | '}</span> */}
               
