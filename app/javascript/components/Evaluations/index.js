@@ -167,7 +167,7 @@ export default function Sessions({
   return (
     <thead>
       <tr>
-        <td>
+        <td className="sticky z-10 bg-absolutewhite" style={{left: 0}}>
           <form onSubmit={onSetNewEvaluation}>
             <button type="submit" className="text-blue-700">
               + Create evaluation

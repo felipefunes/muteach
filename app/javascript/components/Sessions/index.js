@@ -162,7 +162,7 @@ export default function Sessions({ courseId }) {
   return (
     <thead>
       <tr>
-        <td>
+        <td className="sticky z-10 bg-absolutewhite" style={{left: 0}}>
           <form onSubmit={createSession}>
             <button type="submit" className="text-blue-700">+ Add new session</button>
           </form>

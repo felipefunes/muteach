@@ -62,7 +62,7 @@ export default function UsersList({
     <tbody>
       {usersToArr && usersToArr.map(user => (
         <tr key={user.id}>
-          <td>
+          <td className="sticky z-10 bg-absolutewhite" style={{left: 0}}>
             <Tooltip title={`View ${user.name}'s details`}>
               <a href={`/courses/${courseId}/users/${user.id}`} className="text-sm font-semibold text-black">
                 {user.name}
@@ -138,7 +138,7 @@ export default function UsersList({
             </>
           )}
           <div className="flex text-rifth">
-            <button type="button" className="btn btn-blue mt-4" onClick={() => setOpen(false)}>
+            <button type="button" className="btn btn-blue mt-4" onClick={() => handleCloseModal()}>
               Save notes
             </button>
           </div>

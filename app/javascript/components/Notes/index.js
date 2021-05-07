@@ -26,7 +26,7 @@ export default function Notes({
     if (state.current_notes_status === INIT) {
       fetchNotes();
     }
-  }, [state.current_notes_status])
+  }, [state.current_notes_status], user, sessionId)
 
   function fetchNotes() {
     fetch(`/courses/${courseId}/sessions/${sessionId}/users/${user.id}/notes.json`)

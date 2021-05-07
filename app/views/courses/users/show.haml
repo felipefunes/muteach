@@ -1,7 +1,9 @@
 .max-w-xl.mx-auto.py-10.px-6
-  %h2.text-xl.font-bold.mb-4
-    = link_to course_path(@course), class: "text-gray-500" do
-      = "← #{@course.name}"
+  = link_to course_path(@course), class: "text-gray-600 mb-5 inline-block" do
+    %svg{xmlns: "http://www.w3.org/2000/svg", class: "h-5 w-5 text-gray-600 mr-1 inline-block align-text-top", fill: "none", viewBox: "0 0 24 24", stroke: "currentColor"}
+      %path{"stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": "2", d: "M11 17l-5-5m0 0l5-5m-5 5h12" }
+    %span 
+      = "Back to #{@course.name}"
   %h1.text-4xl.font-bold.mb-4.leading-tight.mb-10
     = @user.name
   - if @sessions.any?
