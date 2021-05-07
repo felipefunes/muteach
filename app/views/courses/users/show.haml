@@ -32,8 +32,12 @@
               = note.text
             .text-gray-500.text-sm
               %span
+              - if note.session.present?
                 = "Session #{note.session.index_in_course(@course) + 1}"
-              - if note.session.date.present?
+              - else
+                %span.text-red
+                  Deleted session
+              - if note&.session&.date&.present?
                 %span= " - "
                 = time_tag note.session.date
               - else

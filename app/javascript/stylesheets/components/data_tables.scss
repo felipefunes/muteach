@@ -14,7 +14,8 @@
   tbody {
     tr {
       &.hover:hover,
-      &:hover {
+      &:hover,
+      &:hover td.sticky {
         @apply bg-gray-100;
       }
     }

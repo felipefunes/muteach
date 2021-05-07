@@ -98,31 +98,31 @@ export default function Course(props) {
     <CourseContext.Provider value={{state, dispatch}}>
       <div>
         <div className="px-6">
-          <div className="flex mb-4 items-center text-sm">
+          <div className="flex items-center text-sm justify-between mb-4">
             <a href="/" className="text-gray-600">
               <ArrowSmLeftIcon className="h-5 w-5 text-gray-600 mr-1 inline-block align-text-top"/>
               <span>Back to courses</span>
             </a>
+            <div className="text-sm flex items-center">
+              <div className="text-gray-600">
+                {usersToArr.length} Students
+              </div>
+              <span className="text-gray-400 mx-2">{' • '}</span>
+              <a href={`/courses/${props.id}/users/new`}>
+                <UserAddIcon className="h-4 w-4 mr-1 inline-block align-text-top"/>
+                Add student
+              </a>
+            </div>
           </div>
           <div>
-            <div className="flex mb-0 items-center">
-              <h1 className="text-2xl font-bold mb-1 mr-2">{props.name}</h1>
+            <div className="flex mb-2 items-center">
+              <h1 className="text-2xl font-bold mb-1 mr-3">{props.name}</h1>
               <Tooltip title="Edit course">
                 <a href={`/courses/${props.id}/edit`}>
                   <PencilAltIcon className="h-5 w-5 text-gray-600 mr-1 inline-block align-text-top"/>
                 </a>
               </Tooltip>
             </div>
-            <div className="text-sm flex mb-6 items-center">
-              <div className="text-gray-600">
-                  {usersToArr.length} Students
-                </div>
-                <span className="text-gray-400 mx-2">{' • '}</span>
-                <a href={`/courses/${props.id}/users/new`}>
-                  <UserAddIcon className="h-4 w-4 mr-1 inline-block align-text-top"/>
-                  Add student
-                </a>
-              </div>
             <div>
               <button 
                 type="submit" 
