@@ -1,6 +1,8 @@
 class CoursesController < ApplicationController
   before_action :set_course, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
+  before_action :check_access, only: [:show]
+  before_action :set_write_permission, only: [:edit, :update, :destroy]
 
   def index
     @courses = current_user.courses.includes(:users, :category)
@@ -80,7 +82,13 @@ class CoursesController < ApplicationController
   end
 
   def check_access
-    unless @course.user_ids.include(current_user.id)
+    unless @course.user_ids.include?(current_user.id)
+      render plain: "404 Not Found", status: 404
+    end
+  end
+
+  def set_write_permission
+    unless current_user.course_role(course) == "teacher"
       render plain: "404 Not Found", status: 404
     end
   end

@@ -43,4 +43,8 @@ class User < ApplicationRecord
   def attendance_percentage_by_course(course)
     (attendance_days_by_course(course) * 100) / course.sessions.size
   end
+
+  def course_role(course)
+    courses_users.find_by(course_id: course.id).role
+  end
 end

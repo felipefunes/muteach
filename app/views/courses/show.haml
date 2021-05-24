@@ -1,10 +1,22 @@
-:ruby
-  course = {
-    name: @course.name,
-    id: @course.id,
-    sessions_count: @course.session_ids.length,
-    evaluations_count: @course.evaluation_ids.length,
-  }
-- content_for :packs do
-  = javascript_pack_tag 'course', 'data-turbolinks-track': 'reload'
-#course.pt-4{ data: course }
+.pt-4
+  - if current_user.course_role(@course) == "teacher"
+    :ruby
+      course = {
+        name: @course.name,
+        id: @course.id,
+        sessions_count: @course.session_ids.length,
+        evaluations_count: @course.evaluation_ids.length,
+      }
+    - content_for :packs do
+      = javascript_pack_tag 'course', 'data-turbolinks-track': 'reload'
+    #course{ data: course }
+  - else
+    .px-6
+      %div
+        = link_to courses_path, class: "text-gray-600 mb-5 inline-block" do
+          %svg{xmlns: "http://www.w3.org/2000/svg", class: "h-5 w-5 text-gray-600 mr-1 inline-block align-text-top", fill: "none", viewBox: "0 0 24 24", stroke: "currentColor"}
+            %path{"stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": "2", d: "M11 17l-5-5m0 0l5-5m-5 5h12" }
+          %span 
+            Back to courses
+      %h1.text-2xl.font-bold.mb-1.mr-3
+        = @course.name
