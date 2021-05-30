@@ -63,6 +63,8 @@ Rails.application.configure do
   config.action_mailer.perform_caching = false
   host = "www.muteach.com"
   Rails.application.routes.default_url_options = { host: host, protocol: 'https' }
+  config.action_controller.default_url_options = { host: host }
+  config.action_mailer.default_url_options = { host: host }
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
