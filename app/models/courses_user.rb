@@ -4,4 +4,7 @@ class CoursesUser < ApplicationRecord
 
   enum role: { student: 0, teacher: 1 }
 
+  def hide!
+    update(hidden: true)
+  end
 end

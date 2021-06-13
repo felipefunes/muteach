@@ -1,7 +1,7 @@
 class Courses::UsersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_course
-  before_action :set_user, only: [:show]
+  before_action :set_user, only: [:show, :destroy]
 
   def index
     @users = @course.users.only_students
@@ -27,6 +27,11 @@ class Courses::UsersController < ApplicationController
     else
       render :new
     end
+  end
+
+  def destroy
+    @course.courses_users.find_by(user_id: @user.id).hide!
+    redirect_to course_path(@course)
   end
 
   private

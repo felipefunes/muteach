@@ -7,5 +7,8 @@
   %h1.text-4xl.font-bold.mb-4.leading-none= "Edit #{@course.name}" 
   = render 'form'
   .my-10.py-10.text-md 
-    = link_to course_path(@course), method: :delete, class: 'text-red' do
+    = button_to course_path(@course), method: :delete, type: 'button', class: 'text-red font-bold', title: 'Delete', data: { confirm: 'Are you sure you want to delete this course? You will miss all the data' } do
+      %svg{xmlns: "http://www.w3.org/2000/svg", class: "h-6 w-6 inline-block", fill: "none", viewBox:"0 0 24 24", stroke: "currentColor"}
+        %path{"stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": "2", d: "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" }
       Delete course
+    

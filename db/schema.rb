@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_24_204837) do
+ActiveRecord::Schema.define(version: 2021_06_13_020804) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -80,6 +80,7 @@ ActiveRecord::Schema.define(version: 2021_05_24_204837) do
     t.integer "course_id"
     t.integer "user_id"
     t.integer "role", default: 0
+    t.boolean "hidden", default: false
     t.index ["course_id", "user_id"], name: "index_courses_users_on_course_id_and_user_id", unique: true
   end
 

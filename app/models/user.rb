@@ -19,7 +19,7 @@ class User < ApplicationRecord
   enum status: { draft: 0, active: 1, expired: 2 }
   enum account_type: { person: 0, organization: 1 }
 
-  scope :only_students, -> { includes(:courses_users).where(courses_users: {role: "student"}) }
+  scope :only_students, -> { includes(:courses_users).where(courses_users: {role: "student", hidden: false}) }
 
   def email_local_part
     email.split('@').first
