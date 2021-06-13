@@ -3,7 +3,7 @@ import UserScores from '../UserScores';
 import Notes from '../Notes';
 import Modal from '@material-ui/core/Modal';
 import Tooltip from '@material-ui/core/Tooltip';
-import { DocumentTextIcon, CalendarIcon, CheckIcon } from '@heroicons/react/outline'
+import { DocumentTextIcon, CalendarIcon, CheckIcon, MailIcon } from '@heroicons/react/outline'
 import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -58,24 +58,37 @@ export default function UsersList({
     setOpen(false)
   }
 
+  function sortByName(a, b) {
+    const nameA = a.name.toUpperCase(); // ignore upper and lowercase
+    const nameB = b.name.toUpperCase(); // ignore upper and lowercase
+    if (nameA < nameB) {
+      return -1;
+    }
+    if (nameA > nameB) {
+      return 1;
+    }
+  
+    // names must be equal
+    return 0;
+  }
+
   return ( 
     <tbody>
-      {usersToArr && usersToArr.map(user => (
+      {usersToArr && usersToArr.sort((a,b) => sortByName(a, b)).map((user, index) => (
         <tr key={user.id}>
           <td className="sticky z-10 bg-absolutewhite" style={{left: 0}}>
             <Tooltip title={`View ${user.name}'s details`}>
               <a href={`/courses/${courseId}/users/${user.id}`} className="text-sm font-semibold text-black">
+                {index + 1}
+                {'. '}
                 {user.name}
               </a>
             </Tooltip>
-            <div>
+            <Tooltip title={`Send an email to ${user.name}`}>
               <a href={`mailto:${user.email}`}>
-                <Tooltip title={`Send an email to ${user.name}`}>
-                  <span className="text-gray-600 text-xs">{user.email}</span>
-                </Tooltip>
+                <MailIcon className="ml-1 h-4 w-4 text-gray-600 hover:text-blue-600 inline-block"/>
               </a>
-            </div>
-            
+            </Tooltip>
           </td>
           {viewMode === 'sessions' ? (
             sessionsToArr && sessionsToArr.map(session => (
