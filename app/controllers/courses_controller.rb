@@ -88,7 +88,7 @@ class CoursesController < ApplicationController
   end
 
   def set_write_permission
-    unless current_user.course_role(course) == "teacher"
+    unless current_user.course_role(@course) == "teacher"
       render plain: "404 Not Found", status: 404
     end
   end
