@@ -227,7 +227,7 @@ export default function Sessions({
                 <div className="form-field">
                   <input 
                     placeholder="Add attachment url"
-                    type="text" 
+                    type="url" 
                     className="text-field" 
                     name="attachment_url" 
                     onChange={handleEvaluationField} 
