@@ -84,11 +84,13 @@ export default function UsersList({
                 {user.name}
               </a>
             </Tooltip>
-            <Tooltip title={`Send an email to ${user.name}`}>
-              <a href={`mailto:${user.email}`}>
-                <MailIcon className="ml-1 h-4 w-4 text-gray-600 hover:text-blue-600 inline-block"/>
-              </a>
-            </Tooltip>
+            {!(user.email.includes('_user_') && user.email.includes('@muteach.com')) && (
+              <Tooltip title={`Send an email to ${user.name}`}>
+                <a href={`mailto:${user.email}`}>
+                  <MailIcon className="ml-1 h-4 w-4 text-gray-600 hover:text-blue-600 inline-block"/>
+                </a>
+              </Tooltip>
+            )}
           </td>
           {viewMode === 'sessions' ? (
             sessionsToArr && sessionsToArr.map(session => (
