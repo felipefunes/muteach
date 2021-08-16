@@ -1,7 +1,7 @@
 class Courses::UsersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_course
-  before_action :set_user, only: [:show, :destroy]
+  before_action :set_user, only: [:show, :destroy, :edit, :update]
 
   def index
     @users = @course.users.only_students
@@ -24,6 +24,17 @@ class Courses::UsersController < ApplicationController
     if @new_user.save
       CoursesUser.create(course: @course, user: @new_user)
       redirect_to course_path(@course)
+    else
+      render :new
+    end
+  end
+
+  def edit   
+  end
+
+  def update
+    if @user.update(name: user_params[:name], email: email_to_update)
+      redirect_to course_user_path(@course, @user)
     else
       render :new
     end
@@ -56,5 +67,11 @@ class Courses::UsersController < ApplicationController
     fake_email = "#{@course.id}_user_#{token}@muteach.com"
     email = params[:email]
     email.present? ? email : fake_email
+  end
+
+  def email_to_update
+    return @user.email if user_params[:email].blank?
+    return processed_email if user_params[:email].blank? && !@user.has_muteach_email?
+    user_params[:email]
   end
 end

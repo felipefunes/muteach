@@ -1,0 +1,13 @@
+<div class="form-field">
+  <%= f.label :name %><br />
+  <%= f.text_field :name, autofocus: true, class: "text-field" %>
+</div>
+
+<div class="form-field">
+  <%= f.label :email %><br />
+  <%= f.email_field :email, class: "text-field", value: @user&.visible_email %>
+</div>
+
+<div class="actions form-field">
+  <%= f.submit "Create", class: 'btn btn-blue' %>
+</div>

@@ -47,4 +47,12 @@ class User < ApplicationRecord
   def course_role(course)
     courses_users.find_by(course_id: course.id).role
   end
+
+  def has_muteach_email?
+    email.include?("_user_") && email.include?("muteach.com")
+  end
+
+  def visible_email
+    has_muteach_email? ? '' : email
+  end
 end
