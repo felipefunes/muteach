@@ -28,6 +28,14 @@
     = f.label :primary_objectives
     .field
       = f.text_area :primary_objectives, class: "text-field"
+  
+  .form-field
+    %label.flex.cursor-pointer
+      = f.check_box :public, class: "mt-1 mr-2"
+      %div
+        Make this course public
+        %p.text-gray-600.text-sm
+          Public courses will appear on the feed all the other users.
 
   .form-field
     = f.submit 'Save course', class: "btn-blue btn"
