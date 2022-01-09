@@ -67,6 +67,7 @@ yarn-debug.log*
 /storage/*
 !/storage/.keep
 .env
+.ruby-version
 
 /public/packs
 /public/packs-test
