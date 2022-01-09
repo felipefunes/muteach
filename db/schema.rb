@@ -71,7 +71,6 @@ ActiveRecord::Schema.define(version: 2021_11_10_204251) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "category_id"
-    t.bigint "institution_id"
     t.boolean "public", default: false
     t.index ["category_id"], name: "index_courses_on_category_id"
   end
