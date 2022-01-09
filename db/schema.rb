@@ -74,7 +74,6 @@ ActiveRecord::Schema.define(version: 2021_11_10_204251) do
     t.bigint "institution_id"
     t.boolean "public", default: false
     t.index ["category_id"], name: "index_courses_on_category_id"
-    t.index ["institution_id"], name: "index_courses_on_institution_id"
   end
 
   create_table "courses_users", force: :cascade do |t|
@@ -97,13 +96,6 @@ ActiveRecord::Schema.define(version: 2021_11_10_204251) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["course_id"], name: "index_evaluations_on_course_id"
-  end
-
-  create_table "institutions", force: :cascade do |t|
-    t.string "name"
-    t.text "description"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "notes", force: :cascade do |t|
@@ -171,12 +163,8 @@ ActiveRecord::Schema.define(version: 2021_11_10_204251) do
     t.string "phone"
     t.string "nickname"
     t.string "name"
-    t.bigint "session_id"
-    t.bigint "institution_id"
     t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["institution_id"], name: "index_users_on_institution_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-    t.index ["session_id"], name: "index_users_on_session_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
