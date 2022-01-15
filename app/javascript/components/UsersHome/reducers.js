@@ -9,11 +9,13 @@ function serializeListByIds(array) {
 
 export const [
   FETCH_COURSES_SUCCESS,
+  FETCH_PUBLIC_COURSES_SUCCESS,
   FETCH_COURSES,
   INIT,
   DONE,
 ] = [
   'FETCH_COURSES_SUCCESS',
+  'FETCH_PUBLIC_COURSES_SUCCESS',
   'FETCH_COURSES',
   'INIT',
   'DONE',
@@ -21,6 +23,7 @@ export const [
 
 export const initialState = {
   courses: [],
+  public_courses: [],
   status: INIT,
 };
 
@@ -30,8 +33,14 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         courses: serializeListByIds(action.data.data),
-        status: DONE
+        status: FETCH_COURSES_SUCCESS
       };
+    case FETCH_PUBLIC_COURSES_SUCCESS:
+      return {
+        ...state,
+        public_courses: serializeListByIds(action.data.data),
+        status: DONE
+      }
     default:
       return;
   }

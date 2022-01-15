@@ -85,7 +85,7 @@ class CoursesController < ApplicationController
 
   def check_access
     unless @course.user_ids.include?(current_user.id)
-      render plain: "404 Not Found", status: 404
+      render :public_show
     end
   end
 

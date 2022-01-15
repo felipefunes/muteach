@@ -14,6 +14,9 @@ Rails.application.routes.draw do
 
   resources :categories
   resources :scores, only: [:create, :update]
+  scope module: 'courses' do
+    resources :public, only: [:index]
+  end
 
   resources :courses do
     scope module: 'courses' do
