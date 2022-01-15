@@ -1,0 +1,21 @@
+.max-w-xl.mx-auto.py-10.px-6
+  = link_to courses_path, class: "text-gray-600 mb-5 inline-block" do
+    %svg{xmlns: "http://www.w3.org/2000/svg", class: "h-5 w-5 text-gray-600 mr-1 inline-block align-text-top", fill: "none", viewBox: "0 0 24 24", stroke: "currentColor"}
+      %path{"stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": "2", d: "M11 17l-5-5m0 0l5-5m-5 5h12" }
+    %span 
+      = "Back to courses"
+  .mb-10
+    %h1.text-3xl.font-bold.leading-tight.mr-2.mb-4  
+      = @course.name
+    - if @course.cover_img.attached?
+      .mb-4
+        = image_tag @course.cover_img
+    %p.mb-4
+      = @course.description
+    - teacher = CoursesUser.where(course_id: @course.id, role: "teacher").first.user
+    - if teacher.name.present?
+      %p.text-gray-600
+        ="Teacher: #{teacher.name}"
+    %p.text-gray-600
+      ="Email: #{teacher.email}"
+      

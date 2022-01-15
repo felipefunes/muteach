@@ -9,6 +9,15 @@
       %ul
         - @course.errors.full_messages.each do |msg|
           %li= msg
+  .form_field.mt-6
+    .relative.avatar.avatar--cover
+      = image_tag @course.cover_img.attached? ? url_for(@course.cover_img) : '', id: "avatar-img", class: "object-cover avatar avatar--cover absolute inset-0 #{@course.cover_img.attached? ? "" : "opacity-0"}"
+      = f.file_field :cover_img, id: "avatar", class: "absolute inset-0 avatar avatar--cover opacity-0 cursor-pointer"
+      .text-center.text-gray-500
+        %svg{xmlns: "http://www.w3.org/2000/svg", class: "h-6 w-6 inline-block", fill: "none", viewBox: "0 0 24 24", stroke: "currentColor"}
+          %path{"stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": "2", d: "M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" }
+        %div Cover Image
+
 
   .form-field
     = f.label "Course name"
@@ -28,8 +37,41 @@
     = f.label :primary_objectives
     .field
       = f.text_area :primary_objectives, class: "text-field"
+  
+  .form-field
+    %label.flex.cursor-pointer
+      = f.check_box :public, class: "mt-1 mr-2"
+      %div
+        Make this course public
+        %p.text-gray-600.text-sm
+          Public courses will appear on the feed all the other users.
+        %p.text-gray-600.text-sm
+          Your email will appear on these courses
 
   .form-field
     = f.submit 'Save course', class: "btn-blue btn"
 
 
+:javascript
+  (function() {
+    function readURL(input) {
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        
+        reader.onload = function(e) {
+          document.getElementById('avatar-img').setAttribute('src', e.target.result);
+        }
+        
+        reader.readAsDataURL(input.files[0]); // convert to base64 string
+      }
+    }
+
+    var avatarInput = document.getElementById('avatar');
+    var image = document.getElementById('avatar-img');
+    if (avatarInput) {
+      avatarInput.addEventListener('change', function() {
+        readURL(this, image);
+        image.classList.remove('opacity-0')
+      });
+    }
+  })();

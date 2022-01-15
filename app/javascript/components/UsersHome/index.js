@@ -1,15 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import LoadingIndicator from '../common/LoadingIndicator'
-import { UserIcon, LogoutIcon } from '@heroicons/react/outline'
-import { 
-  UserGroupIcon, 
-  ClipboardCheckIcon, 
-  CalendarIcon,
-} from '@heroicons/react/solid'
+import Course from './Course'
+import { UserIcon, LogoutIcon,  } from '@heroicons/react/outline'
+
 import {
   FETCH_COURSES_SUCCESS,
-  FETCH_COURSES,
+  FETCH_PUBLIC_COURSES_SUCCESS,
   INIT,
   DONE,
 } from './reducers';
@@ -19,11 +15,17 @@ import { initialState, reducer } from './reducers';
 export default function UsersHome({currentUser}) {
   const [state, dispatch] = React.useReducer(reducer, initialState);
   const coursesToArr = Object.values(state.courses).map(course => course);
-  const showCounters = (course) => course.evaluations_count || course.sessions_count || course.users_count
+  const publicCoursesToArr = Object.values(state.public_courses).map(course => course);
 
   React.useEffect(() => {
     if (state.status === INIT) {
       fetchCourses();
+    }
+  }, [state.status])
+
+  React.useEffect(() => {
+    if (state.status === FETCH_COURSES_SUCCESS) {
+      fetchPublicCourses();
     }
   }, [state.status])
 
@@ -36,6 +38,19 @@ export default function UsersHome({currentUser}) {
       dispatch({
         type: FETCH_COURSES_SUCCESS,
         data: courses,
+      });
+    })
+  }
+
+  function fetchPublicCourses() {
+    fetch('/public.json')
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(public_courses) {
+      dispatch({
+        type: FETCH_PUBLIC_COURSES_SUCCESS,
+        data: public_courses,
       });
     })
   }
@@ -85,60 +100,22 @@ export default function UsersHome({currentUser}) {
         </ul>
       </div>
       <div className="col-span-4">
-        <ul>
+        <ul className='mb-10'>
           {state.status !== DONE ? (
               <div className="text-center border-solid border border-gray-300 rounded bg-absolutewhite p-10 mb-2 text-black">
                 <LoadingIndicator />
               </div>
             ) : (coursesToArr.length > 0 ? (
-                  <React.Fragment>
+                <React.Fragment>
                   <h3 className="text-2xl mb-3 font-extrabold leading-snug">
                     {`Your courses (${coursesToArr.length})`}
                   </h3>
                   {coursesToArr.sort((a,b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()).map(course => (
-                    <li key={course.id}>
-                      <a href={`/courses/${course.id}`} className="flex justify-between border-solid border border-gray-300 rounded bg-absolutewhite p-6 mb-2 text-black">
-                        <div>
-                          <h3 className="text-xl font-bold">{course.name}</h3>
-                          <p className="mb-1 text-sm text-gray-500">{course.category_name}</p>
-                          {course.description && <p className={` text-base text-gray-600 mb-${showCounters(course) ? '5' : '2'}`}>{course.description}</p>}
-                          {/* {course.price && <div>{`💵 $${course.price}`}</div>} */}
-                          {
-                            (showCounters(course)) ? (
-                              <div className="text-gray-500 text-xs flex items-center">
-                                { 
-                                  <span className="mr-4">
-                                    <UserGroupIcon className="h-3 w-3 mr-1 inline-block relative" style={{top: -2}}/>
-                                    {`${course.users_count} Students`}
-                                  </span> 
-                                }
-                                { 
-                                  <span className="mr-4">
-                                    <CalendarIcon className="h-3 w-3 mr-1 inline-block relative" style={{top: -2}}/>
-                                    {`${course.sessions_count} Sessions`}
-                                  </span> 
-                                  }
-                                { 
-                                  <span className="">
-                                    <ClipboardCheckIcon className="h-3 w-3 mr-1 inline-block relative" style={{top: -2}}/>
-                                    {`${course.evaluations_count} Evaluations`}
-                                  </span> 
-                                }
-                              </div>
-                            ) : null
-                          }
-                        </div>
-                        {!course.user_ids.includes(currentUser.id) && (
-                          <div>
-                            <button type="button" className="btn btn-blue text-xs " onClick={(e) => {e.preventDefault(); joinCourse(course.id)}}>Join course</button>
-                          </div>
-                        )}
-                      </a>
-                    </li>
-                ))}
-                  </React.Fragment>
+                    <Course course={course} currentUser={currentUser} key={course.id}/>
+                  ))}
+                </React.Fragment>
               ) : (
-                <div className="text-center border-solid border border-gray-300 rounded bg-absolutewhite p-10 mb-2 text-black">
+                <div className="text-center border-solid border border-gray-300 rounded bg-absolutewhite p-10 mb-10 text-black">
                   <p className="text-4xl">🤓</p>
                   <p className="text-xl font-bold mb-1">You haven't created any course yet.</p>
                   <p>Press the blue button to create the first one and start managing your classes.</p>
@@ -147,6 +124,18 @@ export default function UsersHome({currentUser}) {
             )
           }
         </ul>
+        {publicCoursesToArr.length > 0 && (
+          <ul className='mb-10'>
+            <React.Fragment>
+              <h3 className="text-2xl mb-3 font-extrabold leading-snug">
+                {`Courses from our community (${publicCoursesToArr.length})`}
+              </h3>
+              {publicCoursesToArr.sort((a,b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()).map(course => (
+                <Course course={course} currentUser={currentUser} key={course.id}/>
+              ))}
+            </React.Fragment>
+          </ul>
+        )}
       </div>
     </div>
   );

@@ -52,7 +52,7 @@ class CoursesController < ApplicationController
 
   def update
     if @course.update(course_params)
-      redirect_to courses_path, notice: 'Course was successfully updated.'
+      redirect_to course_path(@course), notice: 'Course was successfully updated.'
     else
       render action: :edit
     end
@@ -78,12 +78,14 @@ class CoursesController < ApplicationController
       :price, :category_id,
       :primary_objectives, 
       :sessions_amount,
+      :public,
+      :cover_img
     )
   end
 
   def check_access
     unless @course.user_ids.include?(current_user.id)
-      render plain: "404 Not Found", status: 404
+      render :public_show
     end
   end
 
