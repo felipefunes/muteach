@@ -22,7 +22,7 @@ gem 'jbuilder', '~> 2.7'
 # gem 'bcrypt', '~> 3.1.7'
 
 gem "aws-sdk-s3", require: false
-gem 'image_processing', '~> 1.2'
+gem 'image_processing', '~> 1.12'
 
 gem 'hamlit'
 gem 'haml-rails'
