@@ -13,7 +13,7 @@ export default function Course({course, currentUser}) {
     <li>
     <a href={`/courses/${course.id}`} className="flex justify-between border-solid border border-gray-300 rounded bg-absolutewhite p-6 mb-2 text-black">
       <div className="flex">
-      {course.image_url && <div><img width="240" className="inline-block mr-4 rounded" src={course.image_url} /></div>}
+      {course.image_url && <div className="mr-4"><img width="240" className="inline-block rounded" src={course.image_url} /></div>}
       <div>
         <h3 className="text-xl font-bold">
           {course.name}
