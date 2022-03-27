@@ -20,12 +20,27 @@ class Courses::UsersController < ApplicationController
   end
 
   def create
-    @new_user = User.new(name: params[:name], email: processed_email)
-    if @new_user.save
-      CoursesUser.create(course: @course, user: @new_user)
+   
+    if User.exists?(email: processed_email)
+      user = User.find_by(email: processed_email)
+      if user.name.blank?
+        user.update_column(:name, user_params[:name])
+      end
+      if user.courses_users.exists?(course_id: @course.id)
+        course_user = user.courses_users.find_by(course_id: @course.id)
+        course_user.update_column(:hidden, false)
+      else
+        user.courses_users.create(course: @course, user: user)
+      end
       redirect_to course_path(@course)
     else
-      render :new
+      @new_user = User.new(name: params[:name], email: processed_email)
+      if @new_user.save
+        CoursesUser.create(course: @course, user: @new_user)
+        redirect_to course_path(@course)
+      else
+        render :new
+      end
     end
   end
 
