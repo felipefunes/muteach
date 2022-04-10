@@ -59,8 +59,11 @@ export default function UsersList({
   }
 
   function sortByName(a, b) {
-    const nameA = a.name.toUpperCase(); // ignore upper and lowercase
-    const nameB = b.name.toUpperCase(); // ignore upper and lowercase
+    const handledA = a.name || a.email;
+    const handledB = b.name || b.email;
+    const nameA = handledA.toUpperCase(); // ignore upper and lowercase
+    const nameB = handledB.toUpperCase(); // ignore upper and lowercase
+    
     if (nameA < nameB) {
       return -1;
     }
@@ -77,15 +80,15 @@ export default function UsersList({
       {usersToArr && usersToArr.sort((a,b) => sortByName(a, b)).map((user, index) => (
         <tr key={user.id}>
           <td className="sticky z-10 bg-absolutewhite" style={{left: 0}}>
-            <Tooltip title={`View ${user.name}'s details`}>
+            <Tooltip title={`View ${user.name || user.email}'s details`}>
               <a href={`/courses/${courseId}/users/${user.id}`} className="text-sm font-semibold text-black">
                 {index + 1}
                 {'. '}
-                {user.name}
+                {user.name || user.email}
               </a>
             </Tooltip>
             {!(user.email.includes('_user_') && user.email.includes('@muteach.com')) && (
-              <Tooltip title={`Send an email to ${user.name}`}>
+              <Tooltip title={`Send an email to ${user.name || user.email}`}>
                 <a href={`mailto:${user.email}`}>
                   <MailIcon className="ml-1 h-4 w-4 text-gray-600 hover:text-blue-600 inline-block"/>
                 </a>

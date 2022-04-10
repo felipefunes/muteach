@@ -25,8 +25,12 @@ class User < ApplicationRecord
     email.split('@').first
   end
 
+  def fall_back_name
+    name || email_local_part
+  end
+
   def name_first_letter
-    (name || email_local_part).first.upcase
+    fall_back_name.first.upcase
   end
 
   def avatar_url 
