@@ -1,47 +1,44 @@
-.text-gray-600.mb-4
-  %strong.font-semibold
-    Teacher:
-  = " #{teacher.fall_back_name} • #{teacher.email}"
+.px-6
+  - if course.sessions.any?
+    .mb-10.border-solid.border.border-gray-300.rounded.bg-absolutewhite 
+      .flex.justify-between.p-6.pb-0.mb-1.items-center
+        %h3.text-xl.font-bold
+          = "Sessions (#{course.sessions.size})"
+        .text-gray-600.font-bold
+          = "Attendance: #{current_user.attendance_days_by_course(course)}/#{course.sessions.size} - #{current_user.attendance_percentage_by_course(course)}%"
+      %ul
+        - course.sessions.each_with_index do |session, index|
+          %li.flex.justify-between.border-b.border-gray-300.py-4.px-6.items-center
+            .mr-4
+              .mb-1
+                - if session.description.present?
+                  = "#{index + 1}. #{session.description}"
+                - else
+                  %span.text-gray-600
+                  = "#{index + 1}. Session without description"
+              - if session.objectives.present?
+                .text-sm.text-gray-600
+                  = "Objective: #{session.objectives}"
+              
+            .text-gray-600
+              - if session.date.present? 
+                = time_tag session.date 
+              - else 
+                = "--/--/--"
 
-- if course.sessions.any?
-  .mb-10.border-solid.border.border-gray-300.rounded.bg-absolutewhite 
-    .flex.justify-between.p-6.pb-0.mb-1.items-center
-      %h3.text-2xl.font-bold
-        = "Sessions (#{course.sessions.size})"
-      .text-gray-600.font-bold
-        = "Attendance: #{current_user.attendance_days_by_course(course)}/#{course.sessions.size} • #{current_user.attendance_percentage_by_course(course)}%"
-    %ul
-      - course.sessions.each_with_index do |session, index|
-        %li.flex.justify-between.border-b.border-gray-300.py-4.px-6
-          .mr-4
-            .mb-1
-              - if session.description.present?
-                = "#{index + 1}. #{session.description}"
+  - if course.evaluations.any?
+    .mb-10.border-solid.border.border-gray-300.rounded.bg-absolutewhite
+      %h3.p-6.pb-0.text-xl.font-bold.mb-1= "Evaluations (#{course.evaluations.size})"
+      %ul
+        - course.evaluations.each_with_index do |evaluation, index|
+          %li.flex.justify-between.border-b.border-gray-300.py-4.px-6
+            .text-bold
+              = "#{index + 1}."
+              = evaluation.title.present? ? evaluation.title : "Untitled"
+            %div
+              - score = current_user.scores.detect { |s| s.evaluation_id == evaluation.id }
+              - if score&.points.present?
+                ="#{score&.points} pts"
               - else
                 %span.text-gray-600
-                = "#{index + 1}. Session without description"
-            - if session.objectives.present?
-              .text-sm.text-gray-600
-                = "Objective: #{session.objectives}"
-            
-          .text-gray-600
-            - if session.date.present? 
-              = time_tag session.date 
-            - else 
-              = "--/--/--"
-
--# - if course.evaluations.any?
--#   .mb-10.border-solid.border.border-gray-300.rounded.bg-absolutewhite
--#     %h3.p-6.pb-0.text-2xl.font-bold.mb-1= "Evaluations (#{course.evaluations.size})"
--#     %ul
--#       - course.evaluations.each do |evaluation|
--#         %li.flex.justify-between.border-b.border-gray-300.py-4.px-6
--#           .text-bold
--#             = evaluation.title.present? ? evaluation.title : "Untitled"
--#           %div
--#             - score = course.scores.detect { |s| s.evaluation_id == evaluation.id }
--#             - if score&.points.present?
--#               ="#{score&.points} pts"
--#             - else
--#               %span.text-gray-600
--#                 Pending evaluation
+                  Pending evaluation

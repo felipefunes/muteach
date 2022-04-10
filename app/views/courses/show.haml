@@ -12,13 +12,17 @@
     #course{ data: course }
   - else
     .px-6
-      %div
+      .flex.justify-between.items-center.mb-4
         = link_to root_path, class: "text-gray-600 mb-5 inline-block" do
           %svg{xmlns: "http://www.w3.org/2000/svg", class: "h-5 w-5 text-gray-600 mr-1 inline-block align-text-top", fill: "none", viewBox: "0 0 24 24", stroke: "currentColor"}
             %path{"stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": "2", d: "M11 17l-5-5m0 0l5-5m-5 5h12" }
           %span 
             Back to courses
-      %h1.text-2xl.font-bold.mb-1.mr-3
+        .text-gray-600.text-sm
+          Teacher:
+          = @teacher.fall_back_name
+          %span.mx-1.text-gray-400.font-semibold • 
+          = @teacher.email
+      %h1.text-2xl.font-bold.mr-3.mb-3
         = @course.name
-    .px-6
-      = render "student_show", course: @course, teacher: @teacher
+    = render "student_show", course: @course, teacher: @teacher
