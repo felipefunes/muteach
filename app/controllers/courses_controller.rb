@@ -18,6 +18,7 @@ class CoursesController < ApplicationController
   end
 
   def show
+    @teacher = CoursesUser.where(course_id: @course.id, role: "teacher").first.user
   end
 
   def new   

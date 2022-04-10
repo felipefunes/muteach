@@ -20,3 +20,5 @@
             Back to courses
       %h1.text-2xl.font-bold.mb-1.mr-3
         = @course.name
+    .px-6
+      = render "student_show", course: @course, teacher: @teacher

@@ -12,10 +12,9 @@
         = image_tag @course.cover_img
     %p.mb-4
       = @course.description
-    - teacher = CoursesUser.where(course_id: @course.id, role: "teacher").first.user
-    - if teacher.name.present?
+    - if @teacher.name.present?
       %p.text-gray-600
-        ="Teacher: #{teacher.name}"
+        ="Teacher: #{@teacher.name}"
     %p.text-gray-600
-      ="Email: #{teacher.email}"
+      ="Email: #{@teacher.email}"
       
