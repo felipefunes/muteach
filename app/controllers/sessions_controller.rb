@@ -4,14 +4,23 @@ class SessionsController < ApplicationController
   before_action :set_session, only: [:update, :destroy]
 
   def index
-    sessions = SessionSerializer.new(
-      @course.sessions.includes(:users).reorder(date: :asc)
-    ).serializable_hash.to_json
     
-    render(
-      json: sessions, 
-      status: :ok
-    )
+
+    respond_to do |format|
+      format.html do
+        @sessions = @course.sessions
+      end
+      format.json do
+        sessions = SessionSerializer.new(
+          @course.sessions.includes(:users).reorder(date: :asc)
+        ).serializable_hash.to_json
+        
+        render(
+          json: sessions, 
+          status: :ok
+        )
+      end
+    end
   end
 
   def create
