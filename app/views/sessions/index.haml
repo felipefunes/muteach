@@ -1,0 +1,32 @@
+.max-w-xl.mx-auto.py-10.px-6
+  = link_to course_path(@course), class: "text-gray-600 mb-5 inline-block" do
+    %svg{xmlns: "http://www.w3.org/2000/svg", class: "h-5 w-5 text-gray-600 mr-1 inline-block align-text-top", fill: "none", viewBox: "0 0 24 24", stroke: "currentColor"}
+      %path{"stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": "2", d: "M11 17l-5-5m0 0l5-5m-5 5h12" }
+    %span 
+      = "Back to #{@course.name}"
+
+  %ul
+    - if @sessions.any?
+      .mb-10.border-solid.border.border-gray-300.rounded.bg-absolutewhite
+        %h3.p-6.pb-0.text-2xl.font-bold.mb-1= "Sessions (#{@sessions.size})"
+        %ul
+          - @sessions.each_with_index do |session, index|
+            %li.border-b.border-gray-300.p-6
+              .flex.justify-between
+                %div
+                  - if session.description.present?
+                    .mb-4
+                      %h3.font-bold.mb-1.capitalize Description
+                      %p.mb-2= session.description
+                %div
+                  .rounded-full.text-white.bg-gray-500.justify-center.items-center.w-8.h-8.flex
+                    = index + 1
+              - if session.objectives.present?
+                .mb-4
+                  %h4.font-bold.mb-1.capitalize Objectives
+                  %p.mb-2= session.objectives
+              .text-gray-500
+                - if session.date&.present?
+                  = time_tag session.date
+                - else
+                  %span (Session without date)

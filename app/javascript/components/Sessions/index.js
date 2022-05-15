@@ -163,12 +163,16 @@ export default function Sessions({ courseId }) {
     <thead>
       <tr>
         <td className="sticky z-10 bg-absolutewhite" style={{left: 0}}>
-          <form onSubmit={createSession}>
-            <button type="submit" className="text-blue-700">+ Add new session</button>
-          </form>
+          <div className='flex'>
+            <form onSubmit={createSession}>
+              <button type="submit" className="text-blue-700">+ Add new session</button>
+            </form>
+            <span className="mx-2 text-gray-300">|</span>
+            <a href={`/courses/${courseId}/sessions`}>All Sessions</a>
+          </div>
         </td>  
         {sessionsToArr && sessionsToArr.map((s,i) => (
-          <td key={s.id}>
+          <td key={s.id} className="no-px">
             <button type="button" onClick={() => onOpenModal(s)} className="px-2 text-center hover:text-blue-700">
               <Tooltip title="Edit session">
                 <span className="block text-xs font-semibold mb-1 font-mono hover:text-blue-700">
