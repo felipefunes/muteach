@@ -14,7 +14,7 @@
     "@rails/actioncable": "^6.0.0",
     "@rails/activestorage": "^6.0.0",
     "@rails/ujs": "^6.0.0",
-    "@rails/webpacker": "4.2.2",
+    "@rails/webpacker": "5.4.3",
     "@types/react": "^16.9.46",
     "@types/react-big-calendar": "^0.24.7",
     "@types/react-dom": "^16.9.8",
@@ -27,7 +27,7 @@
     "lint-staged": "^10.5.4",
     "lodash": "^4.17.20",
     "moment": "^2.29.1",
-    "node-sass": "^4.14.1",
+    "node-sass": "^7.0.1",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-big-calendar": "^0.28.1",
@@ -52,10 +52,10 @@
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.22.0",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "webpack-dev-server": "^3.11.0"
+    "webpack-dev-server": "4.7.4"
   },
   "engines": {
-    "node": "15.14"
+    "node": "16.14"
   },
   "scripts": {
     "start": "./bin/webpack --watch --progress --colors",

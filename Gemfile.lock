@@ -335,10 +335,10 @@ DEPENDENCIES
   tzinfo-data
   web-console (>= 3.3.0)
   webdrivers
-  webpacker (~> 4.0)
+  webpacker
 
 RUBY VERSION
-   ruby 2.6.5p114
+   ruby 2.7.4p191
 
 BUNDLED WITH
    2.1.4
