@@ -83,3 +83,5 @@ production:
   database: <%= ENV['MUTEACH_DATABASE'] %>
   username: <%= ENV['MUTEACH_DATABASE_USERNAME'] %>
   password: <%= ENV['MUTEACH_DATABASE_PASSWORD'] %>
+  host: <%= ENV['MUTEACH_DATABASE_HOST'] %>
+  url: <%= ENV['MUTEACH_DATABASE_URL'] %>
