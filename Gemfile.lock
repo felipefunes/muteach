@@ -95,6 +95,10 @@ GEM
       responders
       warden (~> 1.2.3)
     digest (3.1.0)
+    dotenv (2.8.1)
+    dotenv-rails (2.8.1)
+      dotenv (= 2.8.1)
+      railties (>= 3.2)
     erubi (1.11.0)
     erubis (2.7.0)
     ffi (1.15.5)
@@ -141,6 +145,7 @@ GEM
     method_source (1.0.0)
     mini_magick (4.11.0)
     mini_mime (1.0.3)
+    mini_portile2 (2.8.2)
     minitest (5.16.2)
     msgpack (1.5.4)
     net-imap (0.2.3)
@@ -158,9 +163,8 @@ GEM
       net-protocol
       timeout
     nio4r (2.5.8)
-    nokogiri (1.13.8-arm64-darwin)
-      racc (~> 1.4)
-    nokogiri (1.13.8-x86_64-linux)
+    nokogiri (1.13.8)
+      mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
     orm_adapter (0.5.0)
     pg (1.4.3)
@@ -274,6 +278,7 @@ DEPENDENCIES
   bullet
   byebug
   devise
+  dotenv-rails
   haml-rails
   hamlit
   image_processing (~> 1.2)
@@ -297,7 +302,7 @@ DEPENDENCIES
   webpacker (= 4.3.0)
 
 RUBY VERSION
-   ruby 3.1.2p20
+   ruby 3.2.2p53
 
 BUNDLED WITH
    2.3.7

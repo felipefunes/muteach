@@ -80,6 +80,6 @@ test:
 #
 production:
   <<: *default
-  database: muteach_production
-  username: muteach
+  database: <%= ENV['MUTEACH_DATABASE'] %>
+  username: <%= ENV['MUTEACH_DATABASE_USERNAME'] %>
   password: <%= ENV['MUTEACH_DATABASE_PASSWORD'] %>
