@@ -79,7 +79,7 @@ class Courses::UsersController < ApplicationController
 
   def processed_email
     token = SecureRandom.hex(4)
-    fake_email = "#{@course.id}_user_#{token}@muteach.com"
+    fake_email = "#{@course.id}_user_#{token}@#{ENV['DOMAIN']}"
     email = params[:email]
     email.present? ? email : fake_email
   end
