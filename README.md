@@ -1,24 +1,32 @@
-# README
+# MUTEACH
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
 
-Things you may want to cover:
+## Setup
+1. Install Ruby
+```bash
+rvm install (whatever version within Gemfile)
+gem install bundler
+bundle
+```
 
-* Ruby version
+2. Install Yarn
+```bash
+brew install yarn
+# Install node packages
+yarn
+```
 
-* System dependencies
+3. Create DB
+```bash
+rails db:create db:migrate
+```
 
-* Configuration
+4. Run local server
+```bash
+rails s
+```
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+5. Run Webpack
+```bash
+yarn start
+```
