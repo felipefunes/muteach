@@ -1,5 +1,6 @@
 # MUTEACH
-
+Manage your students, sesions, attendance and evaluations.
+https://www.muteach.com
 
 ## Setup
 1. Install Ruby
