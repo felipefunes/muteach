@@ -17,6 +17,7 @@
 default: &default
   adapter: postgresql
   encoding: unicode
+  host: <%= ENV['POSTGRES_DB_HOSTNAME'] || 'localhost' %>
   # For details on connection pooling, see Rails configuration guide
   # https://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
@@ -80,8 +81,7 @@ test:
 #
 production:
   <<: *default
-  database: <%= ENV['MUTEACH_DATABASE'] %>
-  username: <%= ENV['MUTEACH_DATABASE_USERNAME'] %>
-  password: <%= ENV['MUTEACH_DATABASE_PASSWORD'] %>
-  host: <%= ENV['MUTEACH_DATABASE_HOST'] %>
-  url: <%= ENV['MUTEACH_DATABASE_URL'] %>
+  database: muteach_production
+  username: <%= ENV['POSTGRES_DB_USERNAME'] || ENV['USER'] || 'postgres' %>
+  password: <%= ENV['POSTGRES_DB_PASSWORD'] || ENV['USER'] || 'postgres' %>
+  url: <%= ENV['DATABASE_URL'] %>
